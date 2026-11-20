@@ -351,14 +351,6 @@ function formatStarRating(val) {
   return Number(val || 3.2).toFixed(1).replace('.', ',');
 }
 
-function quickFilterStatus(statusValue, btnEl) {
-  const select = document.getElementById('filter-relatos-status');
-  if (select) select.value = statusValue;
-  document.querySelectorAll('.filter-chip').forEach((c) => c.classList.remove('active'));
-  if (btnEl) btnEl.classList.add('active');
-  loadRelatos(1);
-}
-
 async function loadRelatos(page = 1) {
   currentRelatosPage = page;
   const q = document.getElementById('search-relatos-input')?.value || '';
@@ -370,8 +362,6 @@ async function loadRelatos(page = 1) {
     if (status) params.set('status', status);
     const res = await fetch(`/api/relatos?${params.toString()}`);
     allRelatos = await res.json();
-    const kpiRel = document.getElementById('kpi-total-relatos');
-    if (kpiRel && !q && !status) kpiRel.textContent = allRelatos.length;
     renderRelatosGrid();
   } catch (err) {
     console.error('Erro ao carregar relatos:', err);
@@ -384,7 +374,7 @@ function renderRelatosGrid() {
   if (!grid) return;
 
   if (allRelatos.length === 0) {
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:42px;color:#64748b;background:#fff;border-radius:16px;border:1px solid #e2e8f0;">Nenhum relato encontrado para o filtro pesquisado.</div>`;
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:#6b7280;">Nenhum relato encontrado para o filtro pesquisado.</div>`;
     pag.innerHTML = '';
     return;
   }
@@ -402,14 +392,13 @@ function renderRelatosGrid() {
         <div class="proto-card">
           <img src="${r.imagem || '/assets/buraco.svg'}" alt="${r.titulo}" class="card-thumb" />
           <div class="card-info">
-            <div class="card-protocol-mini">#${r.protocolo || 'PICOS-2026'}</div>
             <div class="card-title" title="${r.titulo}">${r.titulo}</div>
             <div class="card-meta-line">📍 ${r.bairro}</div>
             <div class="card-meta-line">🔧 ${r.categoria}</div>
             <span class="status-badge ${badgeClass}">${r.status}</span>
             <div class="card-footer-row">
               <span class="card-rating"><span class="star-gold">★</span> ${formatStarRating(r.avaliacao)}</span>
-              <button type="button" class="btn-visualizar" onclick="openRelatoModal(${r.id})">Ver Detalhes</button>
+              <button type="button" class="btn-visualizar" onclick="openRelatoModal(${r.id})">Visualizar</button>
             </div>
           </div>
         </div>

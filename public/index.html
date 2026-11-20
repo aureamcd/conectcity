@@ -3,218 +3,140 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>e-CONECT-CITY | Plataforma Smart City & Ouvidoria Digital de Picos - PI</title>
+  <title>e-CONECT-CITY | Município de Picos - PI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <!-- Barra GovTech de Acessibilidade e Status da Arquitetura -->
+  <!-- Barra Superior de Acessibilidade (Fiel ao Protótipo) -->
   <div class="top-accessibility-bar">
     <div class="container top-bar-inner">
-      <div class="micro-status-pill" onclick="navigateTo('arquitetura')" title="Ver telemetria em tempo real dos 3 Microsserviços AWS">
+      <div class="micro-status-pill" onclick="navigateTo('arquitetura')" title="Clique para ver o Painel dos 3 Microsserviços AWS, Fila SQS/DLQ e CloudWatch">
         <span class="pulse-dot"></span>
-        <span>AWS Cloud Native: <strong>3 Microsserviços Ativos</strong> (Identidade • Chamados • Mídia/SQS)</span>
+        <span>Arquitetura: <strong>3 Microsserviços AWS Ativos</strong> (Identidade • Chamados • Mídia/SQS)</span>
       </div>
       <div class="accessibility-controls">
         <button type="button" onclick="changeFontSize(1)" title="Aumentar Fonte">A+</button>
         <button type="button" onclick="changeFontSize(-1)" title="Diminuir Fonte">A-</button>
         <button type="button" onclick="resetFontSize()" title="Fonte Padrão">A</button>
-        <button type="button" onclick="toggleContrast()" title="Alternar Alto Contraste">◐ Contraste</button>
-        <span class="acc-divider">|</span>
-        <span class="acc-label" onclick="showToast('Recursos de acessibilidade e leitor visual ativados!')">🖐 Acessibilidade</span>
-        <a href="https://www.picos.pi.gov.br" target="_blank" rel="noopener" class="pref-link">Portal da Prefeitura ↗</a>
+        <button type="button" onclick="toggleContrast()" title="Alto Contraste">◐</button>
+        <span class="acc-label" onclick="showToast('Recursos de acessibilidade e alto contraste ativos!')">🖐 Acessibilidade</span>
+        <a href="https://www.picos.pi.gov.br" target="_blank" rel="noopener" class="pref-link">Acessar Site da Prefeitura</a>
       </div>
     </div>
   </div>
 
-  <!-- Header Moderno Glassmorphic + Identidade Conect-City -->
-  <header class="modern-header">
-    <div class="container header-bar">
+  <!-- Cabeçalho Principal Azul Conect-City -->
+  <header class="main-header">
+    <div class="container header-inner">
       <div class="brand-logo" onclick="navigateTo('inicio')">
-        <div class="logo-badge">
-          <img src="/assets/logo_e.svg" alt="Logo e-Conect-City" class="logo-e-img" />
-        </div>
+        <img src="/assets/logo_e.svg" alt="Logo e-Conect-City" class="logo-e-img" />
         <div class="brand-text">
-          <div class="brand-title-row">
-            <span class="brand-title">e-CONECT<span class="brand-accent">CITY</span></span>
-            <span class="city-pill">PICOS • PI</span>
-          </div>
-          <span class="brand-subtitle">Ouvidoria Digital &amp; Gestão de Cidades Inteligentes</span>
+          <span class="brand-title">CONECT-CITY</span>
+          <span class="brand-subtitle">Município de Picos - PI</span>
         </div>
-      </div>
-
-      <nav class="main-navbar">
-        <button type="button" class="nav-item active" data-view="inicio" onclick="navigateTo('inicio')">
-          <span>🏠</span> Início
-        </button>
-        <button type="button" class="nav-item" data-view="relatos" onclick="navigateTo('relatos')">
-          <span>📋</span> Relatos
-        </button>
-        <button type="button" class="nav-item" data-view="sugestoes" onclick="navigateTo('sugestoes')">
-          <span>💡</span> Sugestões
-        </button>
-        <button type="button" class="nav-item" data-view="eventos" onclick="navigateTo('eventos')">
-          <span>📅</span> Eventos
-        </button>
-        <button type="button" class="nav-item nav-arch" data-view="arquitetura" onclick="navigateTo('arquitetura')">
-          <span>☁️</span> Arquitetura AWS
-        </button>
-      </nav>
-
-      <div class="header-auth-area">
-        <button type="button" class="btn-auth-pill" data-view="login" id="nav-auth-btn" onclick="handleAuthNavClick()">
-          <span class="auth-avatar" id="nav-auth-icon">👤</span>
-          <span id="nav-auth-label">Entrar / Cadastrar</span>
-        </button>
       </div>
     </div>
-    <div class="nav-gradient-border"></div>
   </header>
 
-  <!-- Container de Pop-outs / Notificações -->
+  <!-- Barra de Navegação com linha gradiente Laranja -> Verde -->
+  <nav class="main-navbar">
+    <div class="container nav-inner">
+      <button type="button" class="nav-item active" data-view="inicio" onclick="navigateTo('inicio')">
+        <span class="nav-icon">⌂</span> Início
+      </button>
+      <button type="button" class="nav-item" data-view="relatos" onclick="navigateTo('relatos')">
+        <span class="nav-icon">📋</span> Relatos
+      </button>
+      <button type="button" class="nav-item" data-view="sugestoes" onclick="navigateTo('sugestoes')">
+        <span class="nav-icon">📄</span> Sugestões
+      </button>
+      <button type="button" class="nav-item" data-view="eventos" onclick="navigateTo('eventos')">
+        <span class="nav-icon">📅</span> Eventos
+      </button>
+      <button type="button" class="nav-item nav-login" data-view="login" id="nav-auth-btn" onclick="handleAuthNavClick()">
+        <span class="nav-icon">👤</span> <span id="nav-auth-label">Login</span>
+      </button>
+      <button type="button" class="nav-item nav-arch" data-view="arquitetura" onclick="navigateTo('arquitetura')">
+        <span class="nav-icon">☁️</span> Microsserviços AWS
+      </button>
+    </div>
+    <div class="nav-gradient-border"></div>
+  </nav>
+
+  <!-- Container de Pop-outs / Notificações (Fiel aos Pop-outs do Protótipo) -->
   <div id="toast-container" class="toast-container"></div>
 
   <!-- ======================================================================= -->
-  <!-- TELA 1: INÍCIO (HOME MODERNA SMART CITY)                                -->
+  <!-- TELA 1: INÍCIO (HOME)                                                   -->
   <!-- ======================================================================= -->
   <main id="view-inicio" class="view-section active">
-    <section class="modern-hero">
-      <div class="container hero-grid">
-        <div class="hero-left">
-          <div class="hero-kicker">
-            <span class="kicker-dot"></span>
-            PLATAFORMA PARTICIPATIVA MUNICIPAL • PICOS - PIAUÍ
-          </div>
-          <h1 class="hero-headline">
-            Reclame, Sugira, Mude:<br />
-            A cidade que você <span class="text-gradient-green">sonha</span> começa aqui!
-          </h1>
-          <p class="hero-lead">
-            Conectando os cidadãos picoenses às secretarias municipais em tempo real. Registre ocorrências urbanas com fotos georreferenciadas, proponha soluções e acompanhe a devolutiva oficial da prefeitura com transparência.
-          </p>
-          <div class="hero-actions">
-            <button type="button" class="btn btn-orange btn-lg" onclick="navigateTo('form-relato')">
-              <span>📢</span> Cadastrar um Relato
-            </button>
-            <button type="button" class="btn btn-outline-green btn-lg" onclick="navigateTo('form-sugestao')">
-              <span>💡</span> Cadastrar uma Solução
-            </button>
-          </div>
-
-          <div class="hero-trust-row">
-            <div class="trust-item">✔ Protocolo Digital Imediato</div>
-            <div class="trust-item">✔ Processamento de Mídia em Nuvem (S3/SQS)</div>
-            <div class="trust-item">✔ Devolutiva Oficial</div>
-          </div>
-        </div>
-
-        <div class="hero-right">
-          <div class="hero-visual-card">
-            <img src="/assets/mosaico_picos.svg" alt="Mosaico de Picos - PI" class="hero-mosaic-img" />
-            <div class="floating-stat-card stat-top">
-              <span class="floating-icon">📍</span>
-              <div>
-                <strong>Município de Picos - PI</strong>
-                <span>Monitoramento Urbano Ativo</span>
-              </div>
-            </div>
-            <div class="floating-stat-card stat-bottom">
-              <span class="floating-icon">⚡</span>
-              <div>
-                <strong>Arquitetura Elástica</strong>
-                <span>3 Microsserviços + Fila SQS</span>
-              </div>
-            </div>
-          </div>
+    <section class="hero-section">
+      <div class="hero-mosaic">
+        <img src="/assets/mosaico_picos.svg" alt="Mosaico de Picos - PI" />
+      </div>
+      <div class="hero-content">
+        <h1 class="hero-headline">
+          Reclame, Sugira, Mude:<br />
+          A cidade que você <span class="text-green">sonha</span> começa aqui!
+        </h1>
+        <div class="hero-actions">
+          <button type="button" class="btn btn-orange" onclick="navigateTo('form-relato')">
+            Cadastrar um Relato
+          </button>
+          <button type="button" class="btn btn-outline-green" onclick="navigateTo('form-sugestao')">
+            Cadastrar uma Solução
+          </button>
         </div>
       </div>
     </section>
 
-    <!-- Barra de Indicadores em Tempo Real (KPIs Smart City) -->
-    <section class="kpi-strip">
-      <div class="container kpi-grid">
-        <div class="kpi-card" onclick="navigateTo('relatos')">
-          <div class="kpi-icon blue">📋</div>
-          <div>
-            <div class="kpi-value" id="kpi-total-relatos">12</div>
-            <div class="kpi-label">Relatos Urbanos Registrados</div>
-          </div>
-        </div>
-        <div class="kpi-card" onclick="navigateTo('sugestoes')">
-          <div class="kpi-icon green">💡</div>
-          <div>
-            <div class="kpi-value" id="kpi-total-sugestoes">3</div>
-            <div class="kpi-label">Soluções Cidadãs Propostas</div>
-          </div>
-        </div>
-        <div class="kpi-card" onclick="navigateTo('eventos')">
-          <div class="kpi-icon amber">📅</div>
-          <div>
-            <div class="kpi-value" id="kpi-total-eventos">3</div>
-            <div class="kpi-label">Eventos Municipais Ativos</div>
-          </div>
-        </div>
-        <div class="kpi-card" onclick="navigateTo('arquitetura')">
-          <div class="kpi-icon purple">☁️</div>
-          <div>
-            <div class="kpi-value">99.9%</div>
-            <div class="kpi-label">Disponibilidade Microsserviços</div>
-          </div>
-        </div>
+    <!-- Seção SOBRE NÓS -->
+    <section class="about-section">
+      <div class="container">
+        <h2 class="section-title-white">SOBRE NÓS</h2>
+        <p class="about-description">
+          Somos um portal dedicado a fortalecer a comunicação entre as autoridades e os moradores da cidade de Picos. Nosso
+          objetivo é proporcionar um espaço onde as informações circulam de forma clara, rápida e eficiente, promovendo o diálogo e
+          o entendimento entre os cidadãos e os gestores públicos. Aqui, você encontra notícias, atualizações e recursos essenciais
+          para o seu dia a dia, sempre com o compromisso de melhorar a interação e a qualidade de vida de todos.
+        </p>
       </div>
     </section>
 
-    <!-- Seção OBJETIVO DO PROJETO (Cards Modernos) -->
+    <!-- Seção OBJETIVO DO PROJETO -->
     <section class="objective-section">
       <div class="container">
-        <div class="section-header-center">
-          <span class="section-eyebrow">COMO FUNCIONA O PORTAL</span>
-          <h2 class="objective-heading">Objetivo do Projeto Conect-City</h2>
-          <p class="section-sub">Uma ponte tecnológica direta entre os moradores dos bairros de Picos e a gestão pública municipal.</p>
-        </div>
-
-        <div class="features-3col">
-          <div class="feature-card" onclick="navigateTo('relatos')">
-            <div class="feature-icon-wrap green">📢</div>
-            <h3>Relate insatisfações com a cidade</h3>
-            <p>Registre problemas como pavimentação, buracos em vias, limpeza urbana ou iluminação pública, com fotos e endereço, para que a prefeitura possa agir com rapidez.</p>
-            <span class="feature-link">Ver relatos registrados →</span>
+        <h2 class="objective-heading">OBJETIVO DO PROJETO</h2>
+        <div class="objective-grid">
+          <div class="objective-watermark">
+            <img src="/assets/logo_e.svg" alt="Marca d'água ConectCity" />
           </div>
-
-          <div class="feature-card" onclick="navigateTo('sugestoes')">
-            <div class="feature-icon-wrap amber">💡</div>
-            <h3>Faça sugestões de melhorias</h3>
-            <p>Compartilhe ideias e soluções construtivas para transformar Picos, como ciclovias, áreas de lazer, conectividade ou coleta seletiva nos bairros.</p>
-            <span class="feature-link">Explorar sugestões →</span>
+          <div class="objective-timeline">
+            <div class="timeline-item">
+              <div class="timeline-icon">📢</div>
+              <div class="timeline-content">
+                <h3>Relate insatisfações com a cidade</h3>
+                <p>Registre problemas como infraestrutura, limpeza urbana ou iluminação, com detalhes e anexos, para que a prefeitura possa agir.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-icon">💡</div>
+              <div class="timeline-content">
+                <h3>Faça sugestões de melhorias para a cidade</h3>
+                <p>Compartilhe ideias para transformar sua cidade, como novas áreas de lazer ou projetos comunitários, e ajude a construir um futuro melhor.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-icon">📅</div>
+              <div class="timeline-content">
+                <h3>Saiba sobre os eventos e reuniões comunitárias</h3>
+                <p>Fique por dentro de eventos e reuniões organizados pela prefeitura e participe ativamente da vida da sua comunidade.</p>
+              </div>
+            </div>
           </div>
-
-          <div class="feature-card" onclick="navigateTo('eventos')">
-            <div class="feature-icon-wrap blue">📅</div>
-            <h3>Eventos e reuniões comunitárias</h3>
-            <p>Fique por dentro da agenda cultural, audiências públicas e eventos realizados pela Prefeitura de Picos e participe ativamente da sua comunidade.</p>
-            <span class="feature-link">Conferir programação →</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Seção SOBRE NÓS Moderna -->
-    <section class="about-section">
-      <div class="container about-modern-box">
-        <div class="about-logo-col">
-          <img src="/assets/logo_e.svg" alt="Marca ConectCity" class="about-watermark-img" />
-        </div>
-        <div class="about-text-col">
-          <span class="about-pill">TRANSPARÊNCIA &amp; GOVERNANÇA DIGITAL</span>
-          <h2 class="section-title-white">Sobre Nós</h2>
-          <p class="about-description">
-            Somos um portal dedicado a fortalecer a comunicação entre as autoridades e os moradores da cidade de Picos – PI. Nosso
-            objetivo é proporcionar um espaço onde as informações circulam de forma clara, rápida e eficiente, promovendo o diálogo e
-            o entendimento entre os cidadãos e os gestores públicos. Aqui, você encontra notícias, atualizações de protocolos e recursos essenciais
-            para o seu dia a dia, sempre com o compromisso de melhorar a interação e a qualidade de vida de todos.
-          </p>
         </div>
       </div>
     </section>
@@ -225,50 +147,34 @@
   <!-- ======================================================================= -->
   <main id="view-relatos" class="view-section">
     <div class="container page-container">
-      <div class="page-Hero-header">
-        <div>
-          <span class="section-eyebrow">OUVIDORIA URBANA • PICOS - PI</span>
-          <h1 class="page-title-green">Relatos dos Cidadãos</h1>
-          <p class="page-subtitle">
-            Acompanhe as ocorrências registradas nos bairros de Picos e verifique o status e a devolutiva das secretarias
-          </p>
-        </div>
-        <div class="page-header-actions">
-          <button type="button" class="btn btn-orange" onclick="navigateTo('form-relato')">+ Cadastrar um Relato</button>
-          <button type="button" class="btn btn-outline-green" onclick="navigateTo('form-sugestao')">+ Cadastrar Solução</button>
-        </div>
-      </div>
+      <h1 class="page-title-green">RELATOS</h1>
+      <p class="page-subtitle">
+        Verifique os relatos que os cidadãos de Picos já fizeram e<br />
+        como está o andamento da resolução
+      </p>
 
-      <!-- Barra de Busca e Filtros Rápidos Modernos -->
-      <div class="filter-toolbar">
-        <div class="search-input-wrap">
-          <span class="search-icon-left">🔍</span>
-          <input type="text" id="search-relatos-input" class="search-input" placeholder="Pesquisar por título, bairro (ex: Ipueiras, Junco), categoria ou protocolo..." onkeyup="if(event.key==='Enter') loadRelatos(1)" />
-        </div>
+      <div class="search-bar-row">
+        <input type="text" id="search-relatos-input" class="search-input" placeholder="Pesquise por relatos (ex: Ipueiras, Junco, Buracos, Iluminação)..." onkeyup="if(event.key==='Enter') loadRelatos(1)" />
         <select id="filter-relatos-status" class="search-select" onchange="loadRelatos(1)">
           <option value="">Todos os Status</option>
-          <option value="Em Análise">🔵 Em Análise</option>
-          <option value="Pendente">⚪ Pendente</option>
-          <option value="Em Andamento">🟠 Em Andamento</option>
-          <option value="Concluído">🟢 Concluído</option>
-          <option value="Cancelado">⚫ Cancelado</option>
+          <option value="Em Análise">Em Análise</option>
+          <option value="Pendente">Pendente</option>
+          <option value="Em Andamento">Em Andamento</option>
+          <option value="Concluído">Concluído</option>
+          <option value="Cancelado">Cancelado</option>
         </select>
         <button type="button" class="btn btn-green search-btn" onclick="loadRelatos(1)">Pesquisar</button>
-      </div>
-
-      <!-- Chips de Filtro Rápido -->
-      <div class="quick-chips-row">
-        <button type="button" class="filter-chip active" onclick="quickFilterStatus('', this)">Todos</button>
-        <button type="button" class="filter-chip" onclick="quickFilterStatus('Em Análise', this)">Em Análise</button>
-        <button type="button" class="filter-chip" onclick="quickFilterStatus('Em Andamento', this)">Em Andamento</button>
-        <button type="button" class="filter-chip" onclick="quickFilterStatus('Pendente', this)">Pendentes</button>
-        <button type="button" class="filter-chip" onclick="quickFilterStatus('Concluído', this)">Concluídos</button>
       </div>
 
       <div id="relatos-grid" class="cards-grid-3col"></div>
 
       <!-- Paginação (< 1 2 3 4 >) -->
       <div id="relatos-pagination" class="pagination-bar"></div>
+
+      <div class="bottom-cta-row">
+        <button type="button" class="btn btn-orange" onclick="navigateTo('form-relato')">Cadastrar um Relato</button>
+        <button type="button" class="btn btn-outline-green" onclick="navigateTo('form-sugestao')">Cadastrar uma Solução</button>
+      </div>
     </div>
   </main>
 
@@ -277,28 +183,22 @@
   <!-- ======================================================================= -->
   <main id="view-sugestoes" class="view-section">
     <div class="container page-container">
-      <div class="page-Hero-header">
-        <div>
-          <span class="section-eyebrow">ORÇAMENTO &amp; PLANEJAMENTO PARTICIPATIVO</span>
-          <h1 class="page-title-green">Sugestões e Soluções</h1>
-          <p class="page-subtitle">
-            Ideias construtivas propostas pelos moradores de Picos para modernizar a infraestrutura e os serviços públicos
-          </p>
-        </div>
-        <div class="page-header-actions">
-          <button type="button" class="btn btn-orange" onclick="navigateTo('form-sugestao')">+ Cadastrar uma Sugestão</button>
-        </div>
-      </div>
+      <h1 class="page-title-green">SUGESTÕES</h1>
+      <p class="page-subtitle">
+        Confira as ideias e soluções que os moradores de Picos propuseram<br />
+        para transformar e melhorar nossa cidade
+      </p>
 
-      <div class="filter-toolbar">
-        <div class="search-input-wrap">
-          <span class="search-icon-left">🔍</span>
-          <input type="text" id="search-sugestoes-input" class="search-input" placeholder="Pesquise por sugestões, problemas ou soluções propostas..." onkeyup="if(event.key==='Enter') loadSugestoes()" />
-        </div>
+      <div class="search-bar-row">
+        <input type="text" id="search-sugestoes-input" class="search-input" placeholder="Pesquise por sugestões ou melhorias..." onkeyup="if(event.key==='Enter') loadSugestoes()" />
         <button type="button" class="btn btn-green search-btn" onclick="loadSugestoes()">Pesquisar</button>
       </div>
 
       <div id="sugestoes-grid" class="cards-grid-3col"></div>
+
+      <div class="bottom-cta-row">
+        <button type="button" class="btn btn-orange" onclick="navigateTo('form-sugestao')">Cadastrar uma Sugestão</button>
+      </div>
     </div>
   </main>
 
@@ -307,28 +207,22 @@
   <!-- ======================================================================= -->
   <main id="view-eventos" class="view-section">
     <div class="container page-container">
-      <div class="page-Hero-header">
-        <div>
-          <span class="section-eyebrow">AGENDA CULTURAL &amp; COMUNITÁRIA</span>
-          <h1 class="page-title-green">Eventos Municipais</h1>
-          <p class="page-subtitle">
-            Verifique os eventos, ações sociais e encontros que a Prefeitura de Picos realiza e participe
-          </p>
-        </div>
-        <div class="page-header-actions">
-          <button type="button" class="btn btn-orange" onclick="navigateTo('form-evento')">+ Cadastrar Evento</button>
-        </div>
-      </div>
+      <h1 class="page-title-green">EVENTOS</h1>
+      <p class="page-subtitle">
+        Verifique os eventos que a prefeitura de Picos realiza e<br />
+        participe para fazer uma cidade melhor
+      </p>
 
-      <div class="filter-toolbar">
-        <div class="search-input-wrap">
-          <span class="search-icon-left">🔍</span>
-          <input type="text" id="search-eventos-input" class="search-input" placeholder="Pesquise por eventos (ex: Aniversário de Picos, Dia das Crianças, Geek Show)..." onkeyup="if(event.key==='Enter') loadEventos()" />
-        </div>
+      <div class="search-bar-row">
+        <input type="text" id="search-eventos-input" class="search-input" placeholder="Pesquise por eventos" onkeyup="if(event.key==='Enter') loadEventos()" />
         <button type="button" class="btn btn-green search-btn" onclick="loadEventos()">Pesquisar</button>
       </div>
 
       <div id="eventos-grid" class="cards-grid-3col"></div>
+
+      <div class="bottom-cta-row" style="margin-top: 80px;">
+        <button type="button" class="btn btn-orange" onclick="navigateTo('form-evento')">Cadastrar Evento</button>
+      </div>
     </div>
   </main>
 
@@ -336,56 +230,48 @@
   <!-- TELA 5: LOGIN                                                           -->
   <!-- ======================================================================= -->
   <main id="view-login" class="view-section">
-    <div class="container auth-page-wrap">
-      <div class="modern-auth-card">
-        <div class="auth-visual-side">
-          <img src="/assets/mosaico_picos.svg" alt="Mosaico de Picos - PI" class="auth-mosaic-img" />
-          <div class="auth-visual-overlay">
-            <span class="city-pill">e-CONECT-CITY • PICOS</span>
-            <h3>Sua voz constrói uma cidade mais inteligente.</h3>
-            <p>Autenticação gerenciada pelo Microsserviço de Identidade com controle de sessão e perfis Cidadão / Prefeitura.</p>
+    <section class="hero-section login-split-section">
+      <div class="hero-mosaic">
+        <img src="/assets/mosaico_picos.svg" alt="Mosaico de Picos - PI" />
+      </div>
+      <div class="login-box-container">
+        <h2 class="auth-heading">
+          Faça seu login<br />
+          e ajude a <span class="text-green">melhorar</span> a cidade!
+        </h2>
+
+        <form id="form-login" onsubmit="submitLogin(event)" class="auth-form-narrow">
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" id="login-email" class="form-control" placeholder="Digite seu email" required />
           </div>
-        </div>
+          <div class="form-group">
+            <label>Senha</label>
+            <input type="password" id="login-senha" class="form-control" placeholder="Digite sua senha" required />
+          </div>
+          <div class="auth-btn-row">
+            <button type="button" class="btn btn-outline-orange" onclick="navigateTo('cadastro')">Cadastrar</button>
+            <button type="submit" class="btn btn-green">Entrar</button>
+          </div>
+          <div class="forgot-link-row">
+            <a href="javascript:void(0)" onclick="navigateTo('recuperar')">Esqueceu a senha?</a>
+          </div>
+        </form>
 
-        <div class="auth-form-side">
-          <h2 class="auth-heading">
-            Faça seu login<br />
-            e ajude a <span class="text-gradient-green">melhorar</span> a cidade!
-          </h2>
-
-          <form id="form-login" onsubmit="submitLogin(event)" class="auth-form-narrow">
-            <div class="form-group">
-              <label>E-mail</label>
-              <input type="email" id="login-email" class="form-control" placeholder="Digite seu e-mail" required />
-            </div>
-            <div class="form-group">
-              <label>Senha</label>
-              <input type="password" id="login-senha" class="form-control" placeholder="Digite sua senha" required />
-            </div>
-            <div class="forgot-link-row">
-              <a href="javascript:void(0)" onclick="navigateTo('recuperar')">Esqueceu a senha?</a>
-            </div>
-            <div class="auth-btn-row">
-              <button type="button" class="btn btn-outline-orange" onclick="navigateTo('cadastro')">Criar Conta</button>
-              <button type="submit" class="btn btn-green">Entrar no Portal</button>
-            </div>
-          </form>
-
-          <!-- Atalhos de Demonstração Rápida para o Vídeo -->
-          <div class="demo-credentials-box">
-            <div class="demo-title">⚡ Preenchimento Rápido para Demonstração:</div>
-            <div class="demo-btns">
-              <button type="button" class="btn-demo" onclick="fillDemoLogin('helany123@gmail.com', '123456')">
-                👤 Cidadã (Helany Araújo)
-              </button>
-              <button type="button" class="btn-demo btn-demo-admin" onclick="fillDemoLogin('admin@picos.pi.gov.br', 'admin123')">
-                🏛️ Prefeitura (Admin)
-              </button>
-            </div>
+        <!-- Atalhos de Demonstração Rápida para o Vídeo -->
+        <div class="demo-credentials-box">
+          <div class="demo-title">⚡ Acesso Rápido para Demonstração (Microsserviço de Identidade):</div>
+          <div class="demo-btns">
+            <button type="button" class="btn-demo" onclick="fillDemoLogin('helany123@gmail.com', '123456')">
+              👤 Cidadã (Helany Araújo)
+            </button>
+            <button type="button" class="btn-demo btn-demo-admin" onclick="fillDemoLogin('admin@picos.pi.gov.br', 'admin123')">
+              🏛️ Prefeitura (Administrador)
+            </button>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </main>
 
   <!-- ======================================================================= -->
@@ -393,55 +279,51 @@
   <!-- ======================================================================= -->
   <main id="view-cadastro" class="view-section">
     <div class="container form-page-container">
-      <div class="elevated-form-shell">
-        <div class="form-shell-header">
-          <span class="section-eyebrow">NOVO CIDADÃO • MICROSSERVIÇO DE IDENTIDADE</span>
-          <h2 class="auth-heading">
-            Faça seu cadastro e ajude a <span class="text-gradient-green">melhorar</span> a cidade!
-          </h2>
-        </div>
+      <h2 class="auth-heading">
+        Faça seu cadastro<br />
+        e ajude a <span class="text-green">melhorar</span> a cidade!
+      </h2>
 
-        <form id="form-cadastro" onsubmit="submitCadastro(event)">
+      <form id="form-cadastro" onsubmit="submitCadastro(event)" class="centered-form-card">
+        <div class="form-group">
+          <label>Nome completo</label>
+          <input type="text" id="cad-nome" class="form-control" placeholder="Digite seu nome" required />
+        </div>
+        <div class="form-row-2col">
           <div class="form-group">
-            <label>Nome completo</label>
-            <input type="text" id="cad-nome" class="form-control" placeholder="Digite seu nome completo" required />
+            <label>CPF</label>
+            <input type="text" id="cad-cpf" class="form-control" placeholder="Digite seu CPF (ex: 111.222.333-44)" required />
           </div>
-          <div class="form-row-2col">
-            <div class="form-group">
-              <label>CPF</label>
-              <input type="text" id="cad-cpf" class="form-control" placeholder="000.000.000-00" required />
-            </div>
-            <div class="form-group">
-              <label>Telefone / WhatsApp</label>
-              <input type="text" id="cad-telefone" class="form-control" placeholder="(89) 9 9999-9999" required />
-            </div>
+          <div class="form-group">
+            <label>Telefone</label>
+            <input type="text" id="cad-telefone" class="form-control" placeholder="Digite seu telefone" required />
           </div>
-          <div class="form-row-2col">
-            <div class="form-group">
-              <label>Endereço (Rua e Número)</label>
-              <input type="text" id="cad-endereco" class="form-control" placeholder="Ex: Rua Santo Antônio, 175" required />
-            </div>
-            <div class="form-group">
-              <label>Bairro</label>
-              <input type="text" id="cad-bairro" class="form-control" placeholder="Ex: Ipueiras, Junco, Centro" required />
-            </div>
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Endereço</label>
+            <input type="text" id="cad-endereco" class="form-control" placeholder="Digite o nome da sua rua e número da casa" required />
           </div>
-          <div class="form-row-2col">
-            <div class="form-group">
-              <label>E-mail</label>
-              <input type="email" id="cad-email" class="form-control" placeholder="seuemail@exemplo.com" required />
-            </div>
-            <div class="form-group">
-              <label>Senha de Acesso</label>
-              <input type="password" id="cad-senha" class="form-control" placeholder="Crie uma senha segura" required />
-            </div>
+          <div class="form-group">
+            <label>Bairro</label>
+            <input type="text" id="cad-bairro" class="form-control" placeholder="Digite o bairro em que mora" required />
           </div>
-          <div class="form-actions-centered">
-            <button type="button" class="btn btn-outline-orange" onclick="navigateTo('login')">Cancelar</button>
-            <button type="submit" class="btn btn-green">Concluir Cadastro</button>
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" id="cad-email" class="form-control" placeholder="Digite seu email" required />
           </div>
-        </form>
-      </div>
+          <div class="form-group">
+            <label>Senha</label>
+            <input type="password" id="cad-senha" class="form-control" placeholder="Digite sua senha" required />
+          </div>
+        </div>
+        <div class="form-actions-centered">
+          <button type="button" class="btn btn-outline-orange" onclick="navigateTo('login')">Cancelar</button>
+          <button type="submit" class="btn btn-green">Cadastrar</button>
+        </div>
+      </form>
     </div>
   </main>
 
@@ -450,35 +332,31 @@
   <!-- ======================================================================= -->
   <main id="view-recuperar" class="view-section">
     <div class="container form-page-container">
-      <div class="elevated-form-shell narrow-shell">
-        <div class="form-shell-header">
-          <span class="section-eyebrow">RECUPERAÇÃO DE ACESSO</span>
-          <h2 class="auth-heading">
-            Redefina sua senha no <span class="text-gradient-green">Conect-City</span>
-          </h2>
-        </div>
+      <h2 class="auth-heading">
+        Recupere sua senha<br />
+        e continue ajudando a <span class="text-green">melhorar</span> a cidade!
+      </h2>
 
-        <form id="form-recuperar" onsubmit="submitRecuperarSenha(event)">
+      <form id="form-recuperar" onsubmit="submitRecuperarSenha(event)" class="centered-form-card">
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="rec-email" class="form-control" placeholder="Digite seu e-mail cadastrado" required />
+        </div>
+        <div class="form-row-2col">
           <div class="form-group">
-            <label>E-mail Cadastrado</label>
-            <input type="email" id="rec-email" class="form-control" placeholder="Digite seu e-mail (ex: helany123@gmail.com)" required />
+            <label>Nova Senha</label>
+            <input type="password" id="rec-senha" class="form-control" placeholder="Digite sua senha" required />
           </div>
-          <div class="form-row-2col">
-            <div class="form-group">
-              <label>Nova Senha</label>
-              <input type="password" id="rec-senha" class="form-control" placeholder="Nova senha" required />
-            </div>
-            <div class="form-group">
-              <label>Confirmação de Senha</label>
-              <input type="password" id="rec-confirma" class="form-control" placeholder="Repita a nova senha" required />
-            </div>
+          <div class="form-group">
+            <label>Confirmação de senha</label>
+            <input type="password" id="rec-confirma" class="form-control" placeholder="Digite novamente sua senha" required />
           </div>
-          <div class="form-actions-centered">
-            <button type="button" class="btn btn-outline-orange" onclick="navigateTo('login')">Cancelar</button>
-            <button type="submit" class="btn btn-green">Confirmar Nova Senha</button>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div class="form-actions-centered">
+          <button type="button" class="btn btn-outline-orange" onclick="navigateTo('login')">Cancelar</button>
+          <button type="submit" class="btn btn-green">Confirmar</button>
+        </div>
+      </form>
     </div>
   </main>
 
@@ -487,64 +365,58 @@
   <!-- ======================================================================= -->
   <main id="view-form-relato" class="view-section">
     <div class="container form-page-container">
-      <div class="elevated-form-shell">
-        <div class="form-shell-header">
-          <span class="section-eyebrow">ABERTURA DE CHAMADO • MICROSSERVIÇO DE CHAMADOS + SQS</span>
-          <h1 class="form-page-title">Formulário de Relato Urbano</h1>
-          <p class="form-shell-sub">Descreva o problema identificado no seu bairro e anexe uma foto para triagem da Prefeitura de Picos.</p>
+      <h1 class="form-page-title">Formulário de Relato</h1>
+
+      <form id="form-novo-relato" onsubmit="submitNovoRelato(event)" class="wide-form-card">
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Título</label>
+            <input type="text" id="rel-titulo" class="form-control" placeholder="Digite o título do relato (ex: Buracos na Ipueiras)" required />
+          </div>
+          <div class="form-group">
+            <label>Categoria</label>
+            <select id="rel-categoria" class="form-control">
+              <option value="Infraestrutura">Infraestrutura</option>
+              <option value="Iluminação Pública">Iluminação Pública</option>
+              <option value="Limpeza Urbana">Limpeza Urbana</option>
+              <option value="Saneamento">Saneamento</option>
+              <option value="Trânsito">Trânsito</option>
+              <option value="Meio Ambiente">Meio Ambiente</option>
+            </select>
+          </div>
         </div>
 
-        <form id="form-novo-relato" onsubmit="submitNovoRelato(event)">
-          <div class="form-row-2col">
-            <div class="form-group">
-              <label>Título do Relato</label>
-              <input type="text" id="rel-titulo" class="form-control" placeholder="Ex: Buracos na Ipueiras / Poste apagado no Junco" required />
-            </div>
-            <div class="form-group">
-              <label>Categoria</label>
-              <select id="rel-categoria" class="form-control">
-                <option value="Infraestrutura">🔧 Infraestrutura &amp; Pavimentação</option>
-                <option value="Iluminação Pública">💡 Iluminação Pública</option>
-                <option value="Limpeza Urbana">🧹 Limpeza Urbana &amp; Coleta</option>
-                <option value="Saneamento">💧 Saneamento &amp; Drenagem</option>
-                <option value="Trânsito">🚦 Trânsito &amp; Sinalização</option>
-                <option value="Meio Ambiente">🌳 Meio Ambiente</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row-2col">
-            <div class="form-group">
-              <label>Endereço / Ponto de Referência</label>
-              <input type="text" id="rel-endereco" class="form-control" placeholder="Digite a rua, número ou ponto de referência" required />
-            </div>
-            <div class="form-group">
-              <label>Bairro em Picos</label>
-              <input type="text" id="rel-bairro" class="form-control" placeholder="Ex: Ipueiras, Junco, Centro, Boa Sorte" required />
-            </div>
-          </div>
-
+        <div class="form-row-2col">
           <div class="form-group">
-            <label>Descrição Detalhada da Ocorrência</label>
-            <textarea id="rel-descricao" rows="5" class="form-control" placeholder="Descreva o problema com detalhes. Há quanto tempo ocorre? Quais impactos traz para os moradores?" required></textarea>
+            <label>Endereço</label>
+            <input type="text" id="rel-endereco" class="form-control" placeholder="Digite a rua e número de referência" required />
           </div>
+          <div class="form-group">
+            <label>Bairro</label>
+            <input type="text" id="rel-bairro" class="form-control" placeholder="Digite o bairro em que se localiza (ex: Ipueiras, Junco)" required />
+          </div>
+        </div>
 
-          <!-- Upload de Imagem integrado ao Fluxo Assíncrono (Amazon SQS -> Mídia -> S3) -->
-          <div class="upload-dropzone" onclick="document.getElementById('rel-file-input').click()">
-            <input type="file" id="rel-file-input" accept="image/*" style="display:none" onchange="handleImagePreview(this, 'rel-preview-box', 'rel-file-name')" />
-            <div class="upload-icon-badge">📸</div>
-            <div class="upload-title">Carregar Evidência Fotográfica</div>
-            <div class="upload-hint" id="rel-file-name">Clique para anexar imagem • Processamento Assíncrono via fila <strong>Amazon SQS ➔ S3 ➔ CloudFront</strong></div>
-            <button type="button" class="btn btn-green btn-sm" style="margin-top:10px;">Selecionar Arquivo</button>
-            <div id="rel-preview-box" class="image-preview-box"></div>
-          </div>
+        <div class="form-group">
+          <label>Descrição</label>
+          <textarea id="rel-descricao" rows="6" class="form-control" placeholder="Digite a descrição do relato. Qual o problema? Quais consequências está trazendo?" required></textarea>
+        </div>
 
-          <div class="form-actions-split">
-            <button type="button" class="btn btn-grey" onclick="navigateTo('relatos')">Cancelar</button>
-            <button type="submit" class="btn btn-green">Enviar Relato</button>
-          </div>
-        </form>
-      </div>
+        <!-- Upload de Imagem integrado ao Fluxo Assíncrono (Amazon SQS -> Mídia -> S3) -->
+        <div class="upload-dropzone" onclick="document.getElementById('rel-file-input').click()">
+          <input type="file" id="rel-file-input" accept="image/*" style="display:none" onchange="handleImagePreview(this, 'rel-preview-box', 'rel-file-name')" />
+          <div class="upload-icon">🖼️</div>
+          <div class="upload-title">Carregar Imagem</div>
+          <div class="upload-hint" id="rel-file-name">Clique para selecionar uma foto (Processamento Assíncrono via Amazon SQS + S3)</div>
+          <button type="button" class="btn btn-green btn-sm" style="margin-top:8px;">Carregar</button>
+          <div id="rel-preview-box" class="image-preview-box"></div>
+        </div>
+
+        <div class="form-actions-split">
+          <button type="button" class="btn btn-grey" onclick="navigateTo('relatos')">Cancelar</button>
+          <button type="submit" class="btn btn-green">Enviar</button>
+        </div>
+      </form>
     </div>
   </main>
 
@@ -553,70 +425,64 @@
   <!-- ======================================================================= -->
   <main id="view-form-evento" class="view-section">
     <div class="container form-page-container">
-      <div class="elevated-form-shell">
-        <div class="form-shell-header">
-          <span class="section-eyebrow">DIVULGAÇÃO INSTITUCIONAL • PREFEITURA DE PICOS</span>
-          <h1 class="form-page-title">Formulário de Evento Municipal</h1>
-          <p class="form-shell-sub">Cadastre eventos culturais, audiências públicas, ações sociais ou mutirões comunitários.</p>
+      <h1 class="form-page-title">Formulário de Evento</h1>
+
+      <form id="form-novo-evento" onsubmit="submitNovoEvento(event)" class="wide-form-card">
+        <div class="form-group">
+          <label>Título</label>
+          <input type="text" id="evt-titulo" class="form-control" placeholder="Digite o título do evento" required />
         </div>
 
-        <form id="form-novo-evento" onsubmit="submitNovoEvento(event)">
+        <div class="form-row-2col">
           <div class="form-group">
-            <label>Título do Evento</label>
-            <input type="text" id="evt-titulo" class="form-control" placeholder="Digite o título oficial do evento" required />
+            <label>Modalidade</label>
+            <select id="evt-modalidade" class="form-control">
+              <option value="Presencial">Presencial</option>
+              <option value="Online">Online</option>
+              <option value="Híbrido">Híbrido</option>
+            </select>
           </div>
-
-          <div class="form-row-2col">
-            <div class="form-group">
-              <label>Modalidade</label>
-              <select id="evt-modalidade" class="form-control">
-                <option value="Presencial">📍 Presencial</option>
-                <option value="Online">💻 Online</option>
-                <option value="Híbrido">🌐 Híbrido</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Data de Realização</label>
-              <input type="text" id="evt-data" class="form-control" placeholder="Ex: 15/12/2026" required />
-            </div>
-          </div>
-
-          <div class="form-row-2col">
-            <div class="form-group">
-              <label>Local / Bairro</label>
-              <input type="text" id="evt-local" class="form-control" placeholder="Ex: Ipueiras - Antônio Claro ou Praça Justino Luz" />
-            </div>
-            <div class="form-group">
-              <label>Categoria</label>
-              <select id="evt-categoria" class="form-control">
-                <option value="Lazer">🎉 Lazer &amp; Família</option>
-                <option value="Cultura">🎭 Cultura &amp; Arte</option>
-                <option value="Infraestrutura">🏗️ Infraestrutura &amp; Tecnologia</option>
-                <option value="Comunidade">🤝 Reunião Comunitária</option>
-              </select>
-            </div>
-          </div>
-
           <div class="form-group">
-            <label>Descrição e Programação</label>
-            <textarea id="evt-descricao" rows="5" class="form-control" placeholder="Descreva a programação, atrações e objetivos do evento para os moradores de Picos..." required></textarea>
+            <label>Data</label>
+            <input type="text" id="evt-data" class="form-control" placeholder="Selecione a data (ex: 15/12/2026)" required />
           </div>
+        </div>
 
-          <div class="upload-dropzone" onclick="document.getElementById('evt-file-input').click()">
-            <input type="file" id="evt-file-input" accept="image/*" style="display:none" onchange="handleImagePreview(this, 'evt-preview-box', 'evt-file-name')" />
-            <div class="upload-icon-badge">🖼️</div>
-            <div class="upload-title">Carregar Cartaz / Banner do Evento</div>
-            <div class="upload-hint" id="evt-file-name">Clique para selecionar imagem (Distribuída via Amazon S3 + CloudFront CDN)</div>
-            <button type="button" class="btn btn-green btn-sm" style="margin-top:10px;">Selecionar Imagem</button>
-            <div id="evt-preview-box" class="image-preview-box"></div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Local / Bairro</label>
+            <input type="text" id="evt-local" class="form-control" placeholder="Ex: Ipueiras - Antônio Claro ou Praça Justino Luz" />
           </div>
+          <div class="form-group">
+            <label>Categoria</label>
+            <select id="evt-categoria" class="form-control">
+              <option value="Lazer">Lazer</option>
+              <option value="Cultura">Cultura</option>
+              <option value="Infraestrutura">Infraestrutura</option>
+              <option value="Comunidade">Comunidade</option>
+            </select>
+          </div>
+        </div>
 
-          <div class="form-actions-split">
-            <button type="button" class="btn btn-grey" onclick="navigateTo('eventos')">Cancelar</button>
-            <button type="submit" class="btn btn-green">Publicar Evento</button>
-          </div>
-        </form>
-      </div>
+        <div class="form-group">
+          <label>Descrição</label>
+          <textarea id="evt-descricao" rows="6" class="form-control" placeholder="Digite a descrição do evento. Qual o propósito? O que será tratado?" required></textarea>
+        </div>
+
+        <div class="upload-dropzone" onclick="document.getElementById('evt-file-input').click()">
+          <input type="file" id="evt-file-input" accept="image/*" style="display:none" onchange="handleImagePreview(this, 'evt-preview-box', 'evt-file-name')" />
+          <div class="upload-icon">🖼️</div>
+          <div class="upload-title">Carregar Imagem</div>
+          <div class="upload-hint" id="evt-file-name">Clique para adicionar o cartaz do evento (Enviado via Amazon SQS + S3)</div>
+          <button type="button" class="btn btn-green btn-sm" style="margin-top:8px;">Carregar</button>
+          <div id="evt-preview-box" class="image-preview-box"></div>
+        </div>
+
+        <div class="form-actions-split">
+          <button type="button" class="btn btn-grey" onclick="navigateTo('eventos')">Cancelar</button>
+          <button type="submit" class="btn btn-green">Enviar</button>
+        </div>
+      </form>
     </div>
   </main>
 
@@ -625,106 +491,91 @@
   <!-- ======================================================================= -->
   <main id="view-form-sugestao" class="view-section">
     <div class="container form-page-container">
-      <div class="elevated-form-shell">
-        <div class="form-shell-header">
-          <span class="section-eyebrow">INOVAÇÃO CIDADÃ • PICOS INTELIGENTE</span>
-          <h1 class="form-page-title">Formulário de Sugestão e Solução</h1>
-          <p class="form-shell-sub">Apresente um diagnóstico de problema e proponha uma solução prática para o município.</p>
+      <h1 class="form-page-title">Formulário de Sugestão</h1>
+
+      <form id="form-nova-sugestao" onsubmit="submitNovaSugestao(event)" class="wide-form-card">
+        <div class="form-group">
+          <label>Título</label>
+          <input type="text" id="sug-titulo" class="form-control" placeholder="Digite o título da sugestão" required />
         </div>
 
-        <form id="form-nova-sugestao" onsubmit="submitNovaSugestao(event)">
-          <div class="form-group">
-            <label>Título da Proposta</label>
-            <input type="text" id="sug-titulo" class="form-control" placeholder="Ex: Implantação de Ciclovia Iluminada na Av. Beira Rio" required />
-          </div>
+        <div class="form-group">
+          <label>Descrição do problema</label>
+          <textarea id="sug-problema" rows="5" class="form-control" placeholder="Digite a descrição do problema. O que está acontecendo? Como isso prejudica a vida dos cidadãos?" required></textarea>
+        </div>
 
-          <div class="form-group">
-            <label>Descrição do Problema Identificado</label>
-            <textarea id="sug-problema" rows="4" class="form-control" placeholder="O que está acontecendo hoje? Como isso afeta a rotina dos cidadãos de Picos?" required></textarea>
-          </div>
+        <div class="form-group">
+          <label>Descrição da solução</label>
+          <textarea id="sug-solucao" rows="5" class="form-control" placeholder="Digite a sua solução. O que transformaria a cidade? Como isso impactaria a vida dos moradores?" required></textarea>
+        </div>
 
-          <div class="form-group">
-            <label>Descrição da Solução Proposta</label>
-            <textarea id="sug-solucao" rows="4" class="form-control" placeholder="Qual é a sua ideia de melhoria? Como a prefeitura pode implementar e quais benefícios trará?" required></textarea>
-          </div>
-
-          <div class="form-actions-split">
-            <button type="button" class="btn btn-grey" onclick="navigateTo('sugestoes')">Cancelar</button>
-            <button type="submit" class="btn btn-green">Enviar Sugestão</button>
-          </div>
-        </form>
-      </div>
+        <div class="form-actions-split">
+          <button type="button" class="btn btn-grey" onclick="navigateTo('sugestoes')">Cancelar</button>
+          <button type="submit" class="btn btn-green">Enviar</button>
+        </div>
+      </form>
     </div>
   </main>
 
   <!-- ======================================================================= -->
-  <!-- TELA 11: CONFIGURAÇÕES DE PERFIL                                        -->
+  <!-- TELA 11: CONFIGURAÇÕES DE PERFIL (Fiel à Imagem 8 do Protótipo)         -->
   <!-- ======================================================================= -->
   <main id="view-perfil" class="view-section">
     <div class="container form-page-container">
-      <div class="elevated-form-shell">
-        <div class="form-shell-header">
-          <span class="section-eyebrow">CONTA DO USUÁRIO • MICROSSERVIÇO DE IDENTIDADE</span>
-          <h1 class="form-page-title">Configurações de Perfil</h1>
-          <div id="perfil-role-badge-wrap" class="perfil-role-badge-wrap"></div>
+      <h1 class="form-page-title">Configurações de Perfil</h1>
+      <div id="perfil-role-badge-wrap" class="perfil-role-badge-wrap"></div>
+
+      <form id="form-perfil" onsubmit="submitSalvarPerfil(event)" class="centered-form-card">
+        <div class="form-group">
+          <label>Nome completo</label>
+          <input type="text" id="perf-nome" class="form-control" required />
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>CPF</label>
+            <input type="text" id="perf-cpf" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Telefone</label>
+            <input type="text" id="perf-telefone" class="form-control" required />
+          </div>
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Endereço</label>
+            <input type="text" id="perf-endereco" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Bairro</label>
+            <input type="text" id="perf-bairro" class="form-control" required />
+          </div>
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" id="perf-email" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Senha</label>
+            <input type="password" id="perf-senha" class="form-control" value="***********" required />
+          </div>
         </div>
 
-        <form id="form-perfil" onsubmit="submitSalvarPerfil(event)">
-          <div class="form-group">
-            <label>Nome completo</label>
-            <input type="text" id="perf-nome" class="form-control" required />
-          </div>
-          <div class="form-row-2col">
-            <div class="form-group">
-              <label>CPF</label>
-              <input type="text" id="perf-cpf" class="form-control" required />
-            </div>
-            <div class="form-group">
-              <label>Telefone</label>
-              <input type="text" id="perf-telefone" class="form-control" required />
-            </div>
-          </div>
-          <div class="form-row-2col">
-            <div class="form-group">
-              <label>Endereço</label>
-              <input type="text" id="perf-endereco" class="form-control" required />
-            </div>
-            <div class="form-group">
-              <label>Bairro</label>
-              <input type="text" id="perf-bairro" class="form-control" required />
-            </div>
-          </div>
-          <div class="form-row-2col">
-            <div class="form-group">
-              <label>E-mail</label>
-              <input type="email" id="perf-email" class="form-control" required />
-            </div>
-            <div class="form-group">
-              <label>Senha</label>
-              <input type="password" id="perf-senha" class="form-control" value="***********" required />
-            </div>
-          </div>
+        <div style="text-align: center; margin: 18px 0;">
+          <button type="button" class="btn btn-outline-orange btn-sm" onclick="openAdminAuthModal()">
+            Sou Administrador
+          </button>
+        </div>
 
-          <div class="admin-elevation-banner">
-            <div>
-              <strong>🏛️ Servidor Público ou Gestor Municipal?</strong>
-              <span>Autentique seu código institucional para liberar a triagem de chamados e emissão de devolutivas.</span>
-            </div>
-            <button type="button" class="btn btn-outline-orange btn-sm" onclick="openAdminAuthModal()">
-              🔑 Sou Administrador
-            </button>
-          </div>
+        <div class="form-actions-centered">
+          <button type="button" class="btn btn-grey" onclick="navigateTo('inicio')">Cancelar</button>
+          <button type="submit" class="btn btn-green">Salvar</button>
+        </div>
 
-          <div class="form-actions-centered">
-            <button type="button" class="btn btn-grey" onclick="navigateTo('inicio')">Voltar</button>
-            <button type="submit" class="btn btn-green">Salvar Alterações</button>
-          </div>
-
-          <div style="text-align: center; margin-top: 22px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
-            <button type="button" class="btn-logout-link" onclick="logoutUser()">Encerrar sessão atual (Sair)</button>
-          </div>
-        </form>
-      </div>
+        <div style="text-align: center; margin-top: 22px; padding-top: 14px; border-top: 1px solid #d1d5db;">
+          <button type="button" class="btn-logout-link" onclick="logoutUser()">Sair da sessão atual</button>
+        </div>
+      </form>
     </div>
   </main>
 
@@ -782,7 +633,7 @@
         </div>
       </div>
 
-      <!-- Zonas Síncrona e Assíncrona -->
+      <!-- Zonas Síncrona e Assíncrona (Fiel ao Diagrama Enviado) -->
       <div class="arch-zones-grid">
         <!-- Fluxo Síncrono (resposta imediata) -->
         <div class="arch-zone sync-zone">
@@ -869,16 +720,19 @@
       <div class="observability-panel">
         <h3 class="obs-title">📊 Observabilidade em Tempo Real (Amazon CloudWatch &amp; AWS X-Ray)</h3>
         <div class="obs-grid-3col">
+          <!-- CloudWatch Alarms -->
           <div class="obs-card">
             <h4>🔔 Alerta e Monitoramento (CloudWatch Alarms)</h4>
             <div id="cw-alarms-list" class="obs-list"></div>
           </div>
 
+          <!-- AWS X-Ray Traces -->
           <div class="obs-card">
             <h4>🧭 AWS X-Ray (Traces Distribuídos)</h4>
             <div id="xray-traces-list" class="obs-list mono-list"></div>
           </div>
 
+          <!-- Amazon CloudWatch Logs -->
           <div class="obs-card">
             <h4>☁️ Amazon CloudWatch (Métricas e Logs)</h4>
             <div id="cw-logs-list" class="obs-list mono-list"></div>
@@ -889,25 +743,25 @@
   </main>
 
   <!-- ======================================================================= -->
-  <!-- MODAL: VISUALIZAÇÃO DE RELATO + DEVOLUTIVA DA PREFEITURA                -->
+  <!-- MODAL: VISUALIZAÇÃO DE RELATO + DEVOLUTIVA DA PREFEITURA (Imagem 3)     -->
   <!-- ======================================================================= -->
   <div id="modal-relato" class="modal-backdrop" style="display:none;" onclick="if(event.target===this) closeModal('modal-relato')">
     <div class="modal-card">
-      <button type="button" class="modal-close-x" onclick="closeModal('modal-relato')">✕</button>
-      <div class="modal-protocol-tag" id="mod-rel-protocolo">PICOS-2026-0101</div>
+      <button type="button" class="modal-close-x" onclick="closeModal('modal-relato')">✖</button>
       <h2 id="mod-rel-titulo" class="modal-title">Buracos na Ipueiras</h2>
 
       <div class="modal-top-split">
         <div class="modal-meta-list">
+          <div><strong>Protocolo:</strong> <span id="mod-rel-protocolo">PICOS-2026-0101</span></div>
           <div><strong>Categoria:</strong> <span id="mod-rel-categoria">Infraestrutura</span></div>
           <div>📍 <span id="mod-rel-local">Ipueiras - Antônio Claro</span></div>
-          <div>Status: <span id="mod-rel-status-badge" class="status-badge">Em Análise</span></div>
+          <div>🕒 <span id="mod-rel-status-badge" class="status-badge">Em Análise</span></div>
           <div class="rating-row">
             <span class="star-gold">★</span> <strong id="mod-rel-avaliacao">3,2</strong>
-            <span class="rate-prompt">
+            <span class="rate-prompt">(Avaliar:
               <button type="button" class="star-btn" onclick="votarRelato(3)">3★</button>
               <button type="button" class="star-btn" onclick="votarRelato(4)">4★</button>
-              <button type="button" class="star-btn" onclick="votarRelato(5)">5★</button>
+              <button type="button" class="star-btn" onclick="votarRelato(5)">5★</button>)
             </span>
           </div>
         </div>
@@ -917,23 +771,20 @@
       </div>
 
       <div class="modal-body-text">
-        <div class="modal-section-label">Descrição do Relato Cidadão</div>
-        <p id="mod-rel-descricao"></p>
+        <p><strong>Relato:</strong> <span id="mod-rel-descricao"></span></p>
       </div>
 
       <div class="modal-devolutiva-section">
-        <div class="devolutiva-header-row">
-          <h4>🏛️ Devolutiva Oficial da Prefeitura de Picos</h4>
-          <span class="devolutiva-date">📅 <span id="mod-rel-data-dev">15/11/2025</span></span>
-        </div>
+        <h4>Devolutiva:</h4>
+        <div class="devolutiva-date">📅 <span id="mod-rel-data-dev">15/11/2025</span></div>
         <p id="mod-rel-devolutiva" class="devolutiva-text"></p>
       </div>
 
-      <!-- Painel Exclusivo da Prefeitura (Administrador) -->
+      <!-- Painel Exclusivo da Prefeitura (Administrador) para responder ao chamado -->
       <div id="mod-rel-admin-box" class="admin-management-box" style="display:none;">
-        <h4>⚙️ Painel de Triagem da Prefeitura (Modo Administrador)</h4>
+        <h4>🏛️ Painel de Triagem da Prefeitura (Modo Administrador)</h4>
         <div class="form-group">
-          <label>Atualizar Status do Protocolo:</label>
+          <label>Alterar Status do Chamado:</label>
           <select id="admin-rel-status" class="form-control">
             <option value="Pendente">Pendente</option>
             <option value="Em Análise">Em Análise</option>
@@ -943,7 +794,7 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Devolutiva Oficial da Secretaria:</label>
+          <label>Devolutiva Oficial da Prefeitura:</label>
           <textarea id="admin-rel-devolutiva" rows="3" class="form-control"></textarea>
         </div>
         <button type="button" class="btn btn-green btn-sm" onclick="salvarDevolutivaRelato()">
@@ -954,20 +805,19 @@
   </div>
 
   <!-- ======================================================================= -->
-  <!-- MODAL: VISUALIZAÇÃO DE EVENTO                                           -->
+  <!-- MODAL: VISUALIZAÇÃO DE EVENTO (Fiel à Imagem 3 do Protótipo)            -->
   <!-- ======================================================================= -->
   <div id="modal-evento" class="modal-backdrop" style="display:none;" onclick="if(event.target===this) closeModal('modal-evento')">
     <div class="modal-card">
-      <button type="button" class="modal-close-x" onclick="closeModal('modal-evento')">✕</button>
-      <div class="modal-protocol-tag">EVENTO OFICIAL • PICOS - PI</div>
+      <button type="button" class="modal-close-x" onclick="closeModal('modal-evento')">✖</button>
       <h2 id="mod-evt-titulo" class="modal-title">Dia das Crianças</h2>
 
       <div class="modal-top-split">
         <div class="modal-meta-list">
-          <div>🏷️ <strong>Categoria:</strong> <span id="mod-evt-categoria">Lazer</span></div>
-          <div>📍 <strong>Local:</strong> <span id="mod-evt-local">Ipueiras - Antônio Claro</span></div>
-          <div>📅 <strong>Data:</strong> <span id="mod-evt-data">10/10/2024</span></div>
-          <div>🌐 <strong>Modalidade:</strong> <span id="mod-evt-modalidade">Presencial</span></div>
+          <div>🏃 <span id="mod-evt-categoria">Lazer</span></div>
+          <div>📍 <span id="mod-evt-local">Ipueiras - Antônio Claro</span></div>
+          <div>📅 <span id="mod-evt-data">10/10/2024</span></div>
+          <div>🌐 <span id="mod-evt-modalidade">Presencial</span></div>
           <div><span class="star-gold">★</span> <strong id="mod-evt-avaliacao">3,2</strong></div>
         </div>
         <div class="modal-thumb-wrap">
@@ -976,7 +826,6 @@
       </div>
 
       <div class="modal-body-text">
-        <div class="modal-section-label">Sobre o Evento</div>
         <p id="mod-evt-descricao"></p>
       </div>
     </div>
@@ -987,43 +836,37 @@
   <!-- ======================================================================= -->
   <div id="modal-sugestao" class="modal-backdrop" style="display:none;" onclick="if(event.target===this) closeModal('modal-sugestao')">
     <div class="modal-card">
-      <button type="button" class="modal-close-x" onclick="closeModal('modal-sugestao')">✕</button>
-      <div class="modal-protocol-tag" id="mod-sug-protocolo">SUG-2026-001</div>
+      <button type="button" class="modal-close-x" onclick="closeModal('modal-sugestao')">✖</button>
       <h2 id="mod-sug-titulo" class="modal-title">Sugestão</h2>
-      <div class="modal-meta-list" style="margin-bottom: 14px;">
-        <div>👤 <strong>Proponente:</strong> <span id="mod-sug-autor"></span></div>
-        <div>Status: <span id="mod-sug-status" class="status-badge"></span></div>
+      <div class="modal-meta-list" style="margin-bottom: 12px;">
+        <div><strong>Protocolo:</strong> <span id="mod-sug-protocolo"></span> | <strong>Autor:</strong> <span id="mod-sug-autor"></span></div>
+        <div><strong>Status:</strong> <span id="mod-sug-status" class="status-badge"></span></div>
       </div>
       <div class="modal-body-text">
-        <div class="modal-section-label">Diagnóstico do Problema</div>
-        <p id="mod-sug-problema"></p>
-        <div class="modal-section-label" style="margin-top:12px;">Solução Proposta pelo Cidadão</div>
-        <p id="mod-sug-solucao"></p>
+        <p><strong>Descrição do Problema:</strong> <span id="mod-sug-problema"></span></p>
+        <p style="margin-top:10px;"><strong>Solução Proposta:</strong> <span id="mod-sug-solucao"></span></p>
       </div>
       <div class="modal-devolutiva-section">
-        <div class="devolutiva-header-row">
-          <h4>🏛️ Parecer Técnico da Prefeitura</h4>
-          <span class="devolutiva-date">📅 <span id="mod-sug-data"></span></span>
-        </div>
+        <h4>Parecer da Prefeitura:</h4>
+        <div class="devolutiva-date">📅 <span id="mod-sug-data"></span></div>
         <p id="mod-sug-devolutiva" class="devolutiva-text"></p>
       </div>
     </div>
   </div>
 
   <!-- ======================================================================= -->
-  <!-- MODAL: AUTENTICAÇÃO DE ADMINISTRADOR                                    -->
+  <!-- MODAL: AUTENTICAÇÃO DE ADMINISTRADOR (Fiel à Imagem 8 do Protótipo)     -->
   <!-- ======================================================================= -->
   <div id="modal-admin-auth" class="modal-backdrop" style="display:none;" onclick="if(event.target===this) closeModal('modal-admin-auth')">
     <div class="modal-card modal-card-sm">
-      <button type="button" class="modal-close-x" onclick="closeModal('modal-admin-auth')">✕</button>
-      <div class="admin-key-icon">🔑</div>
+      <button type="button" class="modal-close-x" onclick="closeModal('modal-admin-auth')">✖</button>
       <h3 class="admin-modal-title">Autenticação de Administrador</h3>
       <p class="admin-modal-desc">
-        Insira o código institucional fornecido pela Prefeitura de Picos para habilitar as funções de gestão e triagem de chamados.
+        Insira o código fornecido pela prefeitura para liberar a função de administrador.
       </p>
-      <input type="text" id="admin-code-input" class="form-control" placeholder="Digite o código (ex: PREFEITURA2026)" style="margin: 16px 0 8px; text-align:center; font-weight:700;" />
-      <div class="admin-code-hint">
-        💡 Código oficial para demonstração: <strong>PREFEITURA2026</strong>
+      <input type="text" id="admin-code-input" class="form-control" placeholder="Insira o código (ex: PREFEITURA2026)" style="margin: 14px 0 6px;" />
+      <div style="font-size: 11px; color: #059669; margin-bottom: 16px;">
+        💡 Código oficial para teste: <strong>PREFEITURA2026</strong>
       </div>
       <div class="form-actions-centered">
         <button type="button" class="btn btn-grey" onclick="closeModal('modal-admin-auth')">Cancelar</button>
@@ -1033,60 +876,45 @@
   </div>
 
   <!-- ======================================================================= -->
-  <!-- RODAPÉ MODERNO CONECT-CITY                                              -->
+  <!-- RODAPÉ OFICIAL CONECT-CITY (Fiel aos Protótipos)                        -->
   <!-- ======================================================================= -->
   <footer class="main-footer">
     <div class="container footer-grid">
       <div class="footer-col">
-        <div class="footer-brand-row">
-          <img src="/assets/logo_e.svg" alt="Logo e Conect-City" class="footer-mini-e" />
-          <div>
-            <strong class="footer-brand-name">e-CONECT-CITY</strong>
-            <span class="footer-brand-city">Município de Picos – Piauí</span>
-          </div>
-        </div>
-        <p class="footer-desc">
-          Plataforma de Ouvidoria Digital e Cidades Inteligentes desenvolvida com Arquitetura de Microsserviços em Nuvem.
-        </p>
+        <h4 class="footer-heading">Patrocínios</h4>
         <div class="sponsors-grid">
           <div class="sponsor-box">UFPI</div>
           <div class="sponsor-box">PMP</div>
           <div class="sponsor-box">SI</div>
           <div class="sponsor-box">FUMIP</div>
+          <div class="sponsor-box">PIAUÍ</div>
         </div>
       </div>
 
       <div class="footer-col">
-        <h4 class="footer-heading">Navegação Rápida</h4>
+        <h4 class="footer-heading">Redes sociais</h4>
         <ul class="footer-list">
-          <li onclick="navigateTo('inicio')" style="cursor:pointer">→ Início</li>
-          <li onclick="navigateTo('relatos')" style="cursor:pointer">→ Relatos Urbanos</li>
-          <li onclick="navigateTo('sugestoes')" style="cursor:pointer">→ Sugestões e Soluções</li>
-          <li onclick="navigateTo('eventos')" style="cursor:pointer">→ Eventos Municipais</li>
-          <li onclick="navigateTo('arquitetura')" style="cursor:pointer">→ Arquitetura AWS (3 Microsserviços)</li>
+          <li>📷 Instagram</li>
+          <li>📘 Facebook</li>
+          <li>💬 Whatsapp</li>
         </ul>
       </div>
 
       <div class="footer-col">
-        <h4 class="footer-heading">Canais &amp; Redes Sociais</h4>
+        <h4 class="footer-heading">Contato</h4>
         <ul class="footer-list">
-          <li>📷 Instagram: @conectcity.picos</li>
-          <li>📘 Facebook: /conectcitypicos</li>
-          <li>💬 WhatsApp Ouvidoria: (89) 99999-9999</li>
+          <li>✉️ conectcity@gmail.com</li>
+          <li>📞 (89) 99999-9999</li>
+          <li>📍 Endereço Rua Fulano, nº 9999<br />Bairro Ciclano, Picos - Piauí</li>
         </ul>
       </div>
 
-      <div class="footer-col">
-        <h4 class="footer-heading">Atendimento Presencial</h4>
-        <ul class="footer-list">
-          <li>✉️ conectcity@picos.pi.gov.br</li>
-          <li>📞 Central: (89) 3422-1000</li>
-          <li>📍 Praça Justino Luz, Centro Administrativo<br />Centro, Picos – Piauí</li>
-        </ul>
+      <div class="footer-col footer-logo-col">
+        <img src="/assets/logo_e.svg" alt="Logo e Conect-City" class="footer-big-e" />
       </div>
     </div>
     <div class="footer-copyright">
-      Copyright © 2026 UFPI • Curso de Sistemas de Informação (Tópicos Especiais em Engenharia de Software) – Todos os Direitos Reservados.
+      Copyright © 2026 UFPI - Todos os Direitos Reservados.
     </div>
   </footer>
 
