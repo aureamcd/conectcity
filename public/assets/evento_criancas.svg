@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 320" width="300" height="320">
+  <rect width="300" height="320" rx="14" fill="#fffbeb"/>
+  <!-- Clouds and Sun -->
+  <circle cx="50" cy="45" r="24" fill="#fbbf24"/>
+  <circle cx="240" cy="45" r="22" fill="#bae6fd"/>
+  <circle cx="260" cy="50" r="18" fill="#bae6fd"/>
+  <!-- Title -->
+  <text x="150" y="55" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900" font-size="24" fill="#2563eb">PICOS</text>
+  <text x="150" y="83" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900" font-size="26" fill="#ec4899">CIDADE</text>
+  <text x="150" y="112" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900" font-size="28" fill="#f59e0b">KIDS</text>
+  <!-- Mundo Bita / Characters illustration -->
+  <circle cx="150" cy="175" r="38" fill="#fde68a" stroke="#d97706" stroke-width="3"/>
+  <!-- Top Hat -->
+  <rect x="130" y="118" width="40" height="24" rx="4" fill="#1e293b"/>
+  <rect x="120" y="138" width="60" height="6" rx="3" fill="#ef4444"/>
+  <!-- Mustache & Smile -->
+  <path d="M 132,182 Q 150,172 168,182" stroke="#b45309" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- Kids left & right -->
+  <circle cx="75" cy="195" r="22" fill="#f472b6"/>
+  <circle cx="225" cy="195" r="22" fill="#38bdf8"/>
+  <!-- Bottom Banner -->
+  <rect x="20" y="242" width="260" height="58" rx="12" fill="#2563eb"/>
+  <text x="150" y="266" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="16" fill="#fde047">MUNDO BITA &amp; ATRAÇÕES</text>
+  <text x="150" y="288" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="14" fill="#ffffff">10 DE OUTUBRO • IPUEIRAS</text>
+</svg>

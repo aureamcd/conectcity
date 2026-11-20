@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" width="320" height="220">
+  <rect width="320" height="90" fill="#fef3c7"/>
+  <rect y="90" width="320" height="130" fill="#374151"/>
+  <!-- Crosswalk stripes -->
+  <rect x="30" y="145" width="40" height="18" fill="#f3f4f6" opacity="0.6"/>
+  <rect x="95" y="145" width="40" height="18" fill="#f3f4f6" opacity="0.6"/>
+  <rect x="160" y="145" width="40" height="18" fill="#f3f4f6" opacity="0.6"/>
+  <rect x="225" y="145" width="40" height="18" fill="#f3f4f6" opacity="0.6"/>
+  <!-- Traffic light -->
+  <rect x="255" y="25" width="28" height="72" rx="8" fill="#111827"/>
+  <circle cx="269" cy="41" r="7" fill="#ef4444"/>
+  <circle cx="269" cy="61" r="7" fill="#f59e0b"/>
+  <circle cx="269" cy="81" r="7" fill="#10b981"/>
+</svg>

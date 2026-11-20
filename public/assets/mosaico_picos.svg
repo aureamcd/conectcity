@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 480" width="650" height="480">
+  <defs>
+    <linearGradient id="fadeRight" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e5e7eb" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#e5e7eb" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#e5e7eb" stop-opacity="0.98"/>
+    </linearGradient>
+    <linearGradient id="skyPicos" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+    <linearGradient id="sunsetPicos" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="650" height="480" fill="#e5e7eb"/>
+
+  <!-- Tilted Mosaic Grid of Picos-PI landmarks -->
+  <g transform="rotate(-14 260 220) translate(-35, -30)">
+    <!-- Card 1: Igreja Matriz de Picos -->
+    <g transform="translate(20, 20)">
+      <rect width="145" height="105" rx="6" fill="url(#skyPicos)" stroke="#ffffff" stroke-width="5"/>
+      <rect x="48" y="38" width="48" height="58" fill="#f8fafc"/>
+      <polygon points="48,38 60,12 72,38" fill="#cbd5e1"/>
+      <polygon points="72,38 84,12 96,38" fill="#cbd5e1"/>
+      <circle cx="72" cy="52" r="7" fill="#0284c7"/>
+      <rect x="66" y="72" width="12" height="24" rx="5" fill="#1e3a8a"/>
+      <text x="72" y="99" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="9" fill="#1e293b">CATEDRAL DE PICOS</text>
+    </g>
+
+    <!-- Card 2: Vista Aérea de Picos & Morro -->
+    <g transform="translate(178, 20)">
+      <rect width="145" height="105" rx="6" fill="#38bdf8" stroke="#ffffff" stroke-width="5"/>
+      <path d="M 5,70 Q 45,35 90,65 Q 120,42 140,70 L 140,100 L 5,100 Z" fill="#15803d"/>
+      <rect x="20" y="72" width="18" height="16" fill="#fef08a"/>
+      <rect x="44" y="68" width="22" height="20" fill="#ffffff"/>
+      <rect x="72" y="74" width="20" height="14" fill="#fed7aa"/>
+      <rect x="98" y="66" width="18" height="22" fill="#e2e8f0"/>
+    </g>
+
+    <!-- Card 3: Pedra / Serrado de Picos -->
+    <g transform="translate(336, 20)">
+      <rect width="145" height="105" rx="6" fill="#bae6fd" stroke="#ffffff" stroke-width="5"/>
+      <polygon points="15,98 55,32 105,42 135,98" fill="#b45309"/>
+      <polygon points="35,98 75,45 120,98" fill="#92400e"/>
+      <rect x="5" y="85" width="135" height="15" fill="#16a34a"/>
+    </g>
+
+    <!-- Card 4: Letreiro EU AMO PICOS (Row 2) -->
+    <g transform="translate(20, 138)">
+      <rect width="145" height="105" rx="6" fill="url(#sunsetPicos)" stroke="#ffffff" stroke-width="5"/>
+      <rect x="5" y="72" width="135" height="28" fill="#065f46"/>
+      <text x="72" y="64" text-anchor="middle" font-family="Arial Black" font-weight="900" font-size="23" fill="#ffffff" stroke="#facc15" stroke-width="1">PICOS</text>
+      <text x="72" y="88" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="10" fill="#fde047">CIDADE MODELO</text>
+    </g>
+
+    <!-- Card 5: Pórtico / Entrada de Picos -->
+    <g transform="translate(178, 138)">
+      <rect width="145" height="105" rx="6" fill="#dbeafe" stroke="#ffffff" stroke-width="5"/>
+      <rect x="18" y="45" width="16" height="52" fill="#f59e0b"/>
+      <rect x="110" y="45" width="16" height="52" fill="#f59e0b"/>
+      <rect x="12" y="34" width="120" height="18" rx="4" fill="#1d4ed8"/>
+      <text x="72" y="47" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="9" fill="#ffffff">BEM-VINDO A PICOS</text>
+      <rect x="5" y="88" width="135" height="12" fill="#475569"/>
+    </g>
+
+    <!-- Card 6: Rio Guaribas & Ponte -->
+    <g transform="translate(336, 138)">
+      <rect width="145" height="105" rx="6" fill="#7dd3fc" stroke="#ffffff" stroke-width="5"/>
+      <rect x="5" y="65" width="135" height="35" fill="#0369a1"/>
+      <rect x="5" y="55" width="135" height="10" fill="#94a3b8"/>
+      <circle cx="35" cy="48" r="14" fill="#16a34a"/>
+      <circle cx="110" cy="48" r="16" fill="#15803d"/>
+    </g>
+
+    <!-- Card 7: Letreiro PICOS colorido (Row 3) -->
+    <g transform="translate(20, 256)">
+      <rect width="145" height="105" rx="6" fill="#0f172a" stroke="#ffffff" stroke-width="5"/>
+      <rect x="5" y="75" width="135" height="25" fill="#15803d"/>
+      <text x="72" y="65" text-anchor="middle" font-family="Arial Black" font-weight="900" font-size="24" fill="#f59e0b">PICOS</text>
+      <circle cx="28" cy="30" r="8" fill="#fbbf24"/>
+    </g>
+
+    <!-- Card 8: Praça Félix Pacheco -->
+    <g transform="translate(178, 256)">
+      <rect width="145" height="105" rx="6" fill="#e0f2fe" stroke="#ffffff" stroke-width="5"/>
+      <rect x="5" y="68" width="135" height="32" fill="#86efac"/>
+      <circle cx="42" cy="55" r="20" fill="#16a34a"/>
+      <circle cx="102" cy="55" r="20" fill="#15803d"/>
+      <rect x="62" y="52" width="22" height="28" fill="#f59e0b" rx="3"/>
+    </g>
+
+    <!-- Card 9: Bairro Ipueiras / Ruas de Picos -->
+    <g transform="translate(336, 256)">
+      <rect width="145" height="105" rx="6" fill="#fef3c7" stroke="#ffffff" stroke-width="5"/>
+      <polygon points="55,100 72,50 92,100" fill="#64748b"/>
+      <rect x="15" y="55" width="32" height="35" fill="#38bdf8"/>
+      <rect x="98" y="55" width="32" height="35" fill="#fb923c"/>
+    </g>
+  </g>
+
+  <!-- Soft gradient overlay blending into right side background -->
+  <rect width="650" height="480" fill="url(#fadeRight)"/>
+</svg>

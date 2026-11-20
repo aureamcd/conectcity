@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" width="320" height="220">
+  <rect width="320" height="85" fill="#bae6fd"/>
+  <rect y="85" width="320" height="135" fill="#1f2937"/>
+  <!-- Newly paved road center line -->
+  <line x1="20" y1="155" x2="300" y2="155" stroke="#facc15" stroke-width="6" stroke-dasharray="25,18"/>
+  <!-- Green Check Badge -->
+  <circle cx="160" cy="115" r="36" fill="#10b981" stroke="#ffffff" stroke-width="4"/>
+  <polyline points="143,115 155,127 179,103" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

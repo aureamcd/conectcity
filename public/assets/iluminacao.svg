@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" width="320" height="220">
+  <rect width="320" height="220" fill="#1e293b"/>
+  <rect y="160" width="320" height="60" fill="#334155"/>
+  <!-- Street lamp posts -->
+  <rect x="80" y="45" width="8" height="125" fill="#94a3b8"/>
+  <path d="M 84,48 Q 115,35 135,50" stroke="#94a3b8" stroke-width="6" fill="none"/>
+  <ellipse cx="135" cy="54" rx="14" ry="7" fill="#fef08a"/>
+  <polygon points="122,58 148,58 185,165 85,165" fill="#fde047" opacity="0.22"/>
+  <!-- Broken dark lamp post -->
+  <rect x="215" y="45" width="8" height="125" fill="#64748b"/>
+  <path d="M 219,48 Q 250,35 270,50" stroke="#64748b" stroke-width="6" fill="none"/>
+  <ellipse cx="270" cy="54" rx="14" ry="7" fill="#475569"/>
+  <circle cx="270" cy="54" r="18" stroke="#ef4444" stroke-width="3" fill="none"/>
+  <line x1="258" y1="42" x2="282" y2="66" stroke="#ef4444" stroke-width="3"/>
+</svg>

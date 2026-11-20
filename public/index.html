@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>e-CONECT-CITY | Município de Picos - PI</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <!-- Barra Superior de Acessibilidade (Fiel ao Protótipo) -->
+  <div class="top-accessibility-bar">
+    <div class="container top-bar-inner">
+      <div class="micro-status-pill" onclick="navigateTo('arquitetura')" title="Clique para ver o Painel dos 3 Microsserviços AWS, Fila SQS/DLQ e CloudWatch">
+        <span class="pulse-dot"></span>
+        <span>Arquitetura: <strong>3 Microsserviços AWS Ativos</strong> (Identidade • Chamados • Mídia/SQS)</span>
+      </div>
+      <div class="accessibility-controls">
+        <button type="button" onclick="changeFontSize(1)" title="Aumentar Fonte">A+</button>
+        <button type="button" onclick="changeFontSize(-1)" title="Diminuir Fonte">A-</button>
+        <button type="button" onclick="resetFontSize()" title="Fonte Padrão">A</button>
+        <button type="button" onclick="toggleContrast()" title="Alto Contraste">◐</button>
+        <span class="acc-label" onclick="showToast('Recursos de acessibilidade e alto contraste ativos!')">🖐 Acessibilidade</span>
+        <a href="https://www.picos.pi.gov.br" target="_blank" rel="noopener" class="pref-link">Acessar Site da Prefeitura</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cabeçalho Principal Azul Conect-City -->
+  <header class="main-header">
+    <div class="container header-inner">
+      <div class="brand-logo" onclick="navigateTo('inicio')">
+        <img src="/assets/logo_e.svg" alt="Logo e-Conect-City" class="logo-e-img" />
+        <div class="brand-text">
+          <span class="brand-title">CONECT-CITY</span>
+          <span class="brand-subtitle">Município de Picos - PI</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Barra de Navegação com linha gradiente Laranja -> Verde -->
+  <nav class="main-navbar">
+    <div class="container nav-inner">
+      <button type="button" class="nav-item active" data-view="inicio" onclick="navigateTo('inicio')">
+        <span class="nav-icon">⌂</span> Início
+      </button>
+      <button type="button" class="nav-item" data-view="relatos" onclick="navigateTo('relatos')">
+        <span class="nav-icon">📋</span> Relatos
+      </button>
+      <button type="button" class="nav-item" data-view="sugestoes" onclick="navigateTo('sugestoes')">
+        <span class="nav-icon">📄</span> Sugestões
+      </button>
+      <button type="button" class="nav-item" data-view="eventos" onclick="navigateTo('eventos')">
+        <span class="nav-icon">📅</span> Eventos
+      </button>
+      <button type="button" class="nav-item nav-login" data-view="login" id="nav-auth-btn" onclick="handleAuthNavClick()">
+        <span class="nav-icon">👤</span> <span id="nav-auth-label">Login</span>
+      </button>
+      <button type="button" class="nav-item nav-arch" data-view="arquitetura" onclick="navigateTo('arquitetura')">
+        <span class="nav-icon">☁️</span> Microsserviços AWS
+      </button>
+    </div>
+    <div class="nav-gradient-border"></div>
+  </nav>
+
+  <!-- Container de Pop-outs / Notificações (Fiel aos Pop-outs do Protótipo) -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- ======================================================================= -->
+  <!-- TELA 1: INÍCIO (HOME)                                                   -->
+  <!-- ======================================================================= -->
+  <main id="view-inicio" class="view-section active">
+    <section class="hero-section">
+      <div class="hero-mosaic">
+        <img src="/assets/mosaico_picos.svg" alt="Mosaico de Picos - PI" />
+      </div>
+      <div class="hero-content">
+        <h1 class="hero-headline">
+          Reclame, Sugira, Mude:<br />
+          A cidade que você <span class="text-green">sonha</span> começa aqui!
+        </h1>
+        <div class="hero-actions">
+          <button type="button" class="btn btn-orange" onclick="navigateTo('form-relato')">
+            Cadastrar um Relato
+          </button>
+          <button type="button" class="btn btn-outline-green" onclick="navigateTo('form-sugestao')">
+            Cadastrar uma Solução
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção SOBRE NÓS -->
+    <section class="about-section">
+      <div class="container">
+        <h2 class="section-title-white">SOBRE NÓS</h2>
+        <p class="about-description">
+          Somos um portal dedicado a fortalecer a comunicação entre as autoridades e os moradores da cidade de Picos. Nosso
+          objetivo é proporcionar um espaço onde as informações circulam de forma clara, rápida e eficiente, promovendo o diálogo e
+          o entendimento entre os cidadãos e os gestores públicos. Aqui, você encontra notícias, atualizações e recursos essenciais
+          para o seu dia a dia, sempre com o compromisso de melhorar a interação e a qualidade de vida de todos.
+        </p>
+      </div>
+    </section>
+
+    <!-- Seção OBJETIVO DO PROJETO -->
+    <section class="objective-section">
+      <div class="container">
+        <h2 class="objective-heading">OBJETIVO DO PROJETO</h2>
+        <div class="objective-grid">
+          <div class="objective-watermark">
+            <img src="/assets/logo_e.svg" alt="Marca d'água ConectCity" />
+          </div>
+          <div class="objective-timeline">
+            <div class="timeline-item">
+              <div class="timeline-icon">📢</div>
+              <div class="timeline-content">
+                <h3>Relate insatisfações com a cidade</h3>
+                <p>Registre problemas como infraestrutura, limpeza urbana ou iluminação, com detalhes e anexos, para que a prefeitura possa agir.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-icon">💡</div>
+              <div class="timeline-content">
+                <h3>Faça sugestões de melhorias para a cidade</h3>
+                <p>Compartilhe ideias para transformar sua cidade, como novas áreas de lazer ou projetos comunitários, e ajude a construir um futuro melhor.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-icon">📅</div>
+              <div class="timeline-content">
+                <h3>Saiba sobre os eventos e reuniões comunitárias</h3>
+                <p>Fique por dentro de eventos e reuniões organizados pela prefeitura e participe ativamente da vida da sua comunidade.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TELA 2: RELATOS                                                         -->
+  <!-- ======================================================================= -->
+  <main id="view-relatos" class="view-section">
+    <div class="container page-container">
+      <h1 class="page-title-green">RELATOS</h1>
+      <p class="page-subtitle">
+        Verifique os relatos que os cidadãos de Picos já fizeram e<br />
+        como está o andamento da resolução
+      </p>
+
+      <div class="search-bar-row">
+        <input type="text" id="search-relatos-input" class="search-input" placeholder="Pesquise por relatos (ex: Ipueiras, Junco, Buracos, Iluminação)..." onkeyup="if(event.key==='Enter') loadRelatos(1)" />
+        <select id="filter-relatos-status" class="search-select" onchange="loadRelatos(1)">
+          <option value="">Todos os Status</option>
+          <option value="Em Análise">Em Análise</option>
+          <option value="Pendente">Pendente</option>
+          <option value="Em Andamento">Em Andamento</option>
+          <option value="Concluído">Concluído</option>
+          <option value="Cancelado">Cancelado</option>
+        </select>
+        <button type="button" class="btn btn-green search-btn" onclick="loadRelatos(1)">Pesquisar</button>
+      </div>
+
+      <div id="relatos-grid" class="cards-grid-3col"></div>
+
+      <!-- Paginação (< 1 2 3 4 >) -->
+      <div id="relatos-pagination" class="pagination-bar"></div>
+
+      <div class="bottom-cta-row">
+        <button type="button" class="btn btn-orange" onclick="navigateTo('form-relato')">Cadastrar um Relato</button>
+        <button type="button" class="btn btn-outline-green" onclick="navigateTo('form-sugestao')">Cadastrar uma Solução</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TELA 3: SUGESTÕES                                                       -->
+  <!-- ======================================================================= -->
+  <main id="view-sugestoes" class="view-section">
+    <div class="container page-container">
+      <h1 class="page-title-green">SUGESTÕES</h1>
+      <p class="page-subtitle">
+        Confira as ideias e soluções que os moradores de Picos propuseram<br />
+        para transformar e melhorar nossa cidade
+      </p>
+
+      <div class="search-bar-row">
+        <input type="text" id="search-sugestoes-input" class="search-input" placeholder="Pesquise por sugestões ou melhorias..." onkeyup="if(event.key==='Enter') loadSugestoes()" />
+        <button type="button" class="btn btn-green search-btn" onclick="loadSugestoes()">Pesquisar</button>
+      </div>
+
+      <div id="sugestoes-grid" class="cards-grid-3col"></div>
+
+      <div class="bottom-cta-row">
+        <button type="button" class="btn btn-orange" onclick="navigateTo('form-sugestao')">Cadastrar uma Sugestão</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TELA 4: EVENTOS                                                         -->
+  <!-- ======================================================================= -->
+  <main id="view-eventos" class="view-section">
+    <div class="container page-container">
+      <h1 class="page-title-green">EVENTOS</h1>
+      <p class="page-subtitle">
+        Verifique os eventos que a prefeitura de Picos realiza e<br />
+        participe para fazer uma cidade melhor
+      </p>
+
+      <div class="search-bar-row">
+        <input type="text" id="search-eventos-input" class="search-input" placeholder="Pesquise por eventos" onkeyup="if(event.key==='Enter') loadEventos()" />
+        <button type="button" class="btn btn-green search-btn" onclick="loadEventos()">Pesquisar</button>
+      </div>
+
+      <div id="eventos-grid" class="cards-grid-3col"></div>
+
+      <div class="bottom-cta-row" style="margin-top: 80px;">
+        <button type="button" class="btn btn-orange" onclick="navigateTo('form-evento')">Cadastrar Evento</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TELA 5: LOGIN                                                           -->
+  <!-- ======================================================================= -->
+  <main id="view-login" class="view-section">
+    <section class="hero-section login-split-section">
+      <div class="hero-mosaic">
+        <img src="/assets/mosaico_picos.svg" alt="Mosaico de Picos - PI" />
+      </div>
+      <div class="login-box-container">
+        <h2 class="auth-heading">
+          Faça seu login<br />
+          e ajude a <span class="text-green">melhorar</span> a cidade!
+        </h2>
+
+        <form id="form-login" onsubmit="submitLogin(event)" class="auth-form-narrow">
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" id="login-email" class="form-control" placeholder="Digite seu email" required />
+          </div>
+          <div class="form-group">
+            <label>Senha</label>
+            <input type="password" id="login-senha" class="form-control" placeholder="Digite sua senha" required />
+          </div>
+          <div class="auth-btn-row">
+            <button type="button" class="btn btn-outline-orange" onclick="navigateTo('cadastro')">Cadastrar</button>
+            <button type="submit" class="btn btn-green">Entrar</button>
+          </div>
+          <div class="forgot-link-row">
+            <a href="javascript:void(0)" onclick="navigateTo('recuperar')">Esqueceu a senha?</a>
+          </div>
+        </form>
+
+        <!-- Atalhos de Demonstração Rápida para o Vídeo -->
+        <div class="demo-credentials-box">
+          <div class="demo-title">⚡ Acesso Rápido para Demonstração (Microsserviço de Identidade):</div>
+          <div class="demo-btns">
+            <button type="button" class="btn-demo" onclick="fillDemoLogin('helany123@gmail.com', '123456')">
+              👤 Cidadã (Helany Araújo)
+            </button>
+            <button type="button" class="btn-demo btn-demo-admin" onclick="fillDemoLogin('admin@picos.pi.gov.br', 'admin123')">
+              🏛️ Prefeitura (Administrador)
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TELA 6: CADASTRO - CIDADÃO                                              -->
+  <!-- ======================================================================= -->
+  <main id="view-cadastro" class="view-section">
+    <div class="container form-page-container">
+      <h2 class="auth-heading">
+        Faça seu cadastro<br />
+        e ajude a <span class="text-green">melhorar</span> a cidade!
+      </h2>
+
+      <form id="form-cadastro" onsubmit="submitCadastro(event)" class="centered-form-card">
+        <div class="form-group">
+          <label>Nome completo</label>
+          <input type="text" id="cad-nome" class="form-control" placeholder="Digite seu nome" required />
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>CPF</label>
+            <input type="text" id="cad-cpf" class="form-control" placeholder="Digite seu CPF (ex: 111.222.333-44)" required />
+          </div>
+          <div class="form-group">
+            <label>Telefone</label>
+            <input type="text" id="cad-telefone" class="form-control" placeholder="Digite seu telefone" required />
+          </div>
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Endereço</label>
+            <input type="text" id="cad-endereco" class="form-control" placeholder="Digite o nome da sua rua e número da casa" required />
+          </div>
+          <div class="form-group">
+            <label>Bairro</label>
+            <input type="text" id="cad-bairro" class="form-control" placeholder="Digite o bairro em que mora" required />
+          </div>
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" id="cad-email" class="form-control" placeholder="Digite seu email" required />
+          </div>
+          <div class="form-group">
+            <label>Senha</label>
+            <input type="password" id="cad-senha" class="form-control" placeholder="Digite sua senha" required />
+          </div>
+        </div>
+        <div class="form-actions-centered">
+          <button type="button" class="btn btn-outline-orange" onclick="navigateTo('login')">Cancelar</button>
+          <button type="submit" class="btn btn-green">Cadastrar</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TELA 7: RECUPERAR SENHA                                                 -->
+  <!-- ======================================================================= -->
+  <main id="view-recuperar" class="view-section">
+    <div class="container form-page-container">
+      <h2 class="auth-heading">
+        Recupere sua senha<br />
+        e continue ajudando a <span class="text-green">melhorar</span> a cidade!
+      </h2>
+
+      <form id="form-recuperar" onsubmit="submitRecuperarSenha(event)" class="centered-form-card">
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="rec-email" class="form-control" placeholder="Digite seu e-mail cadastrado" required />
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Nova Senha</label>
+            <input type="password" id="rec-senha" class="form-control" placeholder="Digite sua senha" required />
+          </div>
+          <div class="form-group">
+            <label>Confirmação de senha</label>
+            <input type="password" id="rec-confirma" class="form-control" placeholder="Digite novamente sua senha" required />
+          </div>
+        </div>
+        <div class="form-actions-centered">
+          <button type="button" class="btn btn-outline-orange" onclick="navigateTo('login')">Cancelar</button>
+          <button type="submit" class="btn btn-green">Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TELA 8: FORMULÁRIO DE RELATO (CADASTRAR RELATO)                         -->
+  <!-- ======================================================================= -->
+  <main id="view-form-relato" class="view-section">
+    <div class="container form-page-container">
+      <h1 class="form-page-title">Formulário de Relato</h1>
+
+      <form id="form-novo-relato" onsubmit="submitNovoRelato(event)" class="wide-form-card">
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Título</label>
+            <input type="text" id="rel-titulo" class="form-control" placeholder="Digite o título do relato (ex: Buracos na Ipueiras)" required />
+          </div>
+          <div class="form-group">
+            <label>Categoria</label>
+            <select id="rel-categoria" class="form-control">
+              <option value="Infraestrutura">Infraestrutura</option>
+              <option value="Iluminação Pública">Iluminação Pública</option>
+              <option value="Limpeza Urbana">Limpeza Urbana</option>
+              <option value="Saneamento">Saneamento</option>
+              <option value="Trânsito">Trânsito</option>
+              <option value="Meio Ambiente">Meio Ambiente</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Endereço</label>
+            <input type="text" id="rel-endereco" class="form-control" placeholder="Digite a rua e número de referência" required />
+          </div>
+          <div class="form-group">
+            <label>Bairro</label>
+            <input type="text" id="rel-bairro" class="form-control" placeholder="Digite o bairro em que se localiza (ex: Ipueiras, Junco)" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Descrição</label>
+          <textarea id="rel-descricao" rows="6" class="form-control" placeholder="Digite a descrição do relato. Qual o problema? Quais consequências está trazendo?" required></textarea>
+        </div>
+
+        <!-- Upload de Imagem integrado ao Fluxo Assíncrono (Amazon SQS -> Mídia -> S3) -->
+        <div class="upload-dropzone" onclick="document.getElementById('rel-file-input').click()">
+          <input type="file" id="rel-file-input" accept="image/*" style="display:none" onchange="handleImagePreview(this, 'rel-preview-box', 'rel-file-name')" />
+          <div class="upload-icon">🖼️</div>
+          <div class="upload-title">Carregar Imagem</div>
+          <div class="upload-hint" id="rel-file-name">Clique para selecionar uma foto (Processamento Assíncrono via Amazon SQS + S3)</div>
+          <button type="button" class="btn btn-green btn-sm" style="margin-top:8px;">Carregar</button>
+          <div id="rel-preview-box" class="image-preview-box"></div>
+        </div>
+
+        <div class="form-actions-split">
+          <button type="button" class="btn btn-grey" onclick="navigateTo('relatos')">Cancelar</button>
+          <button type="submit" class="btn btn-green">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TELA 9: FORMULÁRIO DE EVENTO (CADASTRAR EVENTO)                         -->
+  <!-- ======================================================================= -->
+  <main id="view-form-evento" class="view-section">
+    <div class="container form-page-container">
+      <h1 class="form-page-title">Formulário de Evento</h1>
+
+      <form id="form-novo-evento" onsubmit="submitNovoEvento(event)" class="wide-form-card">
+        <div class="form-group">
+          <label>Título</label>
+          <input type="text" id="evt-titulo" class="form-control" placeholder="Digite o título do evento" required />
+        </div>
+
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Modalidade</label>
+            <select id="evt-modalidade" class="form-control">
+              <option value="Presencial">Presencial</option>
+              <option value="Online">Online</option>
+              <option value="Híbrido">Híbrido</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Data</label>
+            <input type="text" id="evt-data" class="form-control" placeholder="Selecione a data (ex: 15/12/2026)" required />
+          </div>
+        </div>
+
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Local / Bairro</label>
+            <input type="text" id="evt-local" class="form-control" placeholder="Ex: Ipueiras - Antônio Claro ou Praça Justino Luz" />
+          </div>
+          <div class="form-group">
+            <label>Categoria</label>
+            <select id="evt-categoria" class="form-control">
+              <option value="Lazer">Lazer</option>
+              <option value="Cultura">Cultura</option>
+              <option value="Infraestrutura">Infraestrutura</option>
+              <option value="Comunidade">Comunidade</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Descrição</label>
+          <textarea id="evt-descricao" rows="6" class="form-control" placeholder="Digite a descrição do evento. Qual o propósito? O que será tratado?" required></textarea>
+        </div>
+
+        <div class="upload-dropzone" onclick="document.getElementById('evt-file-input').click()">
+          <input type="file" id="evt-file-input" accept="image/*" style="display:none" onchange="handleImagePreview(this, 'evt-preview-box', 'evt-file-name')" />
+          <div class="upload-icon">🖼️</div>
+          <div class="upload-title">Carregar Imagem</div>
+          <div class="upload-hint" id="evt-file-name">Clique para adicionar o cartaz do evento (Enviado via Amazon SQS + S3)</div>
+          <button type="button" class="btn btn-green btn-sm" style="margin-top:8px;">Carregar</button>
+          <div id="evt-preview-box" class="image-preview-box"></div>
+        </div>
+
+        <div class="form-actions-split">
+          <button type="button" class="btn btn-grey" onclick="navigateTo('eventos')">Cancelar</button>
+          <button type="submit" class="btn btn-green">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TELA 10: FORMULÁRIO DE SUGESTÃO (CADASTRAR SUGESTÃO / SOLUÇÃO)          -->
+  <!-- ======================================================================= -->
+  <main id="view-form-sugestao" class="view-section">
+    <div class="container form-page-container">
+      <h1 class="form-page-title">Formulário de Sugestão</h1>
+
+      <form id="form-nova-sugestao" onsubmit="submitNovaSugestao(event)" class="wide-form-card">
+        <div class="form-group">
+          <label>Título</label>
+          <input type="text" id="sug-titulo" class="form-control" placeholder="Digite o título da sugestão" required />
+        </div>
+
+        <div class="form-group">
+          <label>Descrição do problema</label>
+          <textarea id="sug-problema" rows="5" class="form-control" placeholder="Digite a descrição do problema. O que está acontecendo? Como isso prejudica a vida dos cidadãos?" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Descrição da solução</label>
+          <textarea id="sug-solucao" rows="5" class="form-control" placeholder="Digite a sua solução. O que transformaria a cidade? Como isso impactaria a vida dos moradores?" required></textarea>
+        </div>
+
+        <div class="form-actions-split">
+          <button type="button" class="btn btn-grey" onclick="navigateTo('sugestoes')">Cancelar</button>
+          <button type="submit" class="btn btn-green">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TELA 11: CONFIGURAÇÕES DE PERFIL (Fiel à Imagem 8 do Protótipo)         -->
+  <!-- ======================================================================= -->
+  <main id="view-perfil" class="view-section">
+    <div class="container form-page-container">
+      <h1 class="form-page-title">Configurações de Perfil</h1>
+      <div id="perfil-role-badge-wrap" class="perfil-role-badge-wrap"></div>
+
+      <form id="form-perfil" onsubmit="submitSalvarPerfil(event)" class="centered-form-card">
+        <div class="form-group">
+          <label>Nome completo</label>
+          <input type="text" id="perf-nome" class="form-control" required />
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>CPF</label>
+            <input type="text" id="perf-cpf" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Telefone</label>
+            <input type="text" id="perf-telefone" class="form-control" required />
+          </div>
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Endereço</label>
+            <input type="text" id="perf-endereco" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Bairro</label>
+            <input type="text" id="perf-bairro" class="form-control" required />
+          </div>
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" id="perf-email" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Senha</label>
+            <input type="password" id="perf-senha" class="form-control" value="***********" required />
+          </div>
+        </div>
+
+        <div style="text-align: center; margin: 18px 0;">
+          <button type="button" class="btn btn-outline-orange btn-sm" onclick="openAdminAuthModal()">
+            Sou Administrador
+          </button>
+        </div>
+
+        <div class="form-actions-centered">
+          <button type="button" class="btn btn-grey" onclick="navigateTo('inicio')">Cancelar</button>
+          <button type="submit" class="btn btn-green">Salvar</button>
+        </div>
+
+        <div style="text-align: center; margin-top: 22px; padding-top: 14px; border-top: 1px solid #d1d5db;">
+          <button type="button" class="btn-logout-link" onclick="logoutUser()">Sair da sessão atual</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TELA 12: PAINEL DE ARQUITETURA DE MICROSSERVIÇOS & OBSERVABILIDADE AWS  -->
+  <!-- ======================================================================= -->
+  <main id="view-arquitetura" class="view-section">
+    <div class="container page-container">
+      <div class="arch-header-banner">
+        <div>
+          <span class="arch-tag">ARQUITETURA DISTRIBUÍDA EM EXECUÇÃO REAL</span>
+          <h1 class="arch-main-title">2. Arquitetura Final – Microsserviços (ConectCity)</h1>
+          <p class="arch-subtitle">
+            O sistema é dividido em <strong>3 microsserviços independentes</strong>, cada um com seu banco de dados isolado e componentes de infraestrutura assíncrona (Amazon SQS, DLQ, S3, CloudFront e Observabilidade CloudWatch / X-Ray).
+          </p>
+        </div>
+        <div class="arch-actions">
+          <button type="button" class="btn btn-green btn-sm" onclick="loadObservability()">🔄 Atualizar Telemetria</button>
+          <button type="button" class="btn btn-orange btn-sm" onclick="simulateDlqError()">⚡ Simular Falha de Mídia (Testar DLQ)</button>
+        </div>
+      </div>
+
+      <!-- Camada de Entrada: Route 53 -> Load Balancer -> API Gateway -->
+      <div class="arch-entry-pipeline">
+        <div class="arch-node entry-node">
+          <div class="node-icon">👥</div>
+          <div>
+            <strong>Cidadão &amp; Prefeitura</strong>
+            <span>Portal Ouvidoria / Painel Admin</span>
+          </div>
+        </div>
+        <div class="arch-arrow">➔</div>
+        <div class="arch-node aws-purple">
+          <div class="node-icon">53</div>
+          <div>
+            <strong>DNS / Route 53</strong>
+            <span>Gerenciamento de domínio</span>
+          </div>
+        </div>
+        <div class="arch-arrow">➔</div>
+        <div class="arch-node aws-purple">
+          <div class="node-icon">⚖️</div>
+          <div>
+            <strong>Load Balancer (ALB)</strong>
+            <span>Alta disponibilidade</span>
+          </div>
+        </div>
+        <div class="arch-arrow">➔</div>
+        <div class="arch-node aws-purple">
+          <div class="node-icon">🚪</div>
+          <div>
+            <strong>API Gateway (:3000)</strong>
+            <span id="gw-req-counter">Roteamento de requisições</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Zonas Síncrona e Assíncrona (Fiel ao Diagrama Enviado) -->
+      <div class="arch-zones-grid">
+        <!-- Fluxo Síncrono (resposta imediata) -->
+        <div class="arch-zone sync-zone">
+          <div class="zone-header sync-header">
+            <span>🟢 Fluxo Síncrono <em>(resposta imediata)</em></span>
+          </div>
+          <div class="sync-services-row">
+            <!-- Microsserviço 1: Identidade -->
+            <div class="ms-card">
+              <div class="ms-status-badge" id="ms1-status">UP :4001</div>
+              <h4>👤 Serviço de Identidade</h4>
+              <ul>
+                <li>Login / sessão JWT</li>
+                <li>Controle de acesso (Cidadão / Admin)</li>
+              </ul>
+              <div class="ms-metrics" id="ms1-metrics">Carregando...</div>
+              <div class="db-isolated-box">
+                <span class="db-icon">🐘</span>
+                <div>
+                  <strong>Banco Isolado 1</strong>
+                  <span>RDS PostgreSQL (identity_rds)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Microsserviço 2: Chamados -->
+            <div class="ms-card">
+              <div class="ms-status-badge" id="ms2-status">UP :4002</div>
+              <h4>📄 Serviço de Chamados</h4>
+              <ul>
+                <li>Dados do protocolo (Relatos / Sugestões)</li>
+                <li>Gestão de chamados e Eventos</li>
+              </ul>
+              <div class="ms-metrics" id="ms2-metrics">Carregando...</div>
+              <div class="db-isolated-box">
+                <span class="db-icon">🐘</span>
+                <div>
+                  <strong>Banco Isolado 2</strong>
+                  <span>RDS PostgreSQL (tickets_rds)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fluxo Assíncrono (processamento de mídia) -->
+        <div class="arch-zone async-zone">
+          <div class="zone-header async-header">
+            <span>🟣 Fluxo Assíncrono <em>(processamento de mídia)</em></span>
+          </div>
+          <div class="async-pipeline-grid">
+            <div class="async-box sqs-box">
+              <strong>🎯 Amazon SQS</strong>
+              <span>Fila de mensagens assíncronas</span>
+              <div class="metric-pill" id="sqs-metrics">Recebidas: 0 | Na fila: 0</div>
+            </div>
+
+            <div class="async-box media-ms-box">
+              <div class="ms-status-badge" id="ms3-status">UP :4003</div>
+              <strong>🖼️ Serviço de Processamento de Mídia</strong>
+              <span>• Sanitiza EXIF e processa imagens<br />• Salva no Bucket S3</span>
+              <div class="metric-pill" id="media-processed-metric">Processadas: 0</div>
+            </div>
+
+            <div class="async-box s3-box">
+              <strong>🪣 Amazon S3 + ☁️ CloudFront</strong>
+              <span>Armazenamento de objetos e CDN</span>
+              <div class="metric-pill" id="s3-metrics">Objetos S3: 0</div>
+            </div>
+
+            <div class="async-box dlq-box">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <strong>🚨 DLQ (Dead Letter Queue)</strong>
+                <button type="button" class="btn-clear-dlq" onclick="clearDlq()">Limpar DLQ</button>
+              </div>
+              <span>Mensagens com erro de processamento</span>
+              <div id="dlq-list" class="dlq-items-box">Nenhuma mensagem com erro na DLQ.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Camada de Observabilidade: CloudWatch, AWS X-Ray e Alarms -->
+      <div class="observability-panel">
+        <h3 class="obs-title">📊 Observabilidade em Tempo Real (Amazon CloudWatch &amp; AWS X-Ray)</h3>
+        <div class="obs-grid-3col">
+          <!-- CloudWatch Alarms -->
+          <div class="obs-card">
+            <h4>🔔 Alerta e Monitoramento (CloudWatch Alarms)</h4>
+            <div id="cw-alarms-list" class="obs-list"></div>
+          </div>
+
+          <!-- AWS X-Ray Traces -->
+          <div class="obs-card">
+            <h4>🧭 AWS X-Ray (Traces Distribuídos)</h4>
+            <div id="xray-traces-list" class="obs-list mono-list"></div>
+          </div>
+
+          <!-- Amazon CloudWatch Logs -->
+          <div class="obs-card">
+            <h4>☁️ Amazon CloudWatch (Métricas e Logs)</h4>
+            <div id="cw-logs-list" class="obs-list mono-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL: VISUALIZAÇÃO DE RELATO + DEVOLUTIVA DA PREFEITURA (Imagem 3)     -->
+  <!-- ======================================================================= -->
+  <div id="modal-relato" class="modal-backdrop" style="display:none;" onclick="if(event.target===this) closeModal('modal-relato')">
+    <div class="modal-card">
+      <button type="button" class="modal-close-x" onclick="closeModal('modal-relato')">✖</button>
+      <h2 id="mod-rel-titulo" class="modal-title">Buracos na Ipueiras</h2>
+
+      <div class="modal-top-split">
+        <div class="modal-meta-list">
+          <div><strong>Protocolo:</strong> <span id="mod-rel-protocolo">PICOS-2026-0101</span></div>
+          <div><strong>Categoria:</strong> <span id="mod-rel-categoria">Infraestrutura</span></div>
+          <div>📍 <span id="mod-rel-local">Ipueiras - Antônio Claro</span></div>
+          <div>🕒 <span id="mod-rel-status-badge" class="status-badge">Em Análise</span></div>
+          <div class="rating-row">
+            <span class="star-gold">★</span> <strong id="mod-rel-avaliacao">3,2</strong>
+            <span class="rate-prompt">(Avaliar:
+              <button type="button" class="star-btn" onclick="votarRelato(3)">3★</button>
+              <button type="button" class="star-btn" onclick="votarRelato(4)">4★</button>
+              <button type="button" class="star-btn" onclick="votarRelato(5)">5★</button>)
+            </span>
+          </div>
+        </div>
+        <div class="modal-thumb-wrap">
+          <img id="mod-rel-img" src="/assets/buraco.svg" alt="Foto do Relato" />
+        </div>
+      </div>
+
+      <div class="modal-body-text">
+        <p><strong>Relato:</strong> <span id="mod-rel-descricao"></span></p>
+      </div>
+
+      <div class="modal-devolutiva-section">
+        <h4>Devolutiva:</h4>
+        <div class="devolutiva-date">📅 <span id="mod-rel-data-dev">15/11/2025</span></div>
+        <p id="mod-rel-devolutiva" class="devolutiva-text"></p>
+      </div>
+
+      <!-- Painel Exclusivo da Prefeitura (Administrador) para responder ao chamado -->
+      <div id="mod-rel-admin-box" class="admin-management-box" style="display:none;">
+        <h4>🏛️ Painel de Triagem da Prefeitura (Modo Administrador)</h4>
+        <div class="form-group">
+          <label>Alterar Status do Chamado:</label>
+          <select id="admin-rel-status" class="form-control">
+            <option value="Pendente">Pendente</option>
+            <option value="Em Análise">Em Análise</option>
+            <option value="Em Andamento">Em Andamento</option>
+            <option value="Concluído">Concluído</option>
+            <option value="Cancelado">Cancelado</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Devolutiva Oficial da Prefeitura:</label>
+          <textarea id="admin-rel-devolutiva" rows="3" class="form-control"></textarea>
+        </div>
+        <button type="button" class="btn btn-green btn-sm" onclick="salvarDevolutivaRelato()">
+          💾 Salvar Devolutiva e Status
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL: VISUALIZAÇÃO DE EVENTO (Fiel à Imagem 3 do Protótipo)            -->
+  <!-- ======================================================================= -->
+  <div id="modal-evento" class="modal-backdrop" style="display:none;" onclick="if(event.target===this) closeModal('modal-evento')">
+    <div class="modal-card">
+      <button type="button" class="modal-close-x" onclick="closeModal('modal-evento')">✖</button>
+      <h2 id="mod-evt-titulo" class="modal-title">Dia das Crianças</h2>
+
+      <div class="modal-top-split">
+        <div class="modal-meta-list">
+          <div>🏃 <span id="mod-evt-categoria">Lazer</span></div>
+          <div>📍 <span id="mod-evt-local">Ipueiras - Antônio Claro</span></div>
+          <div>📅 <span id="mod-evt-data">10/10/2024</span></div>
+          <div>🌐 <span id="mod-evt-modalidade">Presencial</span></div>
+          <div><span class="star-gold">★</span> <strong id="mod-evt-avaliacao">3,2</strong></div>
+        </div>
+        <div class="modal-thumb-wrap">
+          <img id="mod-evt-img" src="/assets/evento_criancas.svg" alt="Cartaz do Evento" />
+        </div>
+      </div>
+
+      <div class="modal-body-text">
+        <p id="mod-evt-descricao"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL: VISUALIZAÇÃO DE SUGESTÃO                                         -->
+  <!-- ======================================================================= -->
+  <div id="modal-sugestao" class="modal-backdrop" style="display:none;" onclick="if(event.target===this) closeModal('modal-sugestao')">
+    <div class="modal-card">
+      <button type="button" class="modal-close-x" onclick="closeModal('modal-sugestao')">✖</button>
+      <h2 id="mod-sug-titulo" class="modal-title">Sugestão</h2>
+      <div class="modal-meta-list" style="margin-bottom: 12px;">
+        <div><strong>Protocolo:</strong> <span id="mod-sug-protocolo"></span> | <strong>Autor:</strong> <span id="mod-sug-autor"></span></div>
+        <div><strong>Status:</strong> <span id="mod-sug-status" class="status-badge"></span></div>
+      </div>
+      <div class="modal-body-text">
+        <p><strong>Descrição do Problema:</strong> <span id="mod-sug-problema"></span></p>
+        <p style="margin-top:10px;"><strong>Solução Proposta:</strong> <span id="mod-sug-solucao"></span></p>
+      </div>
+      <div class="modal-devolutiva-section">
+        <h4>Parecer da Prefeitura:</h4>
+        <div class="devolutiva-date">📅 <span id="mod-sug-data"></span></div>
+        <p id="mod-sug-devolutiva" class="devolutiva-text"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL: AUTENTICAÇÃO DE ADMINISTRADOR (Fiel à Imagem 8 do Protótipo)     -->
+  <!-- ======================================================================= -->
+  <div id="modal-admin-auth" class="modal-backdrop" style="display:none;" onclick="if(event.target===this) closeModal('modal-admin-auth')">
+    <div class="modal-card modal-card-sm">
+      <button type="button" class="modal-close-x" onclick="closeModal('modal-admin-auth')">✖</button>
+      <h3 class="admin-modal-title">Autenticação de Administrador</h3>
+      <p class="admin-modal-desc">
+        Insira o código fornecido pela prefeitura para liberar a função de administrador.
+      </p>
+      <input type="text" id="admin-code-input" class="form-control" placeholder="Insira o código (ex: PREFEITURA2026)" style="margin: 14px 0 6px;" />
+      <div style="font-size: 11px; color: #059669; margin-bottom: 16px;">
+        💡 Código oficial para teste: <strong>PREFEITURA2026</strong>
+      </div>
+      <div class="form-actions-centered">
+        <button type="button" class="btn btn-grey" onclick="closeModal('modal-admin-auth')">Cancelar</button>
+        <button type="button" class="btn btn-green" onclick="confirmarCodigoAdmin()">Autenticar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- RODAPÉ OFICIAL CONECT-CITY (Fiel aos Protótipos)                        -->
+  <!-- ======================================================================= -->
+  <footer class="main-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4 class="footer-heading">Patrocínios</h4>
+        <div class="sponsors-grid">
+          <div class="sponsor-box">UFPI</div>
+          <div class="sponsor-box">PMP</div>
+          <div class="sponsor-box">SI</div>
+          <div class="sponsor-box">FUMIP</div>
+          <div class="sponsor-box">PIAUÍ</div>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Redes sociais</h4>
+        <ul class="footer-list">
+          <li>📷 Instagram</li>
+          <li>📘 Facebook</li>
+          <li>💬 Whatsapp</li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Contato</h4>
+        <ul class="footer-list">
+          <li>✉️ conectcity@gmail.com</li>
+          <li>📞 (89) 99999-9999</li>
+          <li>📍 Endereço Rua Fulano, nº 9999<br />Bairro Ciclano, Picos - Piauí</li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-logo-col">
+        <img src="/assets/logo_e.svg" alt="Logo e Conect-City" class="footer-big-e" />
+      </div>
+    </div>
+    <div class="footer-copyright">
+      Copyright © 2026 UFPI - Todos os Direitos Reservados.
+    </div>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "conectcity-microservices",
+  "version": "2.0.0",
+  "description": "Plataforma ConectCity - Ouvidoria Digital e Gestão Municipal de Picos-PI (Arquitetura de Microsserviços)",
+  "main": "start-all.js",
+  "scripts": {
+    "start": "node --no-warnings start-all.js",
+    "identity": "node --no-warnings services/identity-service/index.js",
+    "tickets": "node --no-warnings services/tickets-service/index.js",
+    "media": "node --no-warnings services/media-service/index.js",
+    "gateway": "node --no-warnings services/api-gateway/index.js"
+  },
+  "keywords": [
+    "conectcity",
+    "picos",
+    "ouvidoria",
+    "microsservicos",
+    "ufpi",
+    "cloud",
+    "aws"
+  ],
+  "author": "Áurea Letícia Carvalho Macedo e Dupla - UFPI (Tópicos Especiais em Engenharia de Software 2026.2)",
+  "license": "MIT"
+}

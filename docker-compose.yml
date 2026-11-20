@@ -1,0 +1,52 @@
+services:
+  identity-service:
+    build: .
+    container_name: conectcity-identity-ms
+    command: node --no-warnings services/identity-service/index.js
+    environment:
+      - IDENTITY_PORT=4001
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./data:/app/data
+
+  media-service:
+    build: .
+    container_name: conectcity-media-ms
+    command: node --no-warnings services/media-service/index.js
+    environment:
+      - MEDIA_PORT=4003
+    ports:
+      - "4003:4003"
+    volumes:
+      - ./data:/app/data
+
+  tickets-service:
+    build: .
+    container_name: conectcity-tickets-ms
+    command: node --no-warnings services/tickets-service/index.js
+    environment:
+      - TICKETS_PORT=4002
+      - MEDIA_SERVICE_URL=http://media-service:4003
+    ports:
+      - "4002:4002"
+    depends_on:
+      - media-service
+    volumes:
+      - ./data:/app/data
+
+  api-gateway:
+    build: .
+    container_name: conectcity-api-gateway
+    command: node --no-warnings services/api-gateway/index.js
+    environment:
+      - GATEWAY_PORT=3000
+      - IDENTITY_SERVICE_URL=http://identity-service:4001
+      - TICKETS_SERVICE_URL=http://tickets-service:4002
+      - MEDIA_SERVICE_URL=http://media-service:4003
+    ports:
+      - "3000:3000"
+    depends_on:
+      - identity-service
+      - tickets-service
+      - media-service

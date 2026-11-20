@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" width="320" height="220">
+  <rect width="320" height="100" fill="#e0f2fe"/>
+  <rect y="100" width="320" height="120" fill="#475569"/>
+  <!-- Drainage grate & water puddle -->
+  <ellipse cx="160" cy="165" rx="115" ry="38" fill="#0284c7" opacity="0.75"/>
+  <rect x="115" y="105" width="90" height="32" rx="4" fill="#1e293b" stroke="#94a3b8" stroke-width="3"/>
+  <line x1="135" y1="105" x2="135" y2="137" stroke="#94a3b8" stroke-width="3"/>
+  <line x1="160" y1="105" x2="160" y2="137" stroke="#94a3b8" stroke-width="3"/>
+  <line x1="185" y1="105" x2="185" y2="137" stroke="#94a3b8" stroke-width="3"/>
+</svg>
