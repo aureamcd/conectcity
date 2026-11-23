@@ -154,6 +154,9 @@ async function submitLogin(e) {
     localStorage.setItem('conectcity_user', JSON.stringify(currentUser));
     localStorage.setItem('conectcity_token', authToken);
     updateNavbarAuthUI();
+    loadRelatos(1);
+    loadSugestoes();
+    loadEventos();
     showToast(`Bem-vindo(a), ${currentUser.nome}!`);
     navigateTo('perfil');
   } catch (err) {
@@ -320,6 +323,9 @@ async function confirmarCodigoAdmin() {
     localStorage.setItem('conectcity_user', JSON.stringify(currentUser));
     updateNavbarAuthUI();
     fillPerfilInputs(currentUser);
+    loadRelatos(1);
+    loadSugestoes();
+    loadEventos();
     closeModal('modal-admin-auth');
     showToast('Informações salvas com sucesso! Função de Administrador liberada.');
   } catch (err) {
@@ -333,6 +339,9 @@ function logoutUser() {
   localStorage.removeItem('conectcity_user');
   localStorage.removeItem('conectcity_token');
   updateNavbarAuthUI();
+  loadRelatos(1);
+  loadSugestoes();
+  loadEventos();
   showToast('Sessão encerrada com sucesso.');
   navigateTo('login');
 }
@@ -357,11 +366,13 @@ async function loadRelatos(page = 1) {
   currentRelatosPage = page;
   const q = document.getElementById('search-relatos-input')?.value || '';
   const status = document.getElementById('filter-relatos-status')?.value || '';
+  const isAdmin = currentUser && currentUser.role === 'admin';
 
   try {
     const params = new URLSearchParams();
     if (q) params.set('q', q);
     if (status) params.set('status', status);
+    if (isAdmin) params.set('admin', '1');
     const res = await fetch(`/api/relatos?${params.toString()}`);
     allRelatos = await res.json();
     renderRelatosGrid();
@@ -373,7 +384,27 @@ async function loadRelatos(page = 1) {
 function renderRelatosGrid() {
   const grid = document.getElementById('relatos-grid');
   const pag = document.getElementById('relatos-pagination');
+  const adminBar = document.getElementById('admin-bar-relatos');
   if (!grid) return;
+
+  const isAdmin = currentUser && currentUser.role === 'admin';
+  if (adminBar) {
+    if (isAdmin) {
+      const pendCount = allRelatos.filter((r) => Number(r.aprovado_portal ?? 1) === 0).length;
+      const pubCount = allRelatos.length - pendCount;
+      adminBar.style.display = 'flex';
+      adminBar.innerHTML = `
+        <div class="admin-mod-info">
+          <span>🏛️ <strong>Gestão &amp; CRUD de Relatos (Admin):</strong></span>
+          <span class="portal-vis-badge pending">🔒 ${pendCount} Aguardando Liberação p/ Portal</span>
+          <span class="portal-vis-badge approved">🌐 ${pubCount} Publicados no Portal</span>
+        </div>
+        <button type="button" class="btn btn-green btn-sm" onclick="navigateTo('form-relato')">+ Novo Relato</button>
+      `;
+    } else {
+      adminBar.style.display = 'none';
+    }
+  }
 
   if (allRelatos.length === 0) {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:#6b7280;">Nenhum relato encontrado para o filtro pesquisado.</div>`;
@@ -390,11 +421,32 @@ function renderRelatosGrid() {
   grid.innerHTML = pageItems
     .map((r) => {
       const badgeClass = getStatusBadgeClass(r.status);
+      const isApproved = Number(r.aprovado_portal ?? 1) === 1;
+      const adminBadgeHtml = isAdmin
+        ? isApproved
+          ? `<span class="portal-vis-badge approved">🌐 No Portal</span>`
+          : `<span class="portal-vis-badge pending">🔒 Aguardando Liberação p/ Portal</span>`
+        : '';
+      const adminCrudHtml = isAdmin
+        ? `
+          <div class="card-admin-crud-row">
+            ${
+              !isApproved
+                ? `<button type="button" class="btn-crud-mini btn-crud-approve" onclick="liberarPortalRelatoCard(${r.id}, 1)">✅ Liberar p/ Portal</button>`
+                : `<button type="button" class="btn-crud-mini btn-crud-hide" onclick="liberarPortalRelatoCard(${r.id}, 0)">🔒 Ocultar</button>`
+            }
+            <button type="button" class="btn-crud-mini btn-crud-edit" onclick="openRelatoModal(${r.id}, true)">✏️ Editar</button>
+            <button type="button" class="btn-crud-mini btn-crud-del" onclick="excluirRelatoCard(${r.id})">🗑️ Excluir</button>
+          </div>
+        `
+        : '';
+
       return `
-        <div class="proto-card">
+        <div class="proto-card ${isAdmin && !isApproved ? 'card-pending-portal' : ''}">
           <img src="${r.imagem || '/assets/buraco_real.png'}" alt="${r.titulo}" class="card-thumb" />
           <div class="card-info">
             <div class="card-title" title="${r.titulo}">${r.titulo}</div>
+            ${adminBadgeHtml}
             <div class="card-meta-line">📍 ${r.bairro}</div>
             <div class="card-meta-line">🔧 ${r.categoria}</div>
             <span class="status-badge ${badgeClass}">${r.status}</span>
@@ -402,6 +454,7 @@ function renderRelatosGrid() {
               <span class="card-rating"><span class="star-gold">★</span> ${formatStarRating(r.avaliacao)}</span>
               <button type="button" class="btn-visualizar" onclick="openRelatoModal(${r.id})">Visualizar</button>
             </div>
+            ${adminCrudHtml}
           </div>
         </div>
       `;
@@ -416,7 +469,7 @@ function renderRelatosGrid() {
   pag.innerHTML = pagHtml;
 }
 
-function openRelatoModal(id) {
+function openRelatoModal(id, autoOpenEdit = false) {
   const relato = allRelatos.find((r) => r.id === id);
   if (!relato) return;
   selectedRelato = relato;
@@ -440,17 +493,25 @@ function openRelatoModal(id) {
   // Se o usuário atual for Administrador, exibe o painel de gestão completo da Prefeitura
   const adminBox = document.getElementById('mod-rel-admin-box');
   const editFields = document.getElementById('admin-rel-edit-fields');
-  if (editFields) editFields.style.display = 'none';
+  if (editFields) editFields.style.display = autoOpenEdit ? 'block' : 'none';
 
   if (currentUser && currentUser.role === 'admin') {
     adminBox.style.display = 'block';
+    const isApproved = Number(relato.aprovado_portal ?? 1) === 1;
     document.getElementById('admin-rel-titulo').value = relato.titulo || '';
     document.getElementById('admin-rel-categoria').value = relato.categoria || 'Infraestrutura';
     document.getElementById('admin-rel-bairro').value = relato.bairro || '';
     document.getElementById('admin-rel-endereco').value = relato.endereco || '';
     document.getElementById('admin-rel-descricao').value = relato.descricao || '';
+    document.getElementById('admin-rel-portal').value = isApproved ? '1' : '0';
     document.getElementById('admin-rel-status').value = relato.status;
     document.getElementById('admin-rel-devolutiva').value = relato.devolutiva || '';
+
+    const btnPortal = document.getElementById('btn-mod-rel-portal');
+    if (btnPortal) {
+      btnPortal.textContent = isApproved ? '🔒 Ocultar do Portal Público' : '✅ Liberar Ida para o Portal';
+      btnPortal.className = isApproved ? 'btn btn-outline-orange btn-sm' : 'btn btn-green btn-sm';
+    }
   } else {
     adminBox.style.display = 'none';
   }
@@ -464,8 +525,50 @@ function toggleEditarRelatoAdmin() {
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
+async function togglePortalRelatoModal() {
+  if (!selectedRelato) return;
+  const cur = Number(document.getElementById('admin-rel-portal').value);
+  const next = cur === 1 ? 0 : 1;
+  document.getElementById('admin-rel-portal').value = String(next);
+  if (next === 1 && document.getElementById('admin-rel-status').value === 'Pendente') {
+    document.getElementById('admin-rel-status').value = 'Em Análise';
+  }
+  await salvarDevolutivaRelato();
+}
+
+async function liberarPortalRelatoCard(id, novoEstado) {
+  try {
+    const res = await fetch(`/api/relatos/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ aprovado_portal: novoEstado })
+    });
+    if (!res.ok) return showToast('Erro ao alterar visibilidade no portal', true);
+    showToast(
+      novoEstado === 1
+        ? 'Relato liberado e publicado no portal público com sucesso!'
+        : 'Relato movido de volta para a fila de triagem.'
+    );
+    loadRelatos(currentRelatosPage);
+  } catch (err) {
+    showToast('Erro ao comunicar com o Serviço de Chamados.', true);
+  }
+}
+
+async function excluirRelatoCard(id) {
+  try {
+    const res = await fetch(`/api/relatos/${id}`, { method: 'DELETE' });
+    if (!res.ok) return showToast('Erro ao excluir relato', true);
+    showToast('Relato excluído pelo Administrador.');
+    loadRelatos(currentRelatosPage);
+  } catch (err) {
+    showToast('Erro ao excluir relato.', true);
+  }
+}
+
 async function rapidoStatusRelato(novoStatus) {
   document.getElementById('admin-rel-status').value = novoStatus;
+  document.getElementById('admin-rel-portal').value = '1';
   if (novoStatus === 'Em Andamento' && !document.getElementById('admin-rel-devolutiva').value.trim()) {
     document.getElementById('admin-rel-devolutiva').value =
       'Relato liberado e encaminhado para execução pela equipe técnica da Prefeitura Municipal de Picos.';
@@ -485,6 +588,7 @@ async function salvarDevolutivaRelato() {
     bairro: document.getElementById('admin-rel-bairro').value,
     endereco: document.getElementById('admin-rel-endereco').value,
     descricao: document.getElementById('admin-rel-descricao').value,
+    aprovado_portal: Number(document.getElementById('admin-rel-portal').value),
     status: document.getElementById('admin-rel-status').value,
     devolutiva: document.getElementById('admin-rel-devolutiva').value
   };
@@ -498,7 +602,7 @@ async function salvarDevolutivaRelato() {
     const data = await res.json();
     if (!res.ok) return showToast(data.error || 'Erro ao atualizar relato', true);
 
-    showToast('Relato e devolutiva atualizados com sucesso!');
+    showToast('Relato e status do portal atualizados com sucesso!');
     closeModal('modal-relato');
     loadRelatos(currentRelatosPage);
   } catch (err) {
@@ -586,8 +690,8 @@ async function submitNovoRelato(e) {
     const data = await res.json();
     if (!res.ok) return showToast(data.error || 'Erro ao enviar relato', true);
 
-    // Pop-out idêntico à Imagem 7 do Protótipo:
-    showToast('Relato enviado com sucesso!');
+    // Pop-out informando que aguarda liberação do Administrador para ir ao portal:
+    showToast('Relato enviado para triagem! O Administrador irá liberar a ida para o portal.');
     document.getElementById('form-novo-relato').reset();
     document.getElementById('rel-preview-box').innerHTML = '';
     uploadedRelatoImageBase64 = null;
@@ -602,8 +706,12 @@ async function submitNovoRelato(e) {
 // =========================================================================
 async function loadSugestoes() {
   const q = document.getElementById('search-sugestoes-input')?.value || '';
+  const isAdmin = currentUser && currentUser.role === 'admin';
   try {
-    const res = await fetch(`/api/sugestoes?q=${encodeURIComponent(q)}`);
+    const params = new URLSearchParams();
+    if (q) params.set('q', q);
+    if (isAdmin) params.set('admin', '1');
+    const res = await fetch(`/api/sugestoes?${params.toString()}`);
     allSugestoes = await res.json();
     renderSugestoesGrid();
   } catch (err) {
@@ -613,16 +721,57 @@ async function loadSugestoes() {
 
 function renderSugestoesGrid() {
   const grid = document.getElementById('sugestoes-grid');
+  const adminBar = document.getElementById('admin-bar-sugestoes');
   if (!grid) return;
+
+  const isAdmin = currentUser && currentUser.role === 'admin';
+  if (adminBar) {
+    if (isAdmin) {
+      const pendCount = allSugestoes.filter((s) => Number(s.aprovado_portal ?? 1) === 0).length;
+      const pubCount = allSugestoes.length - pendCount;
+      adminBar.style.display = 'flex';
+      adminBar.innerHTML = `
+        <div class="admin-mod-info">
+          <span>🏛️ <strong>Gestão &amp; CRUD de Sugestões (Admin):</strong></span>
+          <span class="portal-vis-badge pending">🔒 ${pendCount} Aguardando Liberação p/ Portal</span>
+          <span class="portal-vis-badge approved">🌐 ${pubCount} Publicadas no Portal</span>
+        </div>
+        <button type="button" class="btn btn-green btn-sm" onclick="navigateTo('form-sugestao')">+ Nova Sugestão</button>
+      `;
+    } else {
+      adminBar.style.display = 'none';
+    }
+  }
 
   grid.innerHTML = allSugestoes
     .map((s) => {
       const badgeClass = getStatusBadgeClass(s.status);
+      const isApproved = Number(s.aprovado_portal ?? 1) === 1;
+      const adminBadgeHtml = isAdmin
+        ? isApproved
+          ? `<span class="portal-vis-badge approved">🌐 No Portal</span>`
+          : `<span class="portal-vis-badge pending">🔒 Aguardando Liberação p/ Portal</span>`
+        : '';
+      const adminCrudHtml = isAdmin
+        ? `
+          <div class="card-admin-crud-row">
+            ${
+              !isApproved
+                ? `<button type="button" class="btn-crud-mini btn-crud-approve" onclick="liberarPortalSugestaoCard(${s.id}, 1)">✅ Liberar p/ Portal</button>`
+                : `<button type="button" class="btn-crud-mini btn-crud-hide" onclick="liberarPortalSugestaoCard(${s.id}, 0)">🔒 Ocultar</button>`
+            }
+            <button type="button" class="btn-crud-mini btn-crud-edit" onclick="openSugestaoModal(${s.id}, true)">✏️ Editar</button>
+            <button type="button" class="btn-crud-mini btn-crud-del" onclick="excluirSugestaoCard(${s.id})">🗑️ Excluir</button>
+          </div>
+        `
+        : '';
+
       return `
-        <div class="proto-card">
+        <div class="proto-card ${isAdmin && !isApproved ? 'card-pending-portal' : ''}">
           <img src="/assets/concluido_real.jpg" alt="${s.titulo}" class="card-thumb" />
           <div class="card-info">
             <div class="card-title" title="${s.titulo}">${s.titulo}</div>
+            ${adminBadgeHtml}
             <div class="card-meta-line">📍 ${s.bairro}</div>
             <div class="card-meta-line">💡 ${s.categoria}</div>
             <span class="status-badge ${badgeClass}">${s.status}</span>
@@ -630,6 +779,7 @@ function renderSugestoesGrid() {
               <span class="card-rating"><span class="star-gold">★</span> ${formatStarRating(s.avaliacao)}</span>
               <button type="button" class="btn-visualizar" onclick="openSugestaoModal(${s.id})">Visualizar</button>
             </div>
+            ${adminCrudHtml}
           </div>
         </div>
       `;
@@ -637,7 +787,7 @@ function renderSugestoesGrid() {
     .join('');
 }
 
-function openSugestaoModal(id) {
+function openSugestaoModal(id, autoOpenEdit = false) {
   const s = allSugestoes.find((item) => item.id === id);
   if (!s) return;
   selectedSugestao = s;
@@ -655,17 +805,25 @@ function openSugestaoModal(id) {
 
   const adminBox = document.getElementById('mod-sug-admin-box');
   const editFields = document.getElementById('admin-sug-edit-fields');
-  if (editFields) editFields.style.display = 'none';
+  if (editFields) editFields.style.display = autoOpenEdit ? 'block' : 'none';
 
   if (currentUser && currentUser.role === 'admin') {
     adminBox.style.display = 'block';
+    const isApproved = Number(s.aprovado_portal ?? 1) === 1;
     document.getElementById('admin-sug-titulo').value = s.titulo || '';
     document.getElementById('admin-sug-bairro').value = s.bairro || '';
     document.getElementById('admin-sug-categoria').value = s.categoria || '';
     document.getElementById('admin-sug-problema').value = s.descricao_problema || '';
     document.getElementById('admin-sug-solucao').value = s.descricao_solucao || '';
+    document.getElementById('admin-sug-portal').value = isApproved ? '1' : '0';
     document.getElementById('admin-sug-status').value = s.status || 'Em Análise';
     document.getElementById('admin-sug-devolutiva').value = s.devolutiva || '';
+
+    const btnPortal = document.getElementById('btn-mod-sug-portal');
+    if (btnPortal) {
+      btnPortal.textContent = isApproved ? '🔒 Ocultar do Portal Público' : '✅ Liberar Ida para o Portal';
+      btnPortal.className = isApproved ? 'btn btn-outline-orange btn-sm' : 'btn btn-green btn-sm';
+    }
   } else {
     adminBox.style.display = 'none';
   }
@@ -679,8 +837,50 @@ function toggleEditarSugestaoAdmin() {
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
+async function togglePortalSugestaoModal() {
+  if (!selectedSugestao) return;
+  const cur = Number(document.getElementById('admin-sug-portal').value);
+  const next = cur === 1 ? 0 : 1;
+  document.getElementById('admin-sug-portal').value = String(next);
+  if (next === 1 && document.getElementById('admin-sug-status').value === 'Pendente') {
+    document.getElementById('admin-sug-status').value = 'Em Análise';
+  }
+  await salvarAdminSugestao();
+}
+
+async function liberarPortalSugestaoCard(id, novoEstado) {
+  try {
+    const res = await fetch(`/api/sugestoes/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ aprovado_portal: novoEstado })
+    });
+    if (!res.ok) return showToast('Erro ao alterar visibilidade da sugestão', true);
+    showToast(
+      novoEstado === 1
+        ? 'Sugestão liberada e publicada no portal com sucesso!'
+        : 'Sugestão movida para a fila de triagem.'
+    );
+    loadSugestoes();
+  } catch (err) {
+    showToast('Erro ao atualizar sugestão.', true);
+  }
+}
+
+async function excluirSugestaoCard(id) {
+  try {
+    const res = await fetch(`/api/sugestoes/${id}`, { method: 'DELETE' });
+    if (!res.ok) return showToast('Erro ao excluir sugestão', true);
+    showToast('Sugestão excluída pelo Administrador.');
+    loadSugestoes();
+  } catch (err) {
+    showToast('Erro ao excluir sugestão.', true);
+  }
+}
+
 async function rapidoStatusSugestao(novoStatus) {
   document.getElementById('admin-sug-status').value = novoStatus;
+  document.getElementById('admin-sug-portal').value = '1';
   if (novoStatus === 'Aprovada') {
     document.getElementById('admin-sug-devolutiva').value =
       'Sugestão aprovada e liberada pela Prefeitura Municipal de Picos para inclusão no cronograma de melhorias urbanas.';
@@ -699,6 +899,7 @@ async function salvarAdminSugestao() {
     categoria: document.getElementById('admin-sug-categoria').value,
     descricao_problema: document.getElementById('admin-sug-problema').value,
     descricao_solucao: document.getElementById('admin-sug-solucao').value,
+    aprovado_portal: Number(document.getElementById('admin-sug-portal').value),
     status: document.getElementById('admin-sug-status').value,
     devolutiva: document.getElementById('admin-sug-devolutiva').value
   };
@@ -712,7 +913,7 @@ async function salvarAdminSugestao() {
     const data = await res.json();
     if (!res.ok) return showToast(data.error || 'Erro ao atualizar sugestão', true);
 
-    showToast('Sugestão atualizada com sucesso!');
+    showToast('Sugestão e visibilidade no portal atualizadas com sucesso!');
     closeModal('modal-sugestao');
     loadSugestoes();
   } catch (err) {
@@ -751,8 +952,7 @@ async function submitNovaSugestao(e) {
     const data = await res.json();
     if (!res.ok) return showToast(data.error || 'Erro ao enviar sugestão', true);
 
-    // Pop-out idêntico à Imagem 7 do Protótipo:
-    showToast('Sugestão enviada com sucesso!');
+    showToast('Sugestão enviada para triagem! O Administrador irá liberar a ida para o portal.');
     document.getElementById('form-nova-sugestao').reset();
     navigateTo('sugestoes');
   } catch (err) {
@@ -765,8 +965,12 @@ async function submitNovaSugestao(e) {
 // =========================================================================
 async function loadEventos() {
   const q = document.getElementById('search-eventos-input')?.value || '';
+  const isAdmin = currentUser && currentUser.role === 'admin';
   try {
-    const res = await fetch(`/api/eventos?q=${encodeURIComponent(q)}`);
+    const params = new URLSearchParams();
+    if (q) params.set('q', q);
+    if (isAdmin) params.set('admin', '1');
+    const res = await fetch(`/api/eventos?${params.toString()}`);
     allEventos = await res.json();
     renderEventosGrid();
   } catch (err) {
@@ -776,15 +980,56 @@ async function loadEventos() {
 
 function renderEventosGrid() {
   const grid = document.getElementById('eventos-grid');
+  const adminBar = document.getElementById('admin-bar-eventos');
   if (!grid) return;
+
+  const isAdmin = currentUser && currentUser.role === 'admin';
+  if (adminBar) {
+    if (isAdmin) {
+      const pendCount = allEventos.filter((ev) => Number(ev.aprovado_portal ?? 1) === 0).length;
+      const pubCount = allEventos.length - pendCount;
+      adminBar.style.display = 'flex';
+      adminBar.innerHTML = `
+        <div class="admin-mod-info">
+          <span>🏛️ <strong>Gestão &amp; CRUD de Eventos (Admin):</strong></span>
+          <span class="portal-vis-badge pending">🔒 ${pendCount} Aguardando Liberação p/ Portal</span>
+          <span class="portal-vis-badge approved">🌐 ${pubCount} Publicados no Portal</span>
+        </div>
+        <button type="button" class="btn btn-green btn-sm" onclick="navigateTo('form-evento')">+ Novo Evento</button>
+      `;
+    } else {
+      adminBar.style.display = 'none';
+    }
+  }
 
   grid.innerHTML = allEventos
     .map((ev) => {
+      const isApproved = Number(ev.aprovado_portal ?? 1) === 1;
+      const adminBadgeHtml = isAdmin
+        ? isApproved
+          ? `<span class="portal-vis-badge approved">🌐 No Portal</span>`
+          : `<span class="portal-vis-badge pending">🔒 Aguardando Liberação p/ Portal</span>`
+        : '';
+      const adminCrudHtml = isAdmin
+        ? `
+          <div class="card-admin-crud-row">
+            ${
+              !isApproved
+                ? `<button type="button" class="btn-crud-mini btn-crud-approve" onclick="liberarPortalEventoCard(${ev.id}, 1)">✅ Liberar p/ Portal</button>`
+                : `<button type="button" class="btn-crud-mini btn-crud-hide" onclick="liberarPortalEventoCard(${ev.id}, 0)">🔒 Ocultar</button>`
+            }
+            <button type="button" class="btn-crud-mini btn-crud-edit" onclick="openEventoModal(${ev.id})">✏️ Editar</button>
+            <button type="button" class="btn-crud-mini btn-crud-del" onclick="excluirEventoCard(${ev.id})">🗑️ Excluir</button>
+          </div>
+        `
+        : '';
+
       return `
-        <div class="proto-card">
+        <div class="proto-card ${isAdmin && !isApproved ? 'card-pending-portal' : ''}">
           <img src="${ev.imagem || '/assets/evento_aniversario.svg'}" alt="${ev.titulo}" class="card-thumb" />
           <div class="card-info">
             <div class="card-title" title="${ev.titulo}">${ev.titulo}</div>
+            ${adminBadgeHtml}
             <div class="card-meta-line">📅 ${ev.data_evento}</div>
             <div class="card-meta-line">🏃 ${ev.categoria}</div>
             <div class="card-meta-line">🌐 ${ev.modalidade}</div>
@@ -792,6 +1037,7 @@ function renderEventosGrid() {
               <span class="card-rating"><span class="star-gold">★</span> ${formatStarRating(ev.avaliacao)}</span>
               <button type="button" class="btn-visualizar" onclick="openEventoModal(${ev.id})">Visualizar</button>
             </div>
+            ${adminCrudHtml}
           </div>
         </div>
       `;
@@ -816,11 +1062,20 @@ function openEventoModal(id) {
   const adminBox = document.getElementById('mod-evt-admin-box');
   if (currentUser && currentUser.role === 'admin') {
     adminBox.style.display = 'block';
+    const isApproved = Number(ev.aprovado_portal ?? 1) === 1;
+    document.getElementById('admin-evt-portal').value = isApproved ? '1' : '0';
+    document.getElementById('admin-evt-categoria').value = ev.categoria || 'Lazer';
     document.getElementById('admin-evt-titulo').value = ev.titulo || '';
     document.getElementById('admin-evt-data').value = ev.data_evento || '';
     document.getElementById('admin-evt-local').value = ev.local || '';
     document.getElementById('admin-evt-modalidade').value = ev.modalidade || 'Presencial';
     document.getElementById('admin-evt-descricao').value = ev.descricao || '';
+
+    const btnPortal = document.getElementById('btn-mod-evt-portal');
+    if (btnPortal) {
+      btnPortal.textContent = isApproved ? '🔒 Ocultar do Portal Público' : '✅ Liberar Ida para o Portal';
+      btnPortal.className = isApproved ? 'btn btn-outline-orange btn-sm' : 'btn btn-green btn-sm';
+    }
   } else {
     adminBox.style.display = 'none';
   }
@@ -828,9 +1083,49 @@ function openEventoModal(id) {
   document.getElementById('modal-evento').style.display = 'flex';
 }
 
+async function togglePortalEventoModal() {
+  if (!selectedEvento) return;
+  const cur = Number(document.getElementById('admin-evt-portal').value);
+  const next = cur === 1 ? 0 : 1;
+  document.getElementById('admin-evt-portal').value = String(next);
+  await salvarAdminEvento();
+}
+
+async function liberarPortalEventoCard(id, novoEstado) {
+  try {
+    const res = await fetch(`/api/eventos/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ aprovado_portal: novoEstado })
+    });
+    if (!res.ok) return showToast('Erro ao alterar visibilidade do evento', true);
+    showToast(
+      novoEstado === 1
+        ? 'Evento liberado e publicado no portal com sucesso!'
+        : 'Evento movido para a fila de triagem.'
+    );
+    loadEventos();
+  } catch (err) {
+    showToast('Erro ao atualizar evento.', true);
+  }
+}
+
+async function excluirEventoCard(id) {
+  try {
+    const res = await fetch(`/api/eventos/${id}`, { method: 'DELETE' });
+    if (!res.ok) return showToast('Erro ao excluir evento', true);
+    showToast('Evento excluído pelo Administrador.');
+    loadEventos();
+  } catch (err) {
+    showToast('Erro ao excluir evento.', true);
+  }
+}
+
 async function salvarAdminEvento() {
   if (!selectedEvento) return;
   const payload = {
+    aprovado_portal: Number(document.getElementById('admin-evt-portal').value),
+    categoria: document.getElementById('admin-evt-categoria').value,
     titulo: document.getElementById('admin-evt-titulo').value,
     data_evento: document.getElementById('admin-evt-data').value,
     local: document.getElementById('admin-evt-local').value,
@@ -847,7 +1142,7 @@ async function salvarAdminEvento() {
     const data = await res.json();
     if (!res.ok) return showToast(data.error || 'Erro ao atualizar evento', true);
 
-    showToast('Evento atualizado com sucesso!');
+    showToast('Evento e visibilidade no portal atualizados com sucesso!');
     closeModal('modal-evento');
     loadEventos();
   } catch (err) {
@@ -890,8 +1185,7 @@ async function submitNovoEvento(e) {
     const data = await res.json();
     if (!res.ok) return showToast(data.error || 'Erro ao cadastrar evento', true);
 
-    // Pop-out idêntico à Imagem 7 do Protótipo:
-    showToast('Evento cadastrado com sucesso!');
+    showToast('Evento enviado para triagem! O Administrador irá liberar a ida para o portal.');
     document.getElementById('form-novo-evento').reset();
     document.getElementById('evt-preview-box').innerHTML = '';
     uploadedEventoImageBase64 = null;

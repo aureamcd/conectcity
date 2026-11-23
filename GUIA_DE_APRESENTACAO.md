@@ -48,25 +48,28 @@
 
 ---
 
-## Parte 4 — Demonstração do Serviço de Chamados: Relatos, Sugestões, Eventos e Gestão do Admin (8 a 10 min)
+## Parte 4 — Demonstração do Serviço de Chamados: Triagem do Portal & CRUD Completo do Admin em Relatos, Sugestões e Eventos (8 a 10 min)
 
-1. **Aba `Relatos`:**
-   - Mostrar o grid de 3 colunas com fotografias reais dos relatos de Picos (*Buracos na Ipueiras*, *Iluminação precária no Junco*, *Drenagem pluvial na Boa Sorte*, etc.), status coloridos e paginação.
-   - Demonstrar a pesquisa por texto (ex.: `Ipueiras`) e o filtro por status (ex.: `Em Análise`).
-   - Clicar em **Visualizar** no card *"Buracos na Ipueiras"*:
-     - Mostrar o protocolo (`PICOS-2026-0101`), foto real, avaliação por estrelas e a **Devolutiva da Prefeitura**.
-     - Demonstrar o **Painel de Gestão da Prefeitura (Modo Administrador)**:
-       - Clicar em **`✏️ Editar Dados do Relato`** para mostrar a edição de título, categoria, bairro, endereço e descrição.
-       - Clicar no botão rápido **`✅ Liberar / Em Andamento`** (ou **`✔ Marcar como Concluído`**) e salvar a Devolutiva Oficial da Prefeitura.
-   - Clicar em **`Cadastrar um Relato`**:
-     - Preencher o **Formulário de Relato**, anexar uma foto no campo **Carregar Imagem** (processada assincronamente via SQS + S3) e clicar em **Enviar**, exibindo o pop-out *"Relato enviado com sucesso!"*.
-2. **Aba `Sugestões`:**
-   - Mostrar as sugestões cadastradas (*Ecopontos de Coleta Seletiva*, *Pontos de Wi-Fi Público nas Praças*, *Ciclovia na Av. Beira Rio*).
-   - Clicar em **Visualizar** -> como Administrador, clicar em **`✅ Liberar / Aprovar Sugestão`** ou editar os dados e salvar o Parecer Oficial da Prefeitura.
-   - Mostrar também o **Formulário de Sugestão** clicando em **`Cadastrar uma Sugestão`**.
-3. **Aba `Eventos`:**
-   - Mostrar os eventos municipais (*Aniversário de Picos*, *Dia das Crianças*, *Picos Geek Show*).
-   - Clicar em **Visualizar** -> mostrar que o Administrador pode editar título, data, local, modalidade e descrição ou excluir o evento.
+1. **Fluxo de Triagem (Antes de ir para o Portal, o Admin libera a ida):**
+   - Enquanto estiver como **Cidadão** (ou deslogado), clique em **`Cadastrar um Relato`** (ou Sugestão / Evento), preencha os dados e envie.
+   - Mostre o aviso: *"Relato enviado para triagem! O Administrador irá liberar a ida para o portal."*
+   - Mostre que o novo item **ainda não aparece no portal público** para cidadãos comuns enquanto o Administrador não liberar.
+2. **Entrando como Administrador para Liberar a Ida ao Portal e Executar o CRUD:**
+   - Faça login como **Administrador** (`admin@picos.pi.gov.br` / `admin123` ou libere via código `PREFEITURA2026` no Perfil).
+   - Acesse **Relatos**, **Sugestões** e **Eventos**:
+     - Mostre a **Barra de Gestão & CRUD do Administrador** no topo de cada tela exibindo quantos itens estão **`🔒 Aguardando Liberação p/ Portal`** e quantos estão **`🌐 Publicados no Portal`**.
+     - Mostre que os itens recém-cadastrados aparecem no topo com borda tracejada laranja e o botão direto **`✅ Liberar p/ Portal`**.
+     - Clique em **`✅ Liberar p/ Portal`** para publicar o item instantaneamente no portal público (ou em **`🔒 Ocultar`** para retirá-lo do portal).
+3. **CRUD Completo (Create, Read, Update, Delete) em Relatos, Sugestões e Eventos:**
+   - **Em Relatos**:
+     - **Create**: botão `+ Novo Relato` / `Cadastrar um Relato` com upload de foto (Amazon SQS + S3).
+     - **Read**: busca por texto/bairro, filtro por status, paginação e visualização de protocolo e foto real.
+     - **Update**: clicar em **`✏️ Editar`** no card (ou dentro do modal) para alterar Título, Categoria, Bairro, Endereço, Descrição, Visibilidade no Portal, Status e Devolutiva Oficial da Prefeitura.
+     - **Delete**: clicar em **`🗑️ Excluir`** no card ou no modal para remover o relato do banco.
+   - **Em Sugestões**:
+     - **Create / Read / Update / Delete**: liberar sugestão para o portal (`✅ Liberar p/ Portal`), aprovar sugestão (`⭐ Aprovar Sugestão`), editar Título, Bairro, Categoria, Problema, Solução e Parecer da Prefeitura (`✏️ Editar`), ou excluir (`🗑️ Excluir`).
+   - **Em Eventos**:
+     - **Create / Read / Update / Delete**: liberar evento para o portal (`✅ Liberar p/ Portal`), editar Título, Categoria, Data, Local, Modalidade e Descrição (`✏️ Editar`), ou excluir (`🗑️ Excluir`).
 
 ---
 

@@ -731,6 +731,116 @@ body.high-contrast .objective-watermark img {
   border-color: var(--brand-blue);
 }
 
+.proto-card.card-pending-portal {
+  border: 2px dashed #f59e0b;
+  background: #fffbeb;
+}
+
+.admin-moderation-bar {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1.5px solid #f59e0b;
+  border-radius: 12px;
+  padding: 12px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.12);
+}
+
+.admin-mod-info {
+  font-size: 0.84rem;
+  color: #92400e;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.portal-vis-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.portal-vis-badge.pending {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #f59e0b;
+}
+
+.portal-vis-badge.approved {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.card-admin-crud-row {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.btn-crud-mini {
+  font-family: inherit;
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-crud-approve {
+  background: #00a843;
+  color: #ffffff;
+}
+
+.btn-crud-approve:hover {
+  background: #008c38;
+}
+
+.btn-crud-hide {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #f59e0b;
+}
+
+.btn-crud-edit {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #93c5fd;
+}
+
+.btn-crud-del {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+body.high-contrast .admin-moderation-bar,
+body.high-contrast .proto-card.card-pending-portal {
+  background: #1e1e1e;
+  border-color: #facc15;
+  color: #ffffff;
+}
+
+body.high-contrast .admin-mod-info {
+  color: #facc15;
+}
+
 .card-thumb {
   width: 108px;
   height: 108px;

@@ -60,9 +60,17 @@ db.exec(`
     avaliacao REAL DEFAULT 3.2,
     imagem TEXT,
     sqs_message_id TEXT,
+    aprovado_portal INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 `);
+
+// Migração automática para garantir a coluna aprovado_portal (0 = aguardando liberação do Admin, 1 = liberado no portal)
+for (const table of ['relatos', 'sugestoes', 'eventos']) {
+  try {
+    db.exec(`ALTER TABLE ${table} ADD COLUMN aprovado_portal INTEGER DEFAULT 1`);
+  } catch (_) {}
+}
 
 // Seed inicial fiel aos protótipos do Figma (Buracos na Ipueiras, Eventos de Picos, Sugestões)
 const relatosCount = db.prepare('SELECT COUNT(*) as c FROM relatos').get().c;
@@ -248,8 +256,19 @@ const server = http.createServer(async (req, res) => {
       const q = (url.searchParams.get('q') || '').trim().toLowerCase();
       const status = (url.searchParams.get('status') || '').trim();
       const categoria = (url.searchParams.get('categoria') || '').trim();
+      const isAdmin = url.searchParams.get('admin') === '1';
 
-      let rows = db.prepare('SELECT * FROM relatos ORDER BY CASE WHEN id > 12 THEN 0 ELSE 1 END, CASE WHEN id > 12 THEN -id ELSE id END ASC').all();
+      let rows = db.prepare(`
+        SELECT * FROM relatos
+        ORDER BY
+          CASE WHEN IFNULL(aprovado_portal, 1) = 0 THEN 0 ELSE 1 END ASC,
+          CASE WHEN id > 12 THEN 0 ELSE 1 END ASC,
+          CASE WHEN id > 12 THEN -id ELSE id END ASC
+      `).all();
+
+      if (!isAdmin) {
+        rows = rows.filter((r) => Number(r.aprovado_portal ?? 1) === 1);
+      }
       if (q) {
         rows = rows.filter(
           (r) =>
@@ -281,9 +300,10 @@ const server = http.createServer(async (req, res) => {
       const protocolo = `PICOS-2026-0${nextNum}`;
       const imgFinal = imagem || '/assets/buraco_real.png';
 
+      // Novo relato entra com aprovado_portal = 0 (aguardando o Administrador liberar a ida para o portal)
       const result = db.prepare(`
-        INSERT INTO relatos (protocolo, titulo, categoria, endereco, bairro, descricao, status, avaliacao, imagem, devolutiva, data_devolutiva, autor_nome)
-        VALUES (?, ?, ?, ?, ?, ?, 'Em Análise', 4.5, ?, 'Relato registrado na Ouvidoria Digital de Picos. Aguardando despacho da secretaria responsável.', ?, ?)
+        INSERT INTO relatos (protocolo, titulo, categoria, endereco, bairro, descricao, status, avaliacao, imagem, devolutiva, data_devolutiva, autor_nome, aprovado_portal)
+        VALUES (?, ?, ?, ?, ?, ?, 'Pendente', 4.5, ?, 'Relato recebido na triagem interna. Aguardando liberação do Administrador para publicação no portal.', ?, ?, 0)
       `).run(
         protocolo,
         titulo.trim(),
@@ -310,13 +330,13 @@ const server = http.createServer(async (req, res) => {
 
       const created = db.prepare('SELECT * FROM relatos WHERE id = ?').get(newId);
       return sendJson(res, 201, {
-        message: 'Relato enviado com sucesso!',
+        message: 'Relato enviado para triagem! Aguardando liberação do Administrador para ir ao portal.',
         relato: created,
         asyncMediaPipeline: sqsInfo
       });
     }
 
-    // PUT /relatos/:id (Edição completa pelo Admin, Atualização de Status, Devolutiva ou Avaliação)
+    // PUT /relatos/:id (Liberação para o Portal, Edição completa pelo Admin, Status, Devolutiva ou Avaliação)
     const relatoMatch = pathname.match(/^\/relatos\/(\d+)$/);
     if (req.method === 'PUT' && relatoMatch) {
       const id = Number(relatoMatch[1]);
@@ -329,18 +349,27 @@ const server = http.createServer(async (req, res) => {
       const bairro = body.bairro !== undefined ? body.bairro.trim() : existing.bairro;
       const endereco = body.endereco !== undefined ? body.endereco.trim() : existing.endereco;
       const descricao = body.descricao !== undefined ? body.descricao.trim() : existing.descricao;
-      const status = body.status || existing.status;
-      const devolutiva = body.devolutiva !== undefined ? body.devolutiva : existing.devolutiva;
-      const data_devolutiva = body.devolutiva !== undefined
+      const aprovado_portal = body.aprovado_portal !== undefined ? Number(body.aprovado_portal) : Number(existing.aprovado_portal ?? 1);
+      let status = body.status || existing.status;
+      let devolutiva = body.devolutiva !== undefined ? body.devolutiva : existing.devolutiva;
+
+      if (body.aprovado_portal === 1 && Number(existing.aprovado_portal ?? 1) === 0) {
+        if (!body.status || status === 'Pendente') status = 'Em Análise';
+        if (!body.devolutiva || devolutiva.includes('Aguardando liberação')) {
+          devolutiva = 'Relato liberado e publicado no portal pela Prefeitura Municipal de Picos. Encaminhado para a secretaria responsável.';
+        }
+      }
+
+      const data_devolutiva = (body.devolutiva !== undefined || body.aprovado_portal !== undefined)
         ? new Date().toLocaleDateString('pt-BR')
         : existing.data_devolutiva;
       const avaliacao = body.avaliacao !== undefined ? Number(body.avaliacao) : existing.avaliacao;
 
       db.prepare(`
         UPDATE relatos
-        SET titulo = ?, categoria = ?, bairro = ?, endereco = ?, descricao = ?, status = ?, devolutiva = ?, data_devolutiva = ?, avaliacao = ?
+        SET titulo = ?, categoria = ?, bairro = ?, endereco = ?, descricao = ?, status = ?, devolutiva = ?, data_devolutiva = ?, avaliacao = ?, aprovado_portal = ?
         WHERE id = ?
-      `).run(titulo, categoria, bairro, endereco, descricao, status, devolutiva, data_devolutiva, avaliacao, id);
+      `).run(titulo, categoria, bairro, endereco, descricao, status, devolutiva, data_devolutiva, avaliacao, aprovado_portal, id);
 
       const updated = db.prepare('SELECT * FROM relatos WHERE id = ?').get(id);
       return sendJson(res, 200, {
@@ -360,7 +389,16 @@ const server = http.createServer(async (req, res) => {
     // =========================================================================
     if (req.method === 'GET' && pathname === '/sugestoes') {
       const q = (url.searchParams.get('q') || '').trim().toLowerCase();
-      let rows = db.prepare('SELECT * FROM sugestoes ORDER BY id DESC').all();
+      const isAdmin = url.searchParams.get('admin') === '1';
+
+      let rows = db.prepare(`
+        SELECT * FROM sugestoes
+        ORDER BY CASE WHEN IFNULL(aprovado_portal, 1) = 0 THEN 0 ELSE 1 END ASC, id DESC
+      `).all();
+
+      if (!isAdmin) {
+        rows = rows.filter((s) => Number(s.aprovado_portal ?? 1) === 1);
+      }
       if (q) {
         rows = rows.filter(
           (s) =>
@@ -383,9 +421,10 @@ const server = http.createServer(async (req, res) => {
       const nextNum = db.prepare('SELECT COUNT(*) as c FROM sugestoes').get().c + 1;
       const protocolo = `SUG-2026-00${nextNum}`;
 
+      // Nova sugestão entra com aprovado_portal = 0 aguardando liberação do Administrador
       const result = db.prepare(`
-        INSERT INTO sugestoes (protocolo, titulo, bairro, categoria, descricao_problema, descricao_solucao, status, avaliacao, devolutiva, data_devolutiva, autor_nome)
-        VALUES (?, ?, ?, ?, ?, ?, 'Em Análise', 5.0, 'Sugestão recebida pela Ouvidoria Participativa de Picos. Em avaliação técnica pelas secretarias.', ?, ?)
+        INSERT INTO sugestoes (protocolo, titulo, bairro, categoria, descricao_problema, descricao_solucao, status, avaliacao, devolutiva, data_devolutiva, autor_nome, aprovado_portal)
+        VALUES (?, ?, ?, ?, ?, ?, 'Pendente', 5.0, 'Sugestão recebida na triagem interna. Aguardando liberação do Administrador para publicação no portal.', ?, ?, 0)
       `).run(
         protocolo,
         titulo.trim(),
@@ -400,7 +439,7 @@ const server = http.createServer(async (req, res) => {
       metrics.sugestoesCreated++;
       const created = db.prepare('SELECT * FROM sugestoes WHERE id = ?').get(result.lastInsertRowid);
       return sendJson(res, 201, {
-        message: 'Sugestão enviada com sucesso!',
+        message: 'Sugestão enviada para triagem! Aguardando liberação do Administrador para ir ao portal.',
         sugestao: created
       });
     }
@@ -417,15 +456,24 @@ const server = http.createServer(async (req, res) => {
       const categoria = body.categoria !== undefined ? body.categoria.trim() : existing.categoria;
       const descricao_problema = body.descricao_problema !== undefined ? body.descricao_problema.trim() : existing.descricao_problema;
       const descricao_solucao = body.descricao_solucao !== undefined ? body.descricao_solucao.trim() : existing.descricao_solucao;
-      const status = body.status || existing.status;
-      const devolutiva = body.devolutiva !== undefined ? body.devolutiva : existing.devolutiva;
+      const aprovado_portal = body.aprovado_portal !== undefined ? Number(body.aprovado_portal) : Number(existing.aprovado_portal ?? 1);
+      let status = body.status || existing.status;
+      let devolutiva = body.devolutiva !== undefined ? body.devolutiva : existing.devolutiva;
+
+      if (body.aprovado_portal === 1 && Number(existing.aprovado_portal ?? 1) === 0) {
+        if (!body.status || status === 'Pendente') status = 'Em Análise';
+        if (!body.devolutiva || devolutiva.includes('Aguardando liberação')) {
+          devolutiva = 'Sugestão liberada pelo Administrador para votação e acompanhamento público no portal ConectCity.';
+        }
+      }
+
       const data_devolutiva = new Date().toLocaleDateString('pt-BR');
 
       db.prepare(`
         UPDATE sugestoes
-        SET titulo = ?, bairro = ?, categoria = ?, descricao_problema = ?, descricao_solucao = ?, status = ?, devolutiva = ?, data_devolutiva = ?
+        SET titulo = ?, bairro = ?, categoria = ?, descricao_problema = ?, descricao_solucao = ?, status = ?, devolutiva = ?, data_devolutiva = ?, aprovado_portal = ?
         WHERE id = ?
-      `).run(titulo, bairro, categoria, descricao_problema, descricao_solucao, status, devolutiva, data_devolutiva, id);
+      `).run(titulo, bairro, categoria, descricao_problema, descricao_solucao, status, devolutiva, data_devolutiva, aprovado_portal, id);
 
       const updated = db.prepare('SELECT * FROM sugestoes WHERE id = ?').get(id);
       return sendJson(res, 200, {
@@ -445,7 +493,19 @@ const server = http.createServer(async (req, res) => {
     // =========================================================================
     if (req.method === 'GET' && pathname === '/eventos') {
       const q = (url.searchParams.get('q') || '').trim().toLowerCase();
-      let rows = db.prepare('SELECT * FROM eventos ORDER BY CASE WHEN id > 3 THEN 0 ELSE 1 END, CASE WHEN id > 3 THEN -id ELSE id END ASC').all();
+      const isAdmin = url.searchParams.get('admin') === '1';
+
+      let rows = db.prepare(`
+        SELECT * FROM eventos
+        ORDER BY
+          CASE WHEN IFNULL(aprovado_portal, 1) = 0 THEN 0 ELSE 1 END ASC,
+          CASE WHEN id > 3 THEN 0 ELSE 1 END ASC,
+          CASE WHEN id > 3 THEN -id ELSE id END ASC
+      `).all();
+
+      if (!isAdmin) {
+        rows = rows.filter((e) => Number(e.aprovado_portal ?? 1) === 1);
+      }
       if (q) {
         rows = rows.filter(
           (e) =>
@@ -468,8 +528,8 @@ const server = http.createServer(async (req, res) => {
 
       const imgFinal = imagem || '/assets/evento_aniversario.svg';
       const result = db.prepare(`
-        INSERT INTO eventos (titulo, categoria, local, modalidade, data_evento, descricao, avaliacao, imagem)
-        VALUES (?, ?, ?, ?, ?, ?, 4.8, ?)
+        INSERT INTO eventos (titulo, categoria, local, modalidade, data_evento, descricao, avaliacao, imagem, aprovado_portal)
+        VALUES (?, ?, ?, ?, ?, ?, 4.8, ?, 0)
       `).run(
         titulo.trim(),
         (categoria || 'Lazer').trim(),
@@ -493,7 +553,7 @@ const server = http.createServer(async (req, res) => {
 
       const created = db.prepare('SELECT * FROM eventos WHERE id = ?').get(newId);
       return sendJson(res, 201, {
-        message: 'Evento cadastrado com sucesso!',
+        message: 'Evento enviado para triagem! Aguardando liberação do Administrador para ir ao portal.',
         evento: created,
         asyncMediaPipeline: sqsInfo
       });
@@ -512,12 +572,13 @@ const server = http.createServer(async (req, res) => {
       const modalidade = body.modalidade !== undefined ? body.modalidade.trim() : existing.modalidade;
       const data_evento = body.data_evento !== undefined ? body.data_evento.trim() : existing.data_evento;
       const descricao = body.descricao !== undefined ? body.descricao.trim() : existing.descricao;
+      const aprovado_portal = body.aprovado_portal !== undefined ? Number(body.aprovado_portal) : Number(existing.aprovado_portal ?? 1);
 
       db.prepare(`
         UPDATE eventos
-        SET titulo = ?, categoria = ?, local = ?, modalidade = ?, data_evento = ?, descricao = ?
+        SET titulo = ?, categoria = ?, local = ?, modalidade = ?, data_evento = ?, descricao = ?, aprovado_portal = ?
         WHERE id = ?
-      `).run(titulo, categoria, local, modalidade, data_evento, descricao, id);
+      `).run(titulo, categoria, local, modalidade, data_evento, descricao, aprovado_portal, id);
 
       const updated = db.prepare('SELECT * FROM eventos WHERE id = ?').get(id);
       return sendJson(res, 200, {
