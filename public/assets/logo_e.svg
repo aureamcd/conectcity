@@ -1,13 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
   <defs>
-    <linearGradient id="ringSilver" x1="0" y1="0" x2="1" y2="1">
+    <!-- Gradiente metálico claro para a faixa principal do 'e' -->
+    <linearGradient id="silverMain" x1="0%" y1="15%" x2="95%" y2="85%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="35%" stop-color="#e2e8f0"/>
+      <stop offset="70%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+
+    <!-- Gradiente metálico médio/escuro para profundidade 3D (arco superior esquerdo e dobra interna) -->
+    <linearGradient id="silverDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#cbd5e1"/>
+      <stop offset="50%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+
+    <!-- Gradiente para a esfera lateral -->
+    <linearGradient id="silverDot" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="50%" stop-color="#cbd5e1"/>
+      <stop offset="60%" stop-color="#e2e8f0"/>
       <stop offset="100%" stop-color="#94a3b8"/>
     </linearGradient>
   </defs>
-  <!-- Stylized 'e' ring matching the prototype logo -->
-  <path d="M 96,48 A 42,42 0 1,0 92,86 L 78,74 A 24,24 0 1,1 78,48 L 36,48 L 36,64 L 94,64 Z" fill="url(#ringSilver)"/>
-  <circle cx="102" cy="56" r="9" fill="#ffffff"/>
-  <circle cx="102" cy="78" r="8" fill="#cbd5e1"/>
+
+  <!-- Arco superior esquerdo com efeito de fita 3D dobrada -->
+  <path d="M 24,84
+           C 14,52 34,18 68,16
+           C 90,15 110,27 118,46
+           L 99,49
+           C 92,36 78,30 64,32
+           C 42,35 30,56 36,78 Z"
+        fill="url(#silverDark)" />
+
+  <!-- Dobra interna sombreada na esquerda -->
+  <path d="M 24,84
+           C 20,72 22,58 28,46
+           L 40,56
+           C 35,66 35,76 39,86 Z"
+        fill="#7c8ba1" opacity="0.65" />
+
+  <!-- Fita principal do 'e' (barra diagonal + curva inferior) -->
+  <path d="M 24,84
+           C 28,74 36,68 48,63
+           L 99,41
+           C 103,46 105,52 104,58
+           L 46,84
+           C 53,99 69,107 86,103
+           C 98,100 107,91 111,78
+           L 128,78
+           C 123,102 103,120 77,121
+           C 48,122 28,104 24,84 Z"
+        fill="url(#silverMain)" />
+
+  <!-- Ponto / esfera prateada à direita do 'e' -->
+  <circle cx="121" cy="63" r="8.5" fill="url(#silverDot)" />
 </svg>

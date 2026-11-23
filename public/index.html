@@ -13,16 +13,23 @@
   <!-- Barra Superior de Acessibilidade (Fiel ao Protótipo) -->
   <div class="top-accessibility-bar">
     <div class="container top-bar-inner">
-      <div class="micro-status-pill" onclick="navigateTo('arquitetura')" title="Clique para ver o Painel dos 3 Microsserviços AWS, Fila SQS/DLQ e CloudWatch">
-        <span class="pulse-dot"></span>
-        <span>Arquitetura: <strong>3 Microsserviços AWS Ativos</strong> (Identidade • Chamados • Mídia/SQS)</span>
-      </div>
       <div class="accessibility-controls">
         <button type="button" onclick="changeFontSize(1)" title="Aumentar Fonte">A+</button>
         <button type="button" onclick="changeFontSize(-1)" title="Diminuir Fonte">A-</button>
         <button type="button" onclick="resetFontSize()" title="Fonte Padrão">A</button>
-        <button type="button" onclick="toggleContrast()" title="Alto Contraste">◐</button>
-        <span class="acc-label" onclick="showToast('Recursos de acessibilidade e alto contraste ativos!')">🖐 Acessibilidade</span>
+        <button type="button" class="acc-icon-btn" onclick="toggleContrast()" title="Alto Contraste" aria-label="Alto Contraste">
+          <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+            <circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2.2" />
+            <path d="M 12,2.5 A 9.5,9.5 0 0,1 12,21.5 Z" fill="currentColor" />
+          </svg>
+        </button>
+        <button type="button" class="acc-icon-btn" onclick="showToast('Recursos de acessibilidade e Libras ativos!')" title="Acessibilidade em Libras" aria-label="Libras">
+          <svg viewBox="0 0 28 28" width="21" height="21" fill="currentColor" aria-hidden="true">
+            <path d="M11.8 4.2c.6 0 1.1.5 1.1 1.1v5.1h.7V4.8c0-.6.5-1.1 1.1-1.1s1.1.5 1.1 1.1v5.6h.7V6.1c0-.6.5-1.1 1.1-1.1s1.1.5 1.1 1.1v6.2h.6V8.4c0-.6.5-1 1-1s1 .5 1 1v6.9c0 3.4-2.5 6.1-5.8 6.1h-1.2c-2.6 0-4.7-1.6-5.6-4l-1.9-4.5c-.3-.6 0-1.3.6-1.6.6-.3 1.3 0 1.6.6l1.2 2.7V5.3c0-.6.5-1.1 1.1-1.1z" opacity="0.85"/>
+            <path d="M16.5 10.2c.5 0 .9.4.9.9v4.2h.6v-4.7c0-.5.4-.9.9-.9s.9.4.9.9v4.7h.6v-3.6c0-.5.4-.9.9-.9s.9.4.9.9v5.2h.5v-3.3c0-.5.4-.9.9-.9s.9.4.9.9v5.8c0 2.9-2.1 5.2-4.9 5.2h-1c-2.2 0-4-1.3-4.7-3.4l-1.5-3.7c-.2-.5 0-1.1.5-1.3.5-.2 1.1 0 1.3.5l1 2.2v-7.4c0-.5.4-.9.9-.9z"/>
+          </svg>
+        </button>
+        <span class="acc-label" onclick="showToast('Recursos de acessibilidade e alto contraste ativos!')">Acessibilidade</span>
         <a href="https://www.picos.pi.gov.br" target="_blank" rel="noopener" class="pref-link">Acessar Site da Prefeitura</a>
       </div>
     </div>
@@ -32,11 +39,7 @@
   <header class="main-header">
     <div class="container header-inner">
       <div class="brand-logo" onclick="navigateTo('inicio')">
-        <img src="/assets/logo_e.svg" alt="Logo e-Conect-City" class="logo-e-img" />
-        <div class="brand-text">
-          <span class="brand-title">CONECT-CITY</span>
-          <span class="brand-subtitle">Município de Picos - PI</span>
-        </div>
+        <img src="/assets/logo_conectcity.png" alt="Logo e-Conect-City" class="logo-full-img" />
       </div>
     </div>
   </header>
@@ -45,22 +48,51 @@
   <nav class="main-navbar">
     <div class="container nav-inner">
       <button type="button" class="nav-item active" data-view="inicio" onclick="navigateTo('inicio')">
-        <span class="nav-icon">⌂</span> Início
+        <svg class="nav-svg-icon" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 10.5L12 3l9 7.5" />
+          <path d="M5.5 9v11h13V9" />
+          <path d="M9.5 20v-6h5v6" />
+        </svg>
+        <span>Início</span>
       </button>
       <button type="button" class="nav-item" data-view="relatos" onclick="navigateTo('relatos')">
-        <span class="nav-icon">📋</span> Relatos
+        <svg class="nav-svg-icon" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <circle cx="11.5" cy="13.5" r="2.5" />
+          <path d="M13.5 15.5L17 19" />
+        </svg>
+        <span>Relatos</span>
       </button>
       <button type="button" class="nav-item" data-view="sugestoes" onclick="navigateTo('sugestoes')">
-        <span class="nav-icon">📄</span> Sugestões
+        <svg class="nav-svg-icon" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <circle cx="10.5" cy="13.5" r="2.2" />
+          <path d="M14 15.5l4 2.2-4 2.2v-4.4z" />
+        </svg>
+        <span>Sugestões</span>
       </button>
       <button type="button" class="nav-item" data-view="eventos" onclick="navigateTo('eventos')">
-        <span class="nav-icon">📅</span> Eventos
+        <svg class="nav-svg-icon" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="17" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="9" x2="21" y2="9" />
+          <rect x="7" y="12" width="2.5" height="2.5" fill="currentColor" stroke="none" />
+          <rect x="11" y="12" width="2.5" height="2.5" fill="currentColor" stroke="none" />
+          <rect x="15" y="12" width="2.5" height="2.5" fill="currentColor" stroke="none" />
+          <rect x="7" y="16" width="2.5" height="2.5" fill="currentColor" stroke="none" />
+          <rect x="11" y="16" width="2.5" height="2.5" fill="currentColor" stroke="none" />
+        </svg>
+        <span>Eventos</span>
       </button>
       <button type="button" class="nav-item nav-login" data-view="login" id="nav-auth-btn" onclick="handleAuthNavClick()">
-        <span class="nav-icon">👤</span> <span id="nav-auth-label">Login</span>
-      </button>
-      <button type="button" class="nav-item nav-arch" data-view="arquitetura" onclick="navigateTo('arquitetura')">
-        <span class="nav-icon">☁️</span> Microsserviços AWS
+        <svg class="nav-svg-icon" viewBox="0 0 24 24" width="21" height="21" fill="currentColor">
+          <path d="M10.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-3.8 0-7 2.2-7 5v1.5h9.2a5.5 5.5 0 0 1-.7-2.7c0-1.5.6-2.8 1.6-3.7-.9-.1-2-.1-3.1-.1z" />
+          <path d="M17.5 12.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm2.3 3.4l-2.7 2.8a.6.6 0 0 1-.9 0l-1.4-1.4a.6.6 0 1 1 .9-.9l.9 1 2.3-2.3a.6.6 0 1 1 .9.8z" />
+        </svg>
+        <span id="nav-auth-label">Login</span>
       </button>
     </div>
     <div class="nav-gradient-border"></div>
@@ -75,7 +107,7 @@
   <main id="view-inicio" class="view-section active">
     <section class="hero-section">
       <div class="hero-mosaic">
-        <img src="/assets/mosaico_picos.svg" alt="Mosaico de Picos - PI" />
+        <img src="/assets/mosaico_picos_clean.png" onerror="this.src='/assets/mosaico_picos.jpg'" alt="Mosaico de Picos - PI" />
       </div>
       <div class="hero-content">
         <h1 class="hero-headline">
@@ -112,7 +144,7 @@
         <h2 class="objective-heading">OBJETIVO DO PROJETO</h2>
         <div class="objective-grid">
           <div class="objective-watermark">
-            <img src="/assets/logo_e.svg" alt="Marca d'água ConectCity" />
+            <img src="/assets/logo_e.png" alt="Marca d'água ConectCity" />
           </div>
           <div class="objective-timeline">
             <div class="timeline-item">
@@ -232,7 +264,7 @@
   <main id="view-login" class="view-section">
     <section class="hero-section login-split-section">
       <div class="hero-mosaic">
-        <img src="/assets/mosaico_picos.svg" alt="Mosaico de Picos - PI" />
+        <img src="/assets/mosaico_picos_clean.png" onerror="this.src='/assets/mosaico_picos.jpg'" alt="Mosaico de Picos - PI" />
       </div>
       <div class="login-box-container">
         <h2 class="auth-heading">
@@ -766,7 +798,7 @@
           </div>
         </div>
         <div class="modal-thumb-wrap">
-          <img id="mod-rel-img" src="/assets/buraco.svg" alt="Foto do Relato" />
+          <img id="mod-rel-img" src="/assets/buraco_real.png" alt="Foto do Relato" />
         </div>
       </div>
 
@@ -780,9 +812,59 @@
         <p id="mod-rel-devolutiva" class="devolutiva-text"></p>
       </div>
 
-      <!-- Painel Exclusivo da Prefeitura (Administrador) para responder ao chamado -->
+      <!-- Painel Exclusivo da Prefeitura (Administrador) para liberar, editar e responder ao chamado -->
       <div id="mod-rel-admin-box" class="admin-management-box" style="display:none;">
-        <h4>🏛️ Painel de Triagem da Prefeitura (Modo Administrador)</h4>
+        <h4>🏛️ Painel de Gestão da Prefeitura (Modo Administrador)</h4>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <button type="button" class="btn btn-green btn-sm" onclick="rapidoStatusRelato('Em Andamento')">
+            ✅ Liberar / Em Andamento
+          </button>
+          <button type="button" class="btn btn-orange btn-sm" onclick="rapidoStatusRelato('Concluído')">
+            ✔ Marcar como Concluído
+          </button>
+          <button type="button" class="btn btn-outline-green btn-sm" onclick="toggleEditarRelatoAdmin()">
+            ✏️ Editar Dados do Relato
+          </button>
+          <button type="button" class="btn btn-grey btn-sm" style="background:#dc2626;" onclick="excluirRelatoAdmin()">
+            🗑️ Excluir
+          </button>
+        </div>
+
+        <div id="admin-rel-edit-fields" style="display:none;margin-bottom:12px;padding:10px;background:rgba(255,255,255,0.7);border-radius:8px;border:1px dashed #d97706;">
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label>Título do Relato:</label>
+              <input type="text" id="admin-rel-titulo" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label>Categoria:</label>
+              <select id="admin-rel-categoria" class="form-control">
+                <option value="Infraestrutura">Infraestrutura</option>
+                <option value="Iluminação Pública">Iluminação Pública</option>
+                <option value="Limpeza Urbana">Limpeza Urbana</option>
+                <option value="Saneamento">Saneamento</option>
+                <option value="Trânsito">Trânsito</option>
+                <option value="Meio Ambiente">Meio Ambiente</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label>Bairro:</label>
+              <input type="text" id="admin-rel-bairro" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label>Endereço:</label>
+              <input type="text" id="admin-rel-endereco" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Descrição do Relato:</label>
+            <textarea id="admin-rel-descricao" rows="3" class="form-control"></textarea>
+          </div>
+        </div>
+
         <div class="form-group">
           <label>Alterar Status do Chamado:</label>
           <select id="admin-rel-status" class="form-control">
@@ -798,7 +880,7 @@
           <textarea id="admin-rel-devolutiva" rows="3" class="form-control"></textarea>
         </div>
         <button type="button" class="btn btn-green btn-sm" onclick="salvarDevolutivaRelato()">
-          💾 Salvar Devolutiva e Status
+          💾 Salvar Alterações e Devolutiva
         </button>
       </div>
     </div>
@@ -828,6 +910,47 @@
       <div class="modal-body-text">
         <p id="mod-evt-descricao"></p>
       </div>
+
+      <!-- Painel Admin para Editar/Excluir Evento -->
+      <div id="mod-evt-admin-box" class="admin-management-box" style="display:none;">
+        <h4>🏛️ Painel do Administrador — Gerenciar Evento</h4>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Título do Evento:</label>
+            <input type="text" id="admin-evt-titulo" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Data:</label>
+            <input type="text" id="admin-evt-data" class="form-control" />
+          </div>
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label>Local / Bairro:</label>
+            <input type="text" id="admin-evt-local" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Modalidade:</label>
+            <select id="admin-evt-modalidade" class="form-control">
+              <option value="Presencial">Presencial</option>
+              <option value="Online">Online</option>
+              <option value="Híbrido">Híbrido</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Descrição:</label>
+          <textarea id="admin-evt-descricao" rows="3" class="form-control"></textarea>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-green btn-sm" onclick="salvarAdminEvento()">
+            💾 Salvar Alterações do Evento
+          </button>
+          <button type="button" class="btn btn-grey btn-sm" style="background:#dc2626;" onclick="excluirEventoAdmin()">
+            🗑️ Excluir Evento
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -850,6 +973,69 @@
         <h4>Parecer da Prefeitura:</h4>
         <div class="devolutiva-date">📅 <span id="mod-sug-data"></span></div>
         <p id="mod-sug-devolutiva" class="devolutiva-text"></p>
+      </div>
+
+      <!-- Painel Admin para Liberar, Aprovar, Editar ou Excluir Sugestão -->
+      <div id="mod-sug-admin-box" class="admin-management-box" style="display:none;">
+        <h4>🏛️ Painel de Gestão da Prefeitura — Avaliar / Editar Sugestão</h4>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <button type="button" class="btn btn-green btn-sm" onclick="rapidoStatusSugestao('Aprovada')">
+            ✅ Liberar / Aprovar Sugestão
+          </button>
+          <button type="button" class="btn btn-orange btn-sm" onclick="rapidoStatusSugestao('Em Implementação')">
+            🚀 Em Implementação
+          </button>
+          <button type="button" class="btn btn-outline-green btn-sm" onclick="toggleEditarSugestaoAdmin()">
+            ✏️ Editar Texto da Sugestão
+          </button>
+          <button type="button" class="btn btn-grey btn-sm" style="background:#dc2626;" onclick="excluirSugestaoAdmin()">
+            🗑️ Excluir
+          </button>
+        </div>
+
+        <div id="admin-sug-edit-fields" style="display:none;margin-bottom:12px;padding:10px;background:rgba(255,255,255,0.7);border-radius:8px;border:1px dashed #d97706;">
+          <div class="form-group">
+            <label>Título da Sugestão:</label>
+            <input type="text" id="admin-sug-titulo" class="form-control" />
+          </div>
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label>Bairro:</label>
+              <input type="text" id="admin-sug-bairro" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label>Categoria:</label>
+              <input type="text" id="admin-sug-categoria" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Descrição do Problema:</label>
+            <textarea id="admin-sug-problema" rows="2" class="form-control"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Solução Proposta:</label>
+            <textarea id="admin-sug-solucao" rows="2" class="form-control"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Status da Sugestão:</label>
+          <select id="admin-sug-status" class="form-control">
+            <option value="Em Análise">Em Análise</option>
+            <option value="Aprovada">Aprovada</option>
+            <option value="Em Implementação">Em Implementação</option>
+            <option value="Concluída">Concluída</option>
+            <option value="Cancelada">Cancelada</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Parecer Oficial da Prefeitura:</label>
+          <textarea id="admin-sug-devolutiva" rows="3" class="form-control"></textarea>
+        </div>
+        <button type="button" class="btn btn-green btn-sm" onclick="salvarAdminSugestao()">
+          💾 Salvar Parecer e Alterações
+        </button>
       </div>
     </div>
   </div>
@@ -883,38 +1069,114 @@
       <div class="footer-col">
         <h4 class="footer-heading">Patrocínios</h4>
         <div class="sponsors-grid">
-          <div class="sponsor-box">UFPI</div>
-          <div class="sponsor-box">PMP</div>
-          <div class="sponsor-box">SI</div>
-          <div class="sponsor-box">FUMIP</div>
-          <div class="sponsor-box">PIAUÍ</div>
+          <div class="sponsor-box" title="Universidade Federal do Piauí">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#2468a2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10L12 5 2 10l10 5 10-5z" />
+              <path d="M6 12v5c3 2 9 2 12 0v-5" />
+            </svg>
+            <span>UFPI</span>
+          </div>
+          <div class="sponsor-box" title="Prefeitura Municipal de Picos">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#009c41" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21h18" />
+              <path d="M5 21V8l7-4 7 4v13" />
+              <path d="M9 21v-5h6v5" />
+            </svg>
+            <span>PMP</span>
+          </div>
+          <div class="sponsor-box" title="Sistemas de Informação - UFPI">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <span>SI</span>
+          </div>
+          <div class="sponsor-box" title="Iluminação Pública de Picos">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#eab308" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18h6" />
+              <path d="M10 22h4" />
+              <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" />
+            </svg>
+            <span>FUMIP</span>
+          </div>
+          <div class="sponsor-box" title="Governo do Estado do Piauí">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#1e40af" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+            <span>PIAUÍ</span>
+          </div>
         </div>
       </div>
 
       <div class="footer-col">
         <h4 class="footer-heading">Redes sociais</h4>
         <ul class="footer-list">
-          <li>📷 Instagram</li>
-          <li>📘 Facebook</li>
-          <li>💬 Whatsapp</li>
+          <li>
+            <a href="javascript:void(0)" class="footer-link">
+              <svg class="footer-svg-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+              <span>Instagram</span>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" class="footer-link">
+              <svg class="footer-svg-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+              <span>Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" class="footer-link">
+              <svg class="footer-svg-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              </svg>
+              <span>Whatsapp</span>
+            </a>
+          </li>
         </ul>
       </div>
 
       <div class="footer-col">
         <h4 class="footer-heading">Contato</h4>
         <ul class="footer-list">
-          <li>✉️ conectcity@gmail.com</li>
-          <li>📞 (89) 99999-9999</li>
-          <li>📍 Endereço Rua Fulano, nº 9999<br />Bairro Ciclano, Picos - Piauí</li>
+          <li class="footer-contact-item">
+            <svg class="footer-svg-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            <span>conectcity@gmail.com</span>
+          </li>
+          <li class="footer-contact-item">
+            <svg class="footer-svg-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            <span>(89) 99999-9999</span>
+          </li>
+          <li class="footer-contact-item footer-address-item">
+            <svg class="footer-svg-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span>Endereço Rua Fulano, nº 9999<br />Bairro Ciclano, Picos - Piauí</span>
+          </li>
         </ul>
       </div>
 
       <div class="footer-col footer-logo-col">
-        <img src="/assets/logo_e.svg" alt="Logo e Conect-City" class="footer-big-e" />
+        <img src="/assets/logo_e.png" alt="Logo e Conect-City" class="footer-big-e" onclick="navigateTo('inicio')" title="Voltar ao Início" />
       </div>
     </div>
     <div class="footer-copyright">
       Copyright © 2026 UFPI - Todos os Direitos Reservados.
+      <span style="margin-left: 12px; opacity: 0.85;">|</span>
+      <a href="javascript:void(0)" onclick="navigateTo('arquitetura')" style="color: #fde68a; text-decoration: none; font-weight: 600; margin-left: 12px;">
+        ☁️ Painel de Arquitetura AWS (3 Microsserviços • SQS/DLQ • CloudWatch)
+      </a>
     </div>
   </footer>
 

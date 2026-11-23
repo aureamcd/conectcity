@@ -14,6 +14,8 @@ let allEventos = [];
 let currentRelatosPage = 1;
 const RELATOS_PER_PAGE = 9;
 let selectedRelato = null;
+let selectedSugestao = null;
+let selectedEvento = null;
 let uploadedRelatoImageBase64 = null;
 let uploadedRelatoFileName = null;
 let uploadedEventoImageBase64 = null;
@@ -390,7 +392,7 @@ function renderRelatosGrid() {
       const badgeClass = getStatusBadgeClass(r.status);
       return `
         <div class="proto-card">
-          <img src="${r.imagem || '/assets/buraco.svg'}" alt="${r.titulo}" class="card-thumb" />
+          <img src="${r.imagem || '/assets/buraco_real.png'}" alt="${r.titulo}" class="card-thumb" />
           <div class="card-info">
             <div class="card-title" title="${r.titulo}">${r.titulo}</div>
             <div class="card-meta-line">📍 ${r.bairro}</div>
@@ -429,16 +431,24 @@ function openRelatoModal(id) {
   badgeEl.className = `status-badge ${getStatusBadgeClass(relato.status)}`;
 
   document.getElementById('mod-rel-avaliacao').textContent = formatStarRating(relato.avaliacao);
-  document.getElementById('mod-rel-img').src = relato.imagem || '/assets/buraco.svg';
+  document.getElementById('mod-rel-img').src = relato.imagem || '/assets/buraco_real.png';
   document.getElementById('mod-rel-descricao').textContent = relato.descricao;
   document.getElementById('mod-rel-data-dev').textContent = relato.data_devolutiva || '15/11/2025';
   document.getElementById('mod-rel-devolutiva').textContent =
     relato.devolutiva || 'O caso já foi analisado e está sendo tratado pela secretaria municipal responsável.';
 
-  // Se o usuário atual for Administrador, exibe o painel de triagem da Prefeitura
+  // Se o usuário atual for Administrador, exibe o painel de gestão completo da Prefeitura
   const adminBox = document.getElementById('mod-rel-admin-box');
+  const editFields = document.getElementById('admin-rel-edit-fields');
+  if (editFields) editFields.style.display = 'none';
+
   if (currentUser && currentUser.role === 'admin') {
     adminBox.style.display = 'block';
+    document.getElementById('admin-rel-titulo').value = relato.titulo || '';
+    document.getElementById('admin-rel-categoria').value = relato.categoria || 'Infraestrutura';
+    document.getElementById('admin-rel-bairro').value = relato.bairro || '';
+    document.getElementById('admin-rel-endereco').value = relato.endereco || '';
+    document.getElementById('admin-rel-descricao').value = relato.descricao || '';
     document.getElementById('admin-rel-status').value = relato.status;
     document.getElementById('admin-rel-devolutiva').value = relato.devolutiva || '';
   } else {
@@ -448,25 +458,64 @@ function openRelatoModal(id) {
   document.getElementById('modal-relato').style.display = 'flex';
 }
 
+function toggleEditarRelatoAdmin() {
+  const el = document.getElementById('admin-rel-edit-fields');
+  if (!el) return;
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+async function rapidoStatusRelato(novoStatus) {
+  document.getElementById('admin-rel-status').value = novoStatus;
+  if (novoStatus === 'Em Andamento' && !document.getElementById('admin-rel-devolutiva').value.trim()) {
+    document.getElementById('admin-rel-devolutiva').value =
+      'Relato liberado e encaminhado para execução pela equipe técnica da Prefeitura Municipal de Picos.';
+  }
+  if (novoStatus === 'Concluído') {
+    document.getElementById('admin-rel-devolutiva').value =
+      'Serviço concluído e vistoriado pela Secretaria Municipal de Obras e Infraestrutura de Picos.';
+  }
+  await salvarDevolutivaRelato();
+}
+
 async function salvarDevolutivaRelato() {
   if (!selectedRelato) return;
-  const status = document.getElementById('admin-rel-status').value;
-  const devolutiva = document.getElementById('admin-rel-devolutiva').value;
+  const payload = {
+    titulo: document.getElementById('admin-rel-titulo').value,
+    categoria: document.getElementById('admin-rel-categoria').value,
+    bairro: document.getElementById('admin-rel-bairro').value,
+    endereco: document.getElementById('admin-rel-endereco').value,
+    descricao: document.getElementById('admin-rel-descricao').value,
+    status: document.getElementById('admin-rel-status').value,
+    devolutiva: document.getElementById('admin-rel-devolutiva').value
+  };
 
   try {
     const res = await fetch(`/api/relatos/${selectedRelato.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status, devolutiva })
+      body: JSON.stringify(payload)
     });
     const data = await res.json();
     if (!res.ok) return showToast(data.error || 'Erro ao atualizar relato', true);
 
-    showToast('Devolutiva oficial da Prefeitura salva com sucesso!');
+    showToast('Relato e devolutiva atualizados com sucesso!');
     closeModal('modal-relato');
     loadRelatos(currentRelatosPage);
   } catch (err) {
     showToast('Erro ao comunicar com o Serviço de Chamados.', true);
+  }
+}
+
+async function excluirRelatoAdmin() {
+  if (!selectedRelato) return;
+  try {
+    const res = await fetch(`/api/relatos/${selectedRelato.id}`, { method: 'DELETE' });
+    if (!res.ok) return showToast('Erro ao excluir relato', true);
+    showToast('Relato excluído pelo Administrador.');
+    closeModal('modal-relato');
+    loadRelatos(currentRelatosPage);
+  } catch (err) {
+    showToast('Erro ao excluir relato.', true);
   }
 }
 
@@ -511,11 +560,11 @@ function handleImagePreview(input, previewBoxId, fileNameId) {
 async function submitNovoRelato(e) {
   e.preventDefault();
   const categoria = document.getElementById('rel-categoria').value;
-  let defaultImg = '/assets/buraco.svg';
-  if (categoria.includes('Iluminação')) defaultImg = '/assets/iluminacao.svg';
-  if (categoria.includes('Limpeza') || categoria.includes('Meio Ambiente')) defaultImg = '/assets/limpeza.svg';
-  if (categoria.includes('Saneamento')) defaultImg = '/assets/saneamento.svg';
-  if (categoria.includes('Trânsito')) defaultImg = '/assets/transito.svg';
+  let defaultImg = '/assets/buraco_real.png';
+  if (categoria.includes('Iluminação')) defaultImg = '/assets/iluminacao_real.jpg';
+  if (categoria.includes('Limpeza') || categoria.includes('Meio Ambiente')) defaultImg = '/assets/limpeza_real.jpg';
+  if (categoria.includes('Saneamento')) defaultImg = '/assets/saneamento_real.jpg';
+  if (categoria.includes('Trânsito')) defaultImg = '/assets/transito_real.jpg';
 
   const payload = {
     titulo: document.getElementById('rel-titulo').value,
@@ -571,7 +620,7 @@ function renderSugestoesGrid() {
       const badgeClass = getStatusBadgeClass(s.status);
       return `
         <div class="proto-card">
-          <img src="/assets/concluido.svg" alt="${s.titulo}" class="card-thumb" />
+          <img src="/assets/concluido_real.jpg" alt="${s.titulo}" class="card-thumb" />
           <div class="card-info">
             <div class="card-title" title="${s.titulo}">${s.titulo}</div>
             <div class="card-meta-line">📍 ${s.bairro}</div>
@@ -591,6 +640,7 @@ function renderSugestoesGrid() {
 function openSugestaoModal(id) {
   const s = allSugestoes.find((item) => item.id === id);
   if (!s) return;
+  selectedSugestao = s;
 
   document.getElementById('mod-sug-titulo').textContent = s.titulo;
   document.getElementById('mod-sug-protocolo').textContent = s.protocolo;
@@ -603,7 +653,84 @@ function openSugestaoModal(id) {
   document.getElementById('mod-sug-data').textContent = s.data_devolutiva || '16/11/2025';
   document.getElementById('mod-sug-devolutiva').textContent = s.devolutiva;
 
+  const adminBox = document.getElementById('mod-sug-admin-box');
+  const editFields = document.getElementById('admin-sug-edit-fields');
+  if (editFields) editFields.style.display = 'none';
+
+  if (currentUser && currentUser.role === 'admin') {
+    adminBox.style.display = 'block';
+    document.getElementById('admin-sug-titulo').value = s.titulo || '';
+    document.getElementById('admin-sug-bairro').value = s.bairro || '';
+    document.getElementById('admin-sug-categoria').value = s.categoria || '';
+    document.getElementById('admin-sug-problema').value = s.descricao_problema || '';
+    document.getElementById('admin-sug-solucao').value = s.descricao_solucao || '';
+    document.getElementById('admin-sug-status').value = s.status || 'Em Análise';
+    document.getElementById('admin-sug-devolutiva').value = s.devolutiva || '';
+  } else {
+    adminBox.style.display = 'none';
+  }
+
   document.getElementById('modal-sugestao').style.display = 'flex';
+}
+
+function toggleEditarSugestaoAdmin() {
+  const el = document.getElementById('admin-sug-edit-fields');
+  if (!el) return;
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+async function rapidoStatusSugestao(novoStatus) {
+  document.getElementById('admin-sug-status').value = novoStatus;
+  if (novoStatus === 'Aprovada') {
+    document.getElementById('admin-sug-devolutiva').value =
+      'Sugestão aprovada e liberada pela Prefeitura Municipal de Picos para inclusão no cronograma de melhorias urbanas.';
+  } else if (novoStatus === 'Em Implementação') {
+    document.getElementById('admin-sug-devolutiva').value =
+      'Proposta em fase de implementação pelas equipes técnicas municipais.';
+  }
+  await salvarAdminSugestao();
+}
+
+async function salvarAdminSugestao() {
+  if (!selectedSugestao) return;
+  const payload = {
+    titulo: document.getElementById('admin-sug-titulo').value,
+    bairro: document.getElementById('admin-sug-bairro').value,
+    categoria: document.getElementById('admin-sug-categoria').value,
+    descricao_problema: document.getElementById('admin-sug-problema').value,
+    descricao_solucao: document.getElementById('admin-sug-solucao').value,
+    status: document.getElementById('admin-sug-status').value,
+    devolutiva: document.getElementById('admin-sug-devolutiva').value
+  };
+
+  try {
+    const res = await fetch(`/api/sugestoes/${selectedSugestao.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) return showToast(data.error || 'Erro ao atualizar sugestão', true);
+
+    showToast('Sugestão atualizada com sucesso!');
+    closeModal('modal-sugestao');
+    loadSugestoes();
+  } catch (err) {
+    showToast('Erro ao atualizar sugestão.', true);
+  }
+}
+
+async function excluirSugestaoAdmin() {
+  if (!selectedSugestao) return;
+  try {
+    const res = await fetch(`/api/sugestoes/${selectedSugestao.id}`, { method: 'DELETE' });
+    if (!res.ok) return showToast('Erro ao excluir sugestão', true);
+    showToast('Sugestão excluída pelo Administrador.');
+    closeModal('modal-sugestao');
+    loadSugestoes();
+  } catch (err) {
+    showToast('Erro ao excluir sugestão.', true);
+  }
 }
 
 async function submitNovaSugestao(e) {
@@ -675,6 +802,7 @@ function renderEventosGrid() {
 function openEventoModal(id) {
   const ev = allEventos.find((item) => item.id === id);
   if (!ev) return;
+  selectedEvento = ev;
 
   document.getElementById('mod-evt-titulo').textContent = ev.titulo;
   document.getElementById('mod-evt-categoria').textContent = ev.categoria;
@@ -685,7 +813,59 @@ function openEventoModal(id) {
   document.getElementById('mod-evt-img').src = ev.imagem || '/assets/evento_criancas.svg';
   document.getElementById('mod-evt-descricao').textContent = ev.descricao;
 
+  const adminBox = document.getElementById('mod-evt-admin-box');
+  if (currentUser && currentUser.role === 'admin') {
+    adminBox.style.display = 'block';
+    document.getElementById('admin-evt-titulo').value = ev.titulo || '';
+    document.getElementById('admin-evt-data').value = ev.data_evento || '';
+    document.getElementById('admin-evt-local').value = ev.local || '';
+    document.getElementById('admin-evt-modalidade').value = ev.modalidade || 'Presencial';
+    document.getElementById('admin-evt-descricao').value = ev.descricao || '';
+  } else {
+    adminBox.style.display = 'none';
+  }
+
   document.getElementById('modal-evento').style.display = 'flex';
+}
+
+async function salvarAdminEvento() {
+  if (!selectedEvento) return;
+  const payload = {
+    titulo: document.getElementById('admin-evt-titulo').value,
+    data_evento: document.getElementById('admin-evt-data').value,
+    local: document.getElementById('admin-evt-local').value,
+    modalidade: document.getElementById('admin-evt-modalidade').value,
+    descricao: document.getElementById('admin-evt-descricao').value
+  };
+
+  try {
+    const res = await fetch(`/api/eventos/${selectedEvento.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) return showToast(data.error || 'Erro ao atualizar evento', true);
+
+    showToast('Evento atualizado com sucesso!');
+    closeModal('modal-evento');
+    loadEventos();
+  } catch (err) {
+    showToast('Erro ao atualizar evento.', true);
+  }
+}
+
+async function excluirEventoAdmin() {
+  if (!selectedEvento) return;
+  try {
+    const res = await fetch(`/api/eventos/${selectedEvento.id}`, { method: 'DELETE' });
+    if (!res.ok) return showToast('Erro ao excluir evento', true);
+    showToast('Evento excluído pelo Administrador.');
+    closeModal('modal-evento');
+    loadEventos();
+  } catch (err) {
+    showToast('Erro ao excluir evento.', true);
+  }
 }
 
 async function submitNovoEvento(e) {

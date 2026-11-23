@@ -78,18 +78,18 @@ if (relatosCount === 0) {
     'O caso já foi analisado pela Secretaria Municipal de Obras e Infraestrutura de Picos e está sendo tratado com prioridade. A equipe de pavimentação asfáltica e operação tapa-buracos já incluiu o trecho da Rua Antônio Claro no cronograma desta quinzena.';
 
   const seedRelatos = [
-    ['PICOS-2026-0101', 'Buracos na Ipueiras', 'Infraestrutura', 'Antônio Claro', 'Ipueiras', descPadraoIpueiras, 'Em Análise', 3.2, '/assets/buraco.svg', devolutivaPadrao, '15/11/2025', 'Helany da Silva Araújo'],
-    ['PICOS-2026-0102', 'Buracos na Ipueiras', 'Infraestrutura', 'Rua São José, 175', 'Ipueiras', descPadraoIpueiras, 'Pendente', 3.2, '/assets/buraco.svg', 'Aguardando vistoria técnica da equipe de engenharia municipal.', '16/11/2025', 'Helany da Silva Araújo'],
-    ['PICOS-2026-0103', 'Buracos na Ipueiras', 'Infraestrutura', 'Av. Principal Ipueiras', 'Ipueiras', descPadraoIpueiras, 'Em Andamento', 3.2, '/assets/buraco.svg', devolutivaPadrao, '15/11/2025', 'Carlos Eduardo Almondes'],
-    ['PICOS-2026-0104', 'Iluminação precária no Junco', 'Iluminação Pública', 'Av. Senador Helvídio Nunes', 'Junco', 'Cinco postes consecutivos próximos ao campus da UFPI estão com as luminárias de LED apagadas há duas semanas, gerando insegurança para estudantes e moradores no período noturno.', 'Em Análise', 4.1, '/assets/iluminacao.svg', 'Chamado encaminhado para a equipe de manutenção elétrica (FUMIP). Substituição dos reatores agendada.', '18/11/2025', 'Áurea Letícia Carvalho'],
-    ['PICOS-2026-0105', 'Manutenção asfáltica no Canto da Várzea', 'Infraestrutura', 'Rua Coelho Rodrigues', 'Canto da Várzea', 'Desgaste severo da camada asfáltica próximo à praça principal, prejudicando o tráfego de ônibus e motocicletas nos horários de pico.', 'Em Andamento', 3.8, '/assets/buraco.svg', 'Maquinário de recapeamento já mobilizado no setor central.', '14/11/2025', 'Elder Matheus Maia'],
-    ['PICOS-2026-0106', 'Drenagem pluvial na Boa Sorte', 'Infraestrutura', 'Rua Projetada 12', 'Boa Sorte', 'Galerias pluviais obstruídas causam acúmulo de água sempre que ocorrem chuvas fortes na região.', 'Em Análise', 3.5, '/assets/saneamento.svg', 'Equipe de limpeza urbana notificada para desobstrução preventiva das bocas de lobo.', '17/11/2025', 'Douglas Almondes'],
-    ['PICOS-2026-0107', 'Buracos na Ipueiras - Trecho II', 'Infraestrutura', 'Travessa Santo Antônio', 'Ipueiras', descPadraoIpueiras, 'Cancelado', 3.2, '/assets/buraco.svg', 'Chamado unificado ao protocolo principal PICOS-2026-0101 para atendimento conjunto na mesma via.', '12/11/2025', 'Helany da Silva Araújo'],
-    ['PICOS-2026-0108', 'Reparo concluído na Av. Beira Rio', 'Infraestrutura', 'Av. Beira Rio', 'Centro', 'Afundamento de calçamento e meio-fio danificado ao longo do calçadão da Beira Rio.', 'Concluído', 4.9, '/assets/concluido.svg', 'Serviço de recomposição de pavimento intertravado e meio-fio 100% concluído pela Secretaria de Obras.', '10/11/2025', 'Marcos Vinícius Moura'],
-    ['PICOS-2026-0109', 'Coleta de resíduos no bairro DNER', 'Limpeza Urbana', 'Rua Monsenhor Hipólito', 'DNER', 'Necessidade de instalação de novos contêineres coletores e regularização do horário do caminhão compactador.', 'Em Análise', 3.6, '/assets/limpeza.svg', 'Secretaria de Serviços Públicos está revisando a rota do setor DNER.', '18/11/2025', 'Fernanda Lima'],
-    ['PICOS-2026-0110', 'Sinalização viária nas Pedrinhas', 'Trânsito', 'Cruzamento Av. Deputado Sá Urtiga', 'Pedrinhas', 'Faixa de pedestres apagada e necessidade de redutor de velocidade próximo à escola municipal.', 'Em Andamento', 4.2, '/assets/transito.svg', 'DMTRANS aprovou a implantação de faixa elevada e pintura termoplástica.', '15/11/2025', 'João Pedro Rocha'],
-    ['PICOS-2026-0111', 'Pavimentação concluída na Ipueiras', 'Infraestrutura', 'Rua Padre Madeira', 'Ipueiras', 'Trecho crítico que apresentava buracos foi devidamente recapeado após solicitação na ouvidoria ConectCity.', 'Concluído', 4.8, '/assets/concluido.svg', 'Obra entregue e vistoriada pela engenharia municipal.', '09/11/2025', 'Helany da Silva Araújo'],
-    ['PICOS-2026-0112', 'Podas de árvores no bairro Pantanal', 'Meio Ambiente', 'Rua São Francisco', 'Pantanal', 'Galhos de árvores atingindo a rede de baixa tensão e obstruindo a iluminação dos postes.', 'Pendente', 3.4, '/assets/limpeza.svg', 'Aguardando programação conjunta com a concessionária de energia.', '19/11/2025', 'Ana Beatriz Sousa']
+    ['PICOS-2026-0101', 'Buracos na Ipueiras', 'Infraestrutura', 'Antônio Claro', 'Ipueiras', descPadraoIpueiras, 'Em Análise', 3.2, '/assets/buraco_real.png', devolutivaPadrao, '15/11/2025', 'Helany da Silva Araújo'],
+    ['PICOS-2026-0102', 'Buracos na Ipueiras', 'Infraestrutura', 'Rua São José, 175', 'Ipueiras', descPadraoIpueiras, 'Pendente', 3.2, '/assets/buraco_real.png', 'Aguardando vistoria técnica da equipe de engenharia municipal.', '16/11/2025', 'Helany da Silva Araújo'],
+    ['PICOS-2026-0103', 'Buracos na Ipueiras', 'Infraestrutura', 'Av. Principal Ipueiras', 'Ipueiras', descPadraoIpueiras, 'Em Andamento', 3.2, '/assets/buraco_real.png', devolutivaPadrao, '15/11/2025', 'Carlos Eduardo Almondes'],
+    ['PICOS-2026-0104', 'Iluminação precária no Junco', 'Iluminação Pública', 'Av. Senador Helvídio Nunes', 'Junco', 'Cinco postes consecutivos próximos ao campus da UFPI estão com as luminárias de LED apagadas há duas semanas, gerando insegurança para estudantes e moradores no período noturno.', 'Em Análise', 4.1, '/assets/iluminacao_real.jpg', 'Chamado encaminhado para a equipe de manutenção elétrica (FUMIP). Substituição dos reatores agendada.', '18/11/2025', 'Áurea Letícia Carvalho'],
+    ['PICOS-2026-0105', 'Manutenção asfáltica no Canto da Várzea', 'Infraestrutura', 'Rua Coelho Rodrigues', 'Canto da Várzea', 'Desgaste severo da camada asfáltica próximo à praça principal, prejudicando o tráfego de ônibus e motocicletas nos horários de pico.', 'Em Andamento', 3.8, '/assets/buraco_real.png', 'Maquinário de recapeamento já mobilizado no setor central.', '14/11/2025', 'Elder Matheus Maia'],
+    ['PICOS-2026-0106', 'Drenagem pluvial na Boa Sorte', 'Infraestrutura', 'Rua Projetada 12', 'Boa Sorte', 'Galerias pluviais obstruídas causam acúmulo de água sempre que ocorrem chuvas fortes na região.', 'Em Análise', 3.5, '/assets/saneamento_real.jpg', 'Equipe de limpeza urbana notificada para desobstrução preventiva das bocas de lobo.', '17/11/2025', 'Douglas Almondes'],
+    ['PICOS-2026-0107', 'Buracos na Ipueiras - Trecho II', 'Infraestrutura', 'Travessa Santo Antônio', 'Ipueiras', descPadraoIpueiras, 'Cancelado', 3.2, '/assets/buraco_real.png', 'Chamado unificado ao protocolo principal PICOS-2026-0101 para atendimento conjunto na mesma via.', '12/11/2025', 'Helany da Silva Araújo'],
+    ['PICOS-2026-0108', 'Reparo concluído na Av. Beira Rio', 'Infraestrutura', 'Av. Beira Rio', 'Centro', 'Afundamento de calçamento e meio-fio danificado ao longo do calçadão da Beira Rio.', 'Concluído', 4.9, '/assets/concluido_real.jpg', 'Serviço de recomposição de pavimento intertravado e meio-fio 100% concluído pela Secretaria de Obras.', '10/11/2025', 'Marcos Vinícius Moura'],
+    ['PICOS-2026-0109', 'Coleta de resíduos no bairro DNER', 'Limpeza Urbana', 'Rua Monsenhor Hipólito', 'DNER', 'Necessidade de instalação de novos contêineres coletores e regularização do horário do caminhão compactador.', 'Em Análise', 3.6, '/assets/limpeza_real.jpg', 'Secretaria de Serviços Públicos está revisando a rota do setor DNER.', '18/11/2025', 'Fernanda Lima'],
+    ['PICOS-2026-0110', 'Sinalização viária nas Pedrinhas', 'Trânsito', 'Cruzamento Av. Deputado Sá Urtiga', 'Pedrinhas', 'Faixa de pedestres apagada e necessidade de redutor de velocidade próximo à escola municipal.', 'Em Andamento', 4.2, '/assets/transito_real.jpg', 'DMTRANS aprovou a implantação de faixa elevada e pintura termoplástica.', '15/11/2025', 'João Pedro Rocha'],
+    ['PICOS-2026-0111', 'Pavimentação concluída na Ipueiras', 'Infraestrutura', 'Rua Padre Madeira', 'Ipueiras', 'Trecho crítico que apresentava buracos foi devidamente recapeado após solicitação na ouvidoria ConectCity.', 'Concluído', 4.8, '/assets/concluido_real.jpg', 'Obra entregue e vistoriada pela engenharia municipal.', '09/11/2025', 'Helany da Silva Araújo'],
+    ['PICOS-2026-0112', 'Podas de árvores no bairro Pantanal', 'Meio Ambiente', 'Rua São Francisco', 'Pantanal', 'Galhos de árvores atingindo a rede de baixa tensão e obstruindo a iluminação dos postes.', 'Pendente', 3.4, '/assets/limpeza_real.jpg', 'Aguardando programação conjunta com a concessionária de energia.', '19/11/2025', 'Ana Beatriz Sousa']
   ];
 
   for (const r of seedRelatos) {
@@ -279,7 +279,7 @@ const server = http.createServer(async (req, res) => {
 
       const nextNum = 100 + db.prepare('SELECT COUNT(*) as c FROM relatos').get().c + 1;
       const protocolo = `PICOS-2026-0${nextNum}`;
-      const imgFinal = imagem || '/assets/buraco.svg';
+      const imgFinal = imagem || '/assets/buraco_real.png';
 
       const result = db.prepare(`
         INSERT INTO relatos (protocolo, titulo, categoria, endereco, bairro, descricao, status, avaliacao, imagem, devolutiva, data_devolutiva, autor_nome)
@@ -316,7 +316,7 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
-    // PUT /relatos/:id (Atualização de Status, Devolutiva da Prefeitura ou Avaliação)
+    // PUT /relatos/:id (Edição completa pelo Admin, Atualização de Status, Devolutiva ou Avaliação)
     const relatoMatch = pathname.match(/^\/relatos\/(\d+)$/);
     if (req.method === 'PUT' && relatoMatch) {
       const id = Number(relatoMatch[1]);
@@ -324,6 +324,11 @@ const server = http.createServer(async (req, res) => {
       if (!existing) return sendJson(res, 404, { error: 'Relato não encontrado.' });
 
       const body = await parseBody(req);
+      const titulo = body.titulo !== undefined ? body.titulo.trim() : existing.titulo;
+      const categoria = body.categoria !== undefined ? body.categoria.trim() : existing.categoria;
+      const bairro = body.bairro !== undefined ? body.bairro.trim() : existing.bairro;
+      const endereco = body.endereco !== undefined ? body.endereco.trim() : existing.endereco;
+      const descricao = body.descricao !== undefined ? body.descricao.trim() : existing.descricao;
       const status = body.status || existing.status;
       const devolutiva = body.devolutiva !== undefined ? body.devolutiva : existing.devolutiva;
       const data_devolutiva = body.devolutiva !== undefined
@@ -333,15 +338,21 @@ const server = http.createServer(async (req, res) => {
 
       db.prepare(`
         UPDATE relatos
-        SET status = ?, devolutiva = ?, data_devolutiva = ?, avaliacao = ?
+        SET titulo = ?, categoria = ?, bairro = ?, endereco = ?, descricao = ?, status = ?, devolutiva = ?, data_devolutiva = ?, avaliacao = ?
         WHERE id = ?
-      `).run(status, devolutiva, data_devolutiva, avaliacao, id);
+      `).run(titulo, categoria, bairro, endereco, descricao, status, devolutiva, data_devolutiva, avaliacao, id);
 
       const updated = db.prepare('SELECT * FROM relatos WHERE id = ?').get(id);
       return sendJson(res, 200, {
-        message: 'Devolutiva e status atualizados com sucesso!',
+        message: 'Relato atualizado com sucesso!',
         relato: updated
       });
+    }
+
+    if (req.method === 'DELETE' && relatoMatch) {
+      const id = Number(relatoMatch[1]);
+      db.prepare('DELETE FROM relatos WHERE id = ?').run(id);
+      return sendJson(res, 200, { message: 'Relato excluído com sucesso!' });
     }
 
     // =========================================================================
@@ -401,18 +412,32 @@ const server = http.createServer(async (req, res) => {
       if (!existing) return sendJson(res, 404, { error: 'Sugestão não encontrada.' });
 
       const body = await parseBody(req);
+      const titulo = body.titulo !== undefined ? body.titulo.trim() : existing.titulo;
+      const bairro = body.bairro !== undefined ? body.bairro.trim() : existing.bairro;
+      const categoria = body.categoria !== undefined ? body.categoria.trim() : existing.categoria;
+      const descricao_problema = body.descricao_problema !== undefined ? body.descricao_problema.trim() : existing.descricao_problema;
+      const descricao_solucao = body.descricao_solucao !== undefined ? body.descricao_solucao.trim() : existing.descricao_solucao;
       const status = body.status || existing.status;
       const devolutiva = body.devolutiva !== undefined ? body.devolutiva : existing.devolutiva;
       const data_devolutiva = new Date().toLocaleDateString('pt-BR');
 
-      db.prepare('UPDATE sugestoes SET status = ?, devolutiva = ?, data_devolutiva = ? WHERE id = ?')
-        .run(status, devolutiva, data_devolutiva, id);
+      db.prepare(`
+        UPDATE sugestoes
+        SET titulo = ?, bairro = ?, categoria = ?, descricao_problema = ?, descricao_solucao = ?, status = ?, devolutiva = ?, data_devolutiva = ?
+        WHERE id = ?
+      `).run(titulo, bairro, categoria, descricao_problema, descricao_solucao, status, devolutiva, data_devolutiva, id);
 
       const updated = db.prepare('SELECT * FROM sugestoes WHERE id = ?').get(id);
       return sendJson(res, 200, {
         message: 'Sugestão atualizada com sucesso!',
         sugestao: updated
       });
+    }
+
+    if (req.method === 'DELETE' && sugestaoMatch) {
+      const id = Number(sugestaoMatch[1]);
+      db.prepare('DELETE FROM sugestoes WHERE id = ?').run(id);
+      return sendJson(res, 200, { message: 'Sugestão excluída com sucesso!' });
     }
 
     // =========================================================================
@@ -472,6 +497,39 @@ const server = http.createServer(async (req, res) => {
         evento: created,
         asyncMediaPipeline: sqsInfo
       });
+    }
+
+    const eventoMatch = pathname.match(/^\/eventos\/(\d+)$/);
+    if (req.method === 'PUT' && eventoMatch) {
+      const id = Number(eventoMatch[1]);
+      const existing = db.prepare('SELECT * FROM eventos WHERE id = ?').get(id);
+      if (!existing) return sendJson(res, 404, { error: 'Evento não encontrado.' });
+
+      const body = await parseBody(req);
+      const titulo = body.titulo !== undefined ? body.titulo.trim() : existing.titulo;
+      const categoria = body.categoria !== undefined ? body.categoria.trim() : existing.categoria;
+      const local = body.local !== undefined ? body.local.trim() : existing.local;
+      const modalidade = body.modalidade !== undefined ? body.modalidade.trim() : existing.modalidade;
+      const data_evento = body.data_evento !== undefined ? body.data_evento.trim() : existing.data_evento;
+      const descricao = body.descricao !== undefined ? body.descricao.trim() : existing.descricao;
+
+      db.prepare(`
+        UPDATE eventos
+        SET titulo = ?, categoria = ?, local = ?, modalidade = ?, data_evento = ?, descricao = ?
+        WHERE id = ?
+      `).run(titulo, categoria, local, modalidade, data_evento, descricao, id);
+
+      const updated = db.prepare('SELECT * FROM eventos WHERE id = ?').get(id);
+      return sendJson(res, 200, {
+        message: 'Evento atualizado com sucesso!',
+        evento: updated
+      });
+    }
+
+    if (req.method === 'DELETE' && eventoMatch) {
+      const id = Number(eventoMatch[1]);
+      db.prepare('DELETE FROM eventos WHERE id = ?').run(id);
+      return sendJson(res, 200, { message: 'Evento excluído com sucesso!' });
     }
 
     return sendJson(res, 404, { error: 'Rota não encontrada no Serviço de Chamados.' });

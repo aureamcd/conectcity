@@ -68,37 +68,11 @@ docker compose up --build
 
 ---
 
-## 4. Credenciais e Códigos para Demonstração no Vídeo
+## 4. Credenciais e Códigos de Acesso Padrão
 
 | Perfil | E-mail | Senha | Função |
 | :--- | :--- | :--- | :--- |
-| **Cidadã (Protótipo)** | `helany123@gmail.com` | `123456` | Visualizar, avaliar, cadastrar relatos/sugestões e editar perfil |
-| **Prefeitura (Admin)** | `admin@picos.pi.gov.br` | `admin123` | Triagem de relatos, alteração de status, emissão de devolutivas e eventos |
+| **Cidadã** | `helany123@gmail.com` | `123456` | Visualizar, avaliar, cadastrar relatos/sugestões e editar perfil |
+| **Prefeitura (Admin)** | `admin@picos.pi.gov.br` | `admin123` | Liberar, aprovar, editar e excluir relatos, sugestões e eventos, além de emitir devolutivas oficiais |
 | **Código "Sou Administrador"** | — | `PREFEITURA2026` | Código inserido no modal *Autenticação de Administrador* na tela de Perfil |
 
----
-
-## 5. Roteiro Sugerido para o Vídeo da 2ª Avaliação (Até 30 Minutos)
-
-1. **Parte 1 — Como Executa a Aplicação (3 min):**
-   - Mostrar a estrutura de pastas (`services/identity-service`, `services/tickets-service`, `services/media-service`, `services/api-gateway` e `public`).
-   - Executar `iniciar-conectcity.bat` ou `npm start` mostrando no terminal os 3 microsserviços e seus bancos isolados subindo nas portas `4001`, `4002`, `4003` e o Gateway na `3000`.
-2. **Parte 2 — O que a Aplicação Faz e Tela Inicial (4 min):**
-   - Apresentar a página **Início** do *e-CONECT-CITY (Município de Picos - PI)*, os recursos de acessibilidade no topo (`A+`, `A-`, Alto Contraste), a seção **Sobre Nós** e o **Objetivo do Projeto**.
-3. **Parte 3 — Demonstração do Serviço de Identidade (5 min):**
-   - Mostrar a tela de **Cadastro de Cidadão**, realizar um cadastro real e exibir o pop-out *"Cadastro realizado com sucesso!"*.
-   - Mostrar a tela de **Recuperar Senha** e o pop-out *"Senha recuperada com sucesso!"*.
-   - Fazer **Login** com a cidadã `helany123@gmail.com` e acessar **Configurações de Perfil**.
-   - Clicar no botão **`Sou Administrador`**, inserir o código `PREFEITURA2026` no modal **Autenticação de Administrador** e mostrar a liberação imediata do perfil administrativo.
-4. **Parte 4 — Demonstração do Serviço de Chamados: Relatos, Sugestões e Eventos (10 min):**
-   - Acessar a aba **Relatos**, testar a busca (ex: pesquisar por `Ipueiras` ou filtrar por `Em Análise`), navegar pela paginação.
-   - Clicar em **Visualizar** no card *"Buracos na Ipueiras"*, mostrando o modal detalhado com a foto, descrição, avaliação por estrelas e a **Devolutiva da Prefeitura**.
-   - Como Administrador, alterar o status de um relato para *Em Andamento* ou *Concluído* e salvar uma nova Devolutiva Oficial.
-   - Clicar em **Cadastrar um Relato**, preencher o **Formulário de Relato** com upload de uma imagem e mostrar o pop-out *"Relato enviado com sucesso!"*.
-   - Acessar a aba **Sugestões**, visualizar uma sugestão existente e cadastrar uma nova no **Formulário de Sugestão**.
-   - Acessar a aba **Eventos**, visualizar o modal do evento *"Dia das Crianças"* e cadastrar um novo evento no **Formulário de Evento**.
-5. **Parte 5 — Demonstração da Arquitetura de Microsserviços, Fila SQS/DLQ e Observabilidade AWS (5 min):**
-   - Clicar na aba **`☁️ Microsserviços AWS`** no menu superior.
-   - Mostrar os **Fluxos Síncrono e Assíncrono** funcionando ao vivo: contagem de registros nos Bancos Isolados 1 e 2, mensagens processadas na fila **Amazon SQS** e objetos salvos no **Amazon S3 / CloudFront**.
-   - Clicar no botão **`⚡ Simular Falha de Mídia (Testar DLQ)`** para demonstrar uma mensagem corrompida indo para a **Dead Letter Queue (DLQ)** e acionando o **CloudWatch Alarm**, e em seguida limpar a DLQ.
-   - Mostrar os traces reais do **AWS X-Ray** e logs do **Amazon CloudWatch**.
