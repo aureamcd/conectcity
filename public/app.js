@@ -30,9 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       currentUser = JSON.parse(savedUser);
       authToken = savedToken;
-      updateNavbarAuthUI();
     } catch (_) {}
   }
+  updateNavbarAuthUI();
 
   loadRelatos(1);
   loadSugestoes();
@@ -80,6 +80,11 @@ function showToast(message, isError = false) {
 // NAVEGAÇÃO ENTRE TELAS (SPA)
 // =========================================================================
 function navigateTo(viewName) {
+  if (!currentUser && ['form-relato', 'form-sugestao', 'form-evento', 'perfil'].includes(viewName)) {
+    showToast('Faça login para realizar cadastros.', true);
+    viewName = 'login';
+  }
+
   document.querySelectorAll('.view-section').forEach((sec) => {
     sec.classList.remove('active');
   });
@@ -123,6 +128,11 @@ function updateNavbarAuthUI() {
   } else {
     labelEl.textContent = 'Login';
   }
+
+  // Exibe os botões de cadastro (Relato, Solução/Sugestão, Evento) apenas quando estiver logado
+  document.querySelectorAll('.auth-only-cta').forEach((el) => {
+    el.style.display = currentUser ? 'flex' : 'none';
+  });
 }
 
 // =========================================================================
@@ -230,18 +240,7 @@ async function submitRecuperarSenha(e) {
 
 function populatePerfilForm() {
   if (!currentUser) {
-    // Se não estiver logado, carrega por padrão os dados da cidadã do protótipo (Helany da Silva Araújo)
-    fetch('/api/users/1')
-      .then((r) => r.json())
-      .then((u) => {
-        if (u && u.id) {
-          currentUser = u;
-          localStorage.setItem('conectcity_user', JSON.stringify(u));
-          updateNavbarAuthUI();
-          fillPerfilInputs(u);
-        }
-      })
-      .catch(() => {});
+    navigateTo('login');
     return;
   }
   fillPerfilInputs(currentUser);
