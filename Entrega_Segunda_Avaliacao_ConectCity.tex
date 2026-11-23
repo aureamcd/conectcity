@@ -1,0 +1,83 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{geometry}
+\geometry{margin=2.4cm}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{enumitem}
+
+\definecolor{ufpiblue}{RGB}{29,78,216}
+\definecolor{ufpigreen}{RGB}{5,150,105}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=ufpiblue,
+    urlcolor=ufpiblue
+}
+
+\begin{document}
+
+\begin{center}
+    {\Large \textbf{UNIVERSIDADE FEDERAL DO PIAUÍ -- UFPI}}\\[4pt]
+    {\large \textbf{Curso de Bacharelado em Sistemas de Informação}}\\[4pt]
+    {\normalsize \textbf{Disciplina:} Tópicos Especiais em Engenharia de Software \quad \textbf{Período:} 2026.2}\\[2pt]
+    {\normalsize \textbf{Professora:} Dra. Juliana Oliveira de Carvalho}\\[14pt]
+    \rule{\textwidth}{1.2pt}\\[10pt]
+    {\LARGE \textbf{\textcolor{ufpiblue}{SEGUNDA AVALIAÇÃO (AV2)}}}\\[6pt]
+    {\large \textbf{Plataforma e-CONECT-CITY: Ouvidoria Digital e Gestão Municipal de Picos -- PI (Arquitetura de Microsserviços)}}\\[6pt]
+    \rule{\textwidth}{1.2pt}
+\end{center}
+
+\vspace{8pt}
+
+\section*{1. Identificação da Equipe}
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{Integrantes:} Áurea Letícia Carvalho Macedo, Elder Matheus Maia de Oliveira e Douglas Almondes Rodrigues
+\end{itemize}
+
+\section*{2. Links de Acesso à Aplicação e ao Vídeo Demonstrativo}
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{Repositório Oficial no GitHub (Código-Fonte, Documentação e Executável):}\\
+    \url{https://github.com/aureamcd/conectcity}
+    \item \textbf{Pacote Local (Código + Executável \texttt{iniciar-conectcity.bat}):}\\
+    Arquivo anexado: \texttt{ConectCity\_Codigo\_e\_Executavel\_Av2.zip}
+    \item \textbf{Vídeo Demonstrativo (Execução e Funcionamento -- máx. 30 min):}\\
+    \textit{(Inserir aqui o link do Google Drive / YouTube do vídeo gravado ou anexar na entrega do SIGAA)}
+\end{itemize}
+
+\section*{3. Arquitetura Implementada (3 Microsserviços Independentes)}
+A aplicação \textbf{e-CONECT-CITY} foi construída sob uma arquitetura distribuída orientada a microsserviços, composta por:
+\begin{enumerate}[leftmargin=1.8em]
+    \item \textbf{API Gateway \& Load Balancer (Porta \texttt{3000}):} Ponto único de entrada que hospeda o portal web moderno e roteia as requisições para os microsserviços, registrando logs estruturados (\textit{Amazon CloudWatch}), rastreamento distribuído (\textit{AWS X-Ray Traces}) e alarmes de integridade (\textit{CloudWatch Alarms}).
+    \item \textbf{Microsserviço 1 -- Serviço de Identidade (Porta \texttt{4001}):} Fluxo síncrono com banco de dados relacional isolado (\texttt{identity\_rds.sqlite}). Gerencia autenticação, sessões JWT, cadastro de cidadãos, recuperação de senha, perfil e elevação de privilégio administrativo mediante código institucional da Prefeitura.
+    \item \textbf{Microsserviço 2 -- Serviço de Chamados (Porta \texttt{4002}):} Fluxo síncrono com banco de dados relacional isolado (\texttt{tickets\_rds.sqlite}). Gerencia protocolos de \textbf{Relatos Urbanos} (com filtro por status e busca), \textbf{Sugestões/Soluções Cidadãs}, \textbf{Eventos Municipais}, avaliações por estrelas e emissão da \textbf{Devolutiva Oficial da Prefeitura}.
+    \item \textbf{Microsserviço 3 -- Processamento Assíncrono de Mídia (Porta \texttt{4003}):} Fluxo assíncrono integrado à fila \textit{Amazon SQS}, \textit{Dead Letter Queue (DLQ)} para isolamento de falhas, sanitização de metadados EXIF, persistência em bucket \textit{Amazon S3} e distribuição via \textit{CloudFront CDN}.
+\end{enumerate}
+
+\section*{4. Como Executar a Aplicação}
+\textbf{Pré-requisito:} Node.js (v20+ / v24) ou Docker instalado.
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{Opção A -- Executável Windows (1 Clique):} Dar duplo clique no arquivo \texttt{iniciar-conectcity.bat} na raiz do projeto. Ele inicia os 3 microsserviços e o API Gateway automaticamente e abre o navegador em \url{http://localhost:3000}.
+    \item \textbf{Opção B -- Terminal:} Executar \texttt{npm start} dentro da pasta \texttt{conectcity} e acessar \url{http://localhost:3000}.
+    \item \textbf{Opção C -- Docker Compose:} Executar \texttt{docker compose up --build}.
+\end{itemize}
+
+\section*{5. Dados e Credenciais para Teste}
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{llll}
+\toprule
+\textbf{Perfil} & \textbf{E-mail / Login} & \textbf{Senha / Código} & \textbf{Permissões} \\
+\midrule
+Cidadã (Padrão) & \texttt{helany123@gmail.com} & \texttt{123456} & Relatos, sugestões, avaliações e perfil \\
+Prefeitura (Admin) & \texttt{admin@picos.pi.gov.br} & \texttt{admin123} & Triagem, status, devolutivas e eventos \\
+Código Admin & Botão \textit{Sou Administrador} & \texttt{PREFEITURA2026} & Libera função de Admin no Perfil \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}
