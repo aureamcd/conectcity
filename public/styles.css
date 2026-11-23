@@ -731,14 +731,42 @@ body.high-contrast .objective-watermark img {
   border-color: var(--brand-blue);
 }
 
+/* Card em Cinza quando aguarda liberação do Administrador */
 .proto-card.card-pending-portal {
-  border: 2px dashed #f59e0b;
-  background: #fffbeb;
+  background: #e2e8f0;
+  border: 1.5px solid #94a3b8;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.proto-card.card-pending-portal .card-thumb {
+  filter: grayscale(90%) contrast(0.92) opacity(0.82);
+}
+
+.proto-card.card-pending-portal .card-title {
+  color: #475569;
+  border-bottom-color: #cbd5e1;
+}
+
+.proto-card.card-pending-portal .card-meta-line,
+.proto-card.card-pending-portal .card-rating {
+  color: #64748b;
+}
+
+.proto-card.card-pending-portal .star-gold {
+  color: #94a3b8;
+}
+
+.proto-card.card-pending-portal .btn-visualizar {
+  background-color: #64748b;
+}
+
+.proto-card.card-pending-portal .btn-visualizar:hover {
+  background-color: #475569;
 }
 
 .admin-moderation-bar {
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-  border: 1.5px solid #f59e0b;
+  background: #f1f5f9;
+  border: 1.5px solid #94a3b8;
   border-radius: 12px;
   padding: 12px 18px;
   margin-bottom: 20px;
@@ -747,12 +775,11 @@ body.high-contrast .objective-watermark img {
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.12);
 }
 
 .admin-mod-info {
   font-size: 0.84rem;
-  color: #92400e;
+  color: #334155;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -772,9 +799,9 @@ body.high-contrast .objective-watermark img {
 }
 
 .portal-vis-badge.pending {
-  background: #fef3c7;
-  color: #b45309;
-  border: 1px solid #f59e0b;
+  background: #cbd5e1;
+  color: #334155;
+  border: 1px solid #94a3b8;
 }
 
 .portal-vis-badge.approved {

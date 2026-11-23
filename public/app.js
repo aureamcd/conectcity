@@ -390,14 +390,14 @@ function renderRelatosGrid() {
   const isAdmin = currentUser && currentUser.role === 'admin';
   if (adminBar) {
     if (isAdmin) {
-      const pendCount = allRelatos.filter((r) => Number(r.aprovado_portal ?? 1) === 0).length;
+      const pendCount = allRelatos.filter((r) => !(Number(r.aprovado_portal ?? 1) === 1 && (r.status || '').toLowerCase() !== 'pendente')).length;
       const pubCount = allRelatos.length - pendCount;
       adminBar.style.display = 'flex';
       adminBar.innerHTML = `
         <div class="admin-mod-info">
           <span>🏛️ <strong>Gestão &amp; CRUD de Relatos (Admin):</strong></span>
-          <span class="portal-vis-badge pending">🔒 ${pendCount} Aguardando Liberação p/ Portal</span>
-          <span class="portal-vis-badge approved">🌐 ${pubCount} Publicados no Portal</span>
+          <span class="portal-vis-badge pending">⏳ ${pendCount} Card(s) em Cinza (Aguardando Liberação)</span>
+          <span class="portal-vis-badge approved">✅ ${pubCount} Liberados no Portal</span>
         </div>
         <button type="button" class="btn btn-green btn-sm" onclick="navigateTo('form-relato')">+ Novo Relato</button>
       `;
@@ -420,20 +420,16 @@ function renderRelatosGrid() {
 
   grid.innerHTML = pageItems
     .map((r) => {
-      const badgeClass = getStatusBadgeClass(r.status);
-      const isApproved = Number(r.aprovado_portal ?? 1) === 1;
-      const adminBadgeHtml = isAdmin
-        ? isApproved
-          ? `<span class="portal-vis-badge approved">🌐 No Portal</span>`
-          : `<span class="portal-vis-badge pending">🔒 Aguardando Liberação p/ Portal</span>`
-        : '';
+      const isApproved = Number(r.aprovado_portal ?? 1) === 1 && (r.status || '').toLowerCase() !== 'pendente';
+      const badgeClass = isApproved ? getStatusBadgeClass(r.status) : 'status-pendente';
+      const statusText = isApproved ? r.status : 'Aguardando Liberação';
       const adminCrudHtml = isAdmin
         ? `
           <div class="card-admin-crud-row">
             ${
               !isApproved
-                ? `<button type="button" class="btn-crud-mini btn-crud-approve" onclick="liberarPortalRelatoCard(${r.id}, 1)">✅ Liberar p/ Portal</button>`
-                : `<button type="button" class="btn-crud-mini btn-crud-hide" onclick="liberarPortalRelatoCard(${r.id}, 0)">🔒 Ocultar</button>`
+                ? `<button type="button" class="btn-crud-mini btn-crud-approve" onclick="liberarPortalRelatoCard(${r.id}, 1)">✅ Liberar</button>`
+                : `<button type="button" class="btn-crud-mini btn-crud-hide" onclick="liberarPortalRelatoCard(${r.id}, 0)">⏳ Deixar Pendente</button>`
             }
             <button type="button" class="btn-crud-mini btn-crud-edit" onclick="openRelatoModal(${r.id}, true)">✏️ Editar</button>
             <button type="button" class="btn-crud-mini btn-crud-del" onclick="excluirRelatoCard(${r.id})">🗑️ Excluir</button>
@@ -442,14 +438,13 @@ function renderRelatosGrid() {
         : '';
 
       return `
-        <div class="proto-card ${isAdmin && !isApproved ? 'card-pending-portal' : ''}">
+        <div class="proto-card ${!isApproved ? 'card-pending-portal' : ''}">
           <img src="${r.imagem || '/assets/buraco_real.png'}" alt="${r.titulo}" class="card-thumb" />
           <div class="card-info">
             <div class="card-title" title="${r.titulo}">${r.titulo}</div>
-            ${adminBadgeHtml}
             <div class="card-meta-line">📍 ${r.bairro}</div>
             <div class="card-meta-line">🔧 ${r.categoria}</div>
-            <span class="status-badge ${badgeClass}">${r.status}</span>
+            <span class="status-badge ${badgeClass}">${statusText}</span>
             <div class="card-footer-row">
               <span class="card-rating"><span class="star-gold">★</span> ${formatStarRating(r.avaliacao)}</span>
               <button type="button" class="btn-visualizar" onclick="openRelatoModal(${r.id})">Visualizar</button>
@@ -727,14 +722,14 @@ function renderSugestoesGrid() {
   const isAdmin = currentUser && currentUser.role === 'admin';
   if (adminBar) {
     if (isAdmin) {
-      const pendCount = allSugestoes.filter((s) => Number(s.aprovado_portal ?? 1) === 0).length;
+      const pendCount = allSugestoes.filter((s) => !(Number(s.aprovado_portal ?? 1) === 1 && (s.status || '').toLowerCase() !== 'pendente')).length;
       const pubCount = allSugestoes.length - pendCount;
       adminBar.style.display = 'flex';
       adminBar.innerHTML = `
         <div class="admin-mod-info">
           <span>🏛️ <strong>Gestão &amp; CRUD de Sugestões (Admin):</strong></span>
-          <span class="portal-vis-badge pending">🔒 ${pendCount} Aguardando Liberação p/ Portal</span>
-          <span class="portal-vis-badge approved">🌐 ${pubCount} Publicadas no Portal</span>
+          <span class="portal-vis-badge pending">⏳ ${pendCount} Card(s) em Cinza (Aguardando Liberação)</span>
+          <span class="portal-vis-badge approved">✅ ${pubCount} Liberadas no Portal</span>
         </div>
         <button type="button" class="btn btn-green btn-sm" onclick="navigateTo('form-sugestao')">+ Nova Sugestão</button>
       `;
@@ -745,20 +740,16 @@ function renderSugestoesGrid() {
 
   grid.innerHTML = allSugestoes
     .map((s) => {
-      const badgeClass = getStatusBadgeClass(s.status);
-      const isApproved = Number(s.aprovado_portal ?? 1) === 1;
-      const adminBadgeHtml = isAdmin
-        ? isApproved
-          ? `<span class="portal-vis-badge approved">🌐 No Portal</span>`
-          : `<span class="portal-vis-badge pending">🔒 Aguardando Liberação p/ Portal</span>`
-        : '';
+      const isApproved = Number(s.aprovado_portal ?? 1) === 1 && (s.status || '').toLowerCase() !== 'pendente';
+      const badgeClass = isApproved ? getStatusBadgeClass(s.status) : 'status-pendente';
+      const statusText = isApproved ? s.status : 'Aguardando Liberação';
       const adminCrudHtml = isAdmin
         ? `
           <div class="card-admin-crud-row">
             ${
               !isApproved
-                ? `<button type="button" class="btn-crud-mini btn-crud-approve" onclick="liberarPortalSugestaoCard(${s.id}, 1)">✅ Liberar p/ Portal</button>`
-                : `<button type="button" class="btn-crud-mini btn-crud-hide" onclick="liberarPortalSugestaoCard(${s.id}, 0)">🔒 Ocultar</button>`
+                ? `<button type="button" class="btn-crud-mini btn-crud-approve" onclick="liberarPortalSugestaoCard(${s.id}, 1)">✅ Liberar</button>`
+                : `<button type="button" class="btn-crud-mini btn-crud-hide" onclick="liberarPortalSugestaoCard(${s.id}, 0)">⏳ Deixar Pendente</button>`
             }
             <button type="button" class="btn-crud-mini btn-crud-edit" onclick="openSugestaoModal(${s.id}, true)">✏️ Editar</button>
             <button type="button" class="btn-crud-mini btn-crud-del" onclick="excluirSugestaoCard(${s.id})">🗑️ Excluir</button>
@@ -767,14 +758,13 @@ function renderSugestoesGrid() {
         : '';
 
       return `
-        <div class="proto-card ${isAdmin && !isApproved ? 'card-pending-portal' : ''}">
+        <div class="proto-card ${!isApproved ? 'card-pending-portal' : ''}">
           <img src="/assets/concluido_real.jpg" alt="${s.titulo}" class="card-thumb" />
           <div class="card-info">
             <div class="card-title" title="${s.titulo}">${s.titulo}</div>
-            ${adminBadgeHtml}
             <div class="card-meta-line">📍 ${s.bairro}</div>
             <div class="card-meta-line">💡 ${s.categoria}</div>
-            <span class="status-badge ${badgeClass}">${s.status}</span>
+            <span class="status-badge ${badgeClass}">${statusText}</span>
             <div class="card-footer-row">
               <span class="card-rating"><span class="star-gold">★</span> ${formatStarRating(s.avaliacao)}</span>
               <button type="button" class="btn-visualizar" onclick="openSugestaoModal(${s.id})">Visualizar</button>
@@ -992,8 +982,8 @@ function renderEventosGrid() {
       adminBar.innerHTML = `
         <div class="admin-mod-info">
           <span>🏛️ <strong>Gestão &amp; CRUD de Eventos (Admin):</strong></span>
-          <span class="portal-vis-badge pending">🔒 ${pendCount} Aguardando Liberação p/ Portal</span>
-          <span class="portal-vis-badge approved">🌐 ${pubCount} Publicados no Portal</span>
+          <span class="portal-vis-badge pending">⏳ ${pendCount} Card(s) em Cinza (Aguardando Liberação)</span>
+          <span class="portal-vis-badge approved">✅ ${pubCount} Liberados no Portal</span>
         </div>
         <button type="button" class="btn btn-green btn-sm" onclick="navigateTo('form-evento')">+ Novo Evento</button>
       `;
@@ -1005,18 +995,16 @@ function renderEventosGrid() {
   grid.innerHTML = allEventos
     .map((ev) => {
       const isApproved = Number(ev.aprovado_portal ?? 1) === 1;
-      const adminBadgeHtml = isAdmin
-        ? isApproved
-          ? `<span class="portal-vis-badge approved">🌐 No Portal</span>`
-          : `<span class="portal-vis-badge pending">🔒 Aguardando Liberação p/ Portal</span>`
+      const statusBadgeHtml = !isApproved
+        ? `<span class="status-badge status-pendente">Aguardando Liberação</span>`
         : '';
       const adminCrudHtml = isAdmin
         ? `
           <div class="card-admin-crud-row">
             ${
               !isApproved
-                ? `<button type="button" class="btn-crud-mini btn-crud-approve" onclick="liberarPortalEventoCard(${ev.id}, 1)">✅ Liberar p/ Portal</button>`
-                : `<button type="button" class="btn-crud-mini btn-crud-hide" onclick="liberarPortalEventoCard(${ev.id}, 0)">🔒 Ocultar</button>`
+                ? `<button type="button" class="btn-crud-mini btn-crud-approve" onclick="liberarPortalEventoCard(${ev.id}, 1)">✅ Liberar</button>`
+                : `<button type="button" class="btn-crud-mini btn-crud-hide" onclick="liberarPortalEventoCard(${ev.id}, 0)">⏳ Deixar Pendente</button>`
             }
             <button type="button" class="btn-crud-mini btn-crud-edit" onclick="openEventoModal(${ev.id})">✏️ Editar</button>
             <button type="button" class="btn-crud-mini btn-crud-del" onclick="excluirEventoCard(${ev.id})">🗑️ Excluir</button>
@@ -1025,14 +1013,14 @@ function renderEventosGrid() {
         : '';
 
       return `
-        <div class="proto-card ${isAdmin && !isApproved ? 'card-pending-portal' : ''}">
+        <div class="proto-card ${!isApproved ? 'card-pending-portal' : ''}">
           <img src="${ev.imagem || '/assets/evento_aniversario.svg'}" alt="${ev.titulo}" class="card-thumb" />
           <div class="card-info">
             <div class="card-title" title="${ev.titulo}">${ev.titulo}</div>
-            ${adminBadgeHtml}
             <div class="card-meta-line">📅 ${ev.data_evento}</div>
             <div class="card-meta-line">🏃 ${ev.categoria}</div>
             <div class="card-meta-line">🌐 ${ev.modalidade}</div>
+            ${statusBadgeHtml}
             <div class="card-footer-row" style="margin-top:8px;">
               <span class="card-rating"><span class="star-gold">★</span> ${formatStarRating(ev.avaliacao)}</span>
               <button type="button" class="btn-visualizar" onclick="openEventoModal(${ev.id})">Visualizar</button>

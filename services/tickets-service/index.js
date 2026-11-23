@@ -256,19 +256,14 @@ const server = http.createServer(async (req, res) => {
       const q = (url.searchParams.get('q') || '').trim().toLowerCase();
       const status = (url.searchParams.get('status') || '').trim();
       const categoria = (url.searchParams.get('categoria') || '').trim();
-      const isAdmin = url.searchParams.get('admin') === '1';
 
       let rows = db.prepare(`
         SELECT * FROM relatos
         ORDER BY
-          CASE WHEN IFNULL(aprovado_portal, 1) = 0 THEN 0 ELSE 1 END ASC,
           CASE WHEN id > 12 THEN 0 ELSE 1 END ASC,
           CASE WHEN id > 12 THEN -id ELSE id END ASC
       `).all();
 
-      if (!isAdmin) {
-        rows = rows.filter((r) => Number(r.aprovado_portal ?? 1) === 1);
-      }
       if (q) {
         rows = rows.filter(
           (r) =>
@@ -353,11 +348,13 @@ const server = http.createServer(async (req, res) => {
       let status = body.status || existing.status;
       let devolutiva = body.devolutiva !== undefined ? body.devolutiva : existing.devolutiva;
 
-      if (body.aprovado_portal === 1 && Number(existing.aprovado_portal ?? 1) === 0) {
+      if (body.aprovado_portal === 1) {
         if (!body.status || status === 'Pendente') status = 'Em Análise';
-        if (!body.devolutiva || devolutiva.includes('Aguardando liberação')) {
+        if (!body.devolutiva || devolutiva.includes('Aguardando')) {
           devolutiva = 'Relato liberado e publicado no portal pela Prefeitura Municipal de Picos. Encaminhado para a secretaria responsável.';
         }
+      } else if (body.aprovado_portal === 0) {
+        status = 'Pendente';
       }
 
       const data_devolutiva = (body.devolutiva !== undefined || body.aprovado_portal !== undefined)
@@ -389,16 +386,12 @@ const server = http.createServer(async (req, res) => {
     // =========================================================================
     if (req.method === 'GET' && pathname === '/sugestoes') {
       const q = (url.searchParams.get('q') || '').trim().toLowerCase();
-      const isAdmin = url.searchParams.get('admin') === '1';
 
       let rows = db.prepare(`
         SELECT * FROM sugestoes
-        ORDER BY CASE WHEN IFNULL(aprovado_portal, 1) = 0 THEN 0 ELSE 1 END ASC, id DESC
+        ORDER BY id DESC
       `).all();
 
-      if (!isAdmin) {
-        rows = rows.filter((s) => Number(s.aprovado_portal ?? 1) === 1);
-      }
       if (q) {
         rows = rows.filter(
           (s) =>
@@ -460,11 +453,13 @@ const server = http.createServer(async (req, res) => {
       let status = body.status || existing.status;
       let devolutiva = body.devolutiva !== undefined ? body.devolutiva : existing.devolutiva;
 
-      if (body.aprovado_portal === 1 && Number(existing.aprovado_portal ?? 1) === 0) {
+      if (body.aprovado_portal === 1) {
         if (!body.status || status === 'Pendente') status = 'Em Análise';
-        if (!body.devolutiva || devolutiva.includes('Aguardando liberação')) {
+        if (!body.devolutiva || devolutiva.includes('Aguardando')) {
           devolutiva = 'Sugestão liberada pelo Administrador para votação e acompanhamento público no portal ConectCity.';
         }
+      } else if (body.aprovado_portal === 0) {
+        status = 'Pendente';
       }
 
       const data_devolutiva = new Date().toLocaleDateString('pt-BR');
@@ -493,19 +488,14 @@ const server = http.createServer(async (req, res) => {
     // =========================================================================
     if (req.method === 'GET' && pathname === '/eventos') {
       const q = (url.searchParams.get('q') || '').trim().toLowerCase();
-      const isAdmin = url.searchParams.get('admin') === '1';
 
       let rows = db.prepare(`
         SELECT * FROM eventos
         ORDER BY
-          CASE WHEN IFNULL(aprovado_portal, 1) = 0 THEN 0 ELSE 1 END ASC,
           CASE WHEN id > 3 THEN 0 ELSE 1 END ASC,
           CASE WHEN id > 3 THEN -id ELSE id END ASC
       `).all();
 
-      if (!isAdmin) {
-        rows = rows.filter((e) => Number(e.aprovado_portal ?? 1) === 1);
-      }
       if (q) {
         rows = rows.filter(
           (e) =>
