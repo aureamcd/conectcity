@@ -81,3 +81,4 @@
    - Clicar em **`⚡ Simular Falha de Mídia (Testar DLQ)`**.
    - Mostrar o payload com erro caindo na **DLQ (Dead Letter Queue)** e o alarme `SQS-DeadLetterQueue-MessagesVisible` mudando de `[OK]` para `[ALARM]` no **CloudWatch Alarms**.
    - Clicar em **`Limpar DLQ`** para normalizar o alarme e mostrar os traces distribuídos no **AWS X-Ray** e logs no **Amazon CloudWatch**.
+
